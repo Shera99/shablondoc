@@ -51,10 +51,12 @@ class TranslationDirectionResource extends Resource
                 Tables\Columns\TextColumn::make('sourceLanguage.name')
                     ->numeric()
                     ->sortable()
+                    ->searchable()
                     ->label('Переводимый язык'),
                 Tables\Columns\TextColumn::make('targetLanguage.name')
                     ->numeric()
                     ->sortable()
+                    ->searchable()
                     ->label('Язык перевода'),
             ])
             ->filters([
