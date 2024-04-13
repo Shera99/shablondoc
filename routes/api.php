@@ -17,9 +17,9 @@ Route::post('/password-reset/confirm', [ResetPasswordController::class, 'passwor
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('logout', [ProfileController::class, 'logout']);
-
-    Route::get('/country', [CountryController::class, 'list']);
-    Route::get('/language', [LanguageController::class, 'list']);
-    Route::get('/faq', [FaqController::class, 'list']);
-    Route::get('/document-type', [DocumentTypeController::class, 'list']);
 });
+
+Route::get('/country', [CountryController::class, 'list']);
+Route::get('/language', [LanguageController::class, 'list']);
+Route::get('/faq', [FaqController::class, 'list']);
+Route::get('/document-type', [DocumentTypeController::class, 'list']);
