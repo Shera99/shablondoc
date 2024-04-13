@@ -38,6 +38,7 @@ class DocumentTypeResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255)
+                    ->unique()
                     ->label('Название'),
             ]);
     }
