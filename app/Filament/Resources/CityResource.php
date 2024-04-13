@@ -35,10 +35,12 @@ class CityResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->label('Название города')
                     ->required()
                     ->maxLength(80),
                 Forms\Components\Select::make('country_id')
                     ->relationship('country', 'name')
+                    ->label('Название страны')
                     ->searchable()
                     ->required(),
             ]);

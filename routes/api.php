@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\Api\References\{CountryController, LanguageController, FaqController, DocumentTypeController};
+use App\Http\Controllers\Api\References\{CountryController, LanguageController, FaqController, DocumentTypeController,
+    CityController};
 use App\Http\Controllers\Api\Auth\{RegisterController, AuthController, ResetPasswordController};
 use App\Http\Controllers\Api\Profile\ProfileController;
 use Illuminate\Http\Request;
@@ -23,3 +24,5 @@ Route::get('/country', [CountryController::class, 'list']);
 Route::get('/language', [LanguageController::class, 'list']);
 Route::get('/faq', [FaqController::class, 'list']);
 Route::get('/document-type', [DocumentTypeController::class, 'list']);
+Route::get('/city', [CityController::class, 'list']);
+Route::get('/city/by-country/{country_id}', [CityController::class, 'showByCountry']);
