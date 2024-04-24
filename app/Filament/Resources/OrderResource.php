@@ -32,23 +32,28 @@ class OrderResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('user_id')
-                    ->relationship('user', 'name')
-                    ->required()->label('Клиент'),
-                Forms\Components\Select::make('company_id')
-                    ->relationship('companies', 'name')
-                    ->required()->label('Компания'),
+                Forms\Components\TextInput::make('email')
+                    ->maxLength(100)
+                    ->label('Почта заказчика'),
+                Forms\Components\TextInput::make('phone_number')
+                    ->required()
+                    ->maxLength(20)
+                    ->label('Номер заказчика'),
+                Forms\Components\Select::make('company_address_id')
+                    ->relationship('company_addresses', 'name')
+                    ->required()
+                    ->label('Адрес выдачи'),
                 Forms\Components\Select::make('template_id')
                     ->relationship('template', 'name')
-                    ->required()->label('Шаблон'),
-//                Forms\Components\Select::make('template_data_id')
-//                    ->relationship('templateData', 'data_json')
-//                    ->required()->label('Данные документа'),
+                    ->required()
+                    ->label('Шаблон'),
                 Forms\Components\TextInput::make('document_file')
                     ->required()
-                    ->maxLength(255)->label('Файл'),
+                    ->maxLength(255)
+                    ->label('Файл'),
                 Forms\Components\DatePicker::make('delivery_date')
-                    ->required()->label('Дата доставки'),
+                    ->required()
+                    ->label('Дата доставки'),
                 Forms\Components\Select::make('status')
                     ->options([
                         'pending' => 'В процессе модерации',
@@ -65,14 +70,18 @@ class OrderResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user.name')
+                Tables\Columns\TextColumn::make('email')
+                    ->searchable()
+                    ->sortable()
+                    ->label('Почта заказчика'),
+                Tables\Columns\TextColumn::make('phone_number')
+                    ->searchable()
+                    ->sortable()
+                    ->label('Номер заказчика'),
+                Tables\Columns\TextColumn::make('companyAddress.name')
                     ->numeric()
                     ->sortable()
-                    ->label('Клиент'),
-                Tables\Columns\TextColumn::make('companies.name')
-                    ->numeric()
-                    ->sortable()
-                    ->label('Компания'),
+                    ->label('Адрес выдачи'),
                 Tables\Columns\TextColumn::make('template.name')
                     ->numeric()
                     ->sortable()

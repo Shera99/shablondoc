@@ -12,11 +12,12 @@ class Order extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
-        'company_id',
         'template_id',
         'template_data_id',
+        'company_address_id',
         'document_file',
+        'email',
+        'phone_number',
         'delivery_date',
         'status',
     ];
@@ -33,11 +34,6 @@ class Order extends Model
         ];
     }
 
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
-
     public function template(): BelongsTo
     {
         return $this->belongsTo(Template::class);
@@ -48,8 +44,8 @@ class Order extends Model
         return $this->belongsTo(TemplateData::class);
     }
 
-    public function company(): BelongsTo
+    public function companyAddress(): BelongsTo
     {
-        return $this->belongsTo(Company::class);
+        return $this->belongsTo(CompanyAddress::class);
     }
 }

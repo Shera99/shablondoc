@@ -17,11 +17,12 @@ return new class extends Migration
 
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('subscription_id')->constrained('subscriptions');
+            $table->foreignId('user_id')->nullable(true)->constrained('users');
+            $table->integer('foreign_id');
             $table->decimal('amount');
             $table->string('transaction_id', 150);
             $table->string('additional_transaction_id', 150);
+            $table->enum('type', ['subscription', 'order']);
             $table->jsonb('payload');
             $table->timestamps();
         });

@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\{BelongsTo,HasMany};
 
 class Company extends Model
 {
@@ -14,8 +14,6 @@ class Company extends Model
         'name',
         'user_id',
         'country_id',
-        'city_id',
-        'delivery_location'
     ];
 
     /**
@@ -29,8 +27,6 @@ class Company extends Model
             'name' => 'string',
             'user_id' => 'integer',
             'country_id' => 'integer',
-            'city_id' => 'integer',
-            'delivery_location' => 'string'
         ];
     }
 
@@ -44,8 +40,8 @@ class Company extends Model
         return $this->belongsTo(Country::class);
     }
 
-    public function city(): BelongsTo
+    public function companyAddress(): HasMany
     {
-        return $this->belongsTo(City::class);
+        return $this->hasMany(CompanyAddress::class);
     }
 }

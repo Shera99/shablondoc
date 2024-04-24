@@ -1,7 +1,12 @@
 <?php
 
-use App\Http\Controllers\Api\References\{CountryController, LanguageController, FaqController, DocumentTypeController,
-    CityController};
+use App\Http\Controllers\Api\References\{CompanyAddressController,
+    CountryController,
+    LanguageController,
+    FaqController,
+    DocumentTypeController,
+    CityController,
+    CompanyController};
 use App\Http\Controllers\Api\Auth\{RegisterController, AuthController, ResetPasswordController};
 use App\Http\Controllers\Api\Profile\ProfileController;
 use Illuminate\Http\Request;
@@ -18,6 +23,12 @@ Route::post('/password-reset/confirm', [ResetPasswordController::class, 'passwor
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('logout', [ProfileController::class, 'logout']);
+
+    Route::post('/company', [CompanyController::class, 'create']);
+    Route::match(['PUT','PATCH'], '/company/{company}', [CompanyController::class, 'update']);
+
+    Route::post('/address', [CompanyAddressController::class, 'create']);
+    Route::match(['PUT','PATCH'], '/address/{companyAddress}', [CompanyAddressController::class, 'update']);
 });
 
 Route::get('/country', [CountryController::class, 'list']);
@@ -25,4 +36,6 @@ Route::get('/language', [LanguageController::class, 'list']);
 Route::get('/faq', [FaqController::class, 'list']);
 Route::get('/document-type', [DocumentTypeController::class, 'list']);
 Route::get('/city', [CityController::class, 'list']);
-Route::get('/city/by-country/{country_id}', [CityController::class, 'showByCountry']);
+Route::get('/city/by-country', [CityController::class, 'showByCountry']);
+Route::get('/company', [CompanyController::class, 'list']);
+Route::get('/address', [CompanyAddressController::class, 'list']);
