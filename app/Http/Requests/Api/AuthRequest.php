@@ -22,7 +22,7 @@ class AuthRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'email' => 'required|string|email',
+            'login' => 'required|string',
             'password' => 'required|min:8'
         ];
     }
@@ -35,9 +35,8 @@ class AuthRequest extends BaseRequest
     public function messages(): array
     {
         return [
-            'email.required' => 'The email field is required.',
-            'email.string' => 'The email must be a string.',
-            'email.email' => 'The email must be a valid email address.',
+            'login.required' => 'The login field is required.',
+            'login.string' => 'The login must be a string.',
             'password.required' => 'The password field is required.',
             'password.min' => 'The password must be at least :min characters.',
         ];

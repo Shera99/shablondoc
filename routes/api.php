@@ -6,8 +6,10 @@ use App\Http\Controllers\Api\References\{CompanyAddressController,
     FaqController,
     DocumentTypeController,
     CityController,
-    CompanyController};
+    CompanyController,
+    TemplateController};
 use App\Http\Controllers\Api\Auth\{RegisterController, AuthController, ResetPasswordController};
+use App\Http\Controllers\Api\Order\OrderController;
 use App\Http\Controllers\Api\Profile\ProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -39,3 +41,6 @@ Route::get('/city', [CityController::class, 'list']);
 Route::get('/city/by-country', [CityController::class, 'showByCountry']);
 Route::get('/company', [CompanyController::class, 'list']);
 Route::get('/address', [CompanyAddressController::class, 'list']);
+Route::get('/template', [TemplateController::class, 'list']);
+
+Route::post('/order', [OrderController::class, 'create']);

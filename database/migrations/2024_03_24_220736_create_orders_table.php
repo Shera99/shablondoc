@@ -17,13 +17,17 @@ return new class extends Migration
 
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('template_id')->constrained('templates');
+            $table->foreignId('user_id')->nullable()->constrained('users');
+            $table->foreignId('template_id')->nullable()->constrained('templates');
             $table->foreignId('template_data_id')->nullable()->constrained('template_data');
             $table->foreignId('company_address_id')->constrained('company_addresses');
+            $table->text('document_name')->nullable();
             $table->text('document_file')->nullable();
             $table->string('email', 100)->nullable();
             $table->string('phone_number', 20)->nullable(false);
             $table->timestamp('delivery_date')->nullable();
+            $table->time('delivery_time')->nullable();
+            $table->text('comment')->nullable();
             $table->timestamps();
         });
 

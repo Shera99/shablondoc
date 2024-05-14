@@ -21,7 +21,7 @@ class AuthController extends Controller
     {
         $validate_data = $request->validated();
 
-        $user = User::where('email', $validate_data['email'])->first();
+        $user = User::where('login', $validate_data['login'])->first();
 
         if (!$user || !Hash::check($validate_data['password'], $user->password)) {
             return $this->sendErrorResponse('Invalid Credentials', Response::HTTP_BAD_REQUEST);

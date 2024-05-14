@@ -15,6 +15,7 @@ class Template extends Model
         'name',
         'template_json',
         'template_file',
+        'country_id',
         'document_type_id',
         'translation_direction_id',
         'status'
@@ -30,14 +31,6 @@ class Template extends Model
         return [
             'status' => TemplateStatus::class . ':string',
         ];
-    }
-
-    /**
-     * @return BelongsTo
-     */
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
     }
 
     /**

@@ -12,13 +12,17 @@ class Order extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'template_id',
         'template_data_id',
         'company_address_id',
+        'document_name',
         'document_file',
         'email',
         'phone_number',
         'delivery_date',
+        'delivery_time',
+        'comment',
         'status',
     ];
 
@@ -32,6 +36,11 @@ class Order extends Model
         return [
             'status' => OrderStatus::class . ':string',
         ];
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function template(): BelongsTo
