@@ -7,7 +7,8 @@ use App\Http\Controllers\Api\References\{CompanyAddressController,
     DocumentTypeController,
     CityController,
     CompanyController,
-    TemplateController};
+    TemplateController,
+    CurrencyController};
 use App\Http\Controllers\Api\Auth\{RegisterController, AuthController, ResetPasswordController};
 use App\Http\Controllers\Api\Order\OrderController;
 use App\Http\Controllers\Api\Profile\ProfileController;
@@ -42,5 +43,7 @@ Route::get('/city/by-country', [CityController::class, 'showByCountry']);
 Route::get('/company', [CompanyController::class, 'list']);
 Route::get('/address', [CompanyAddressController::class, 'list']);
 Route::get('/template', [TemplateController::class, 'list']);
+Route::get('/currency', [CurrencyController::class, 'list']);
 
 Route::post('/order', [OrderController::class, 'create']);
+Route::post('/web-call-back', [OrderController::class, 'webCallBack']);

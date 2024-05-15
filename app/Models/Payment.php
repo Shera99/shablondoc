@@ -12,10 +12,12 @@ class Payment extends Model
 
     protected $fillable = [
         'user_id',
+        'foreign_id',
         'amount',
         'transaction_id',
         'additional_transaction_id',
         'payload',
+        'type',
         'status',
     ];
 
@@ -28,6 +30,7 @@ class Payment extends Model
     {
         return [
             'user_id' => 'integer',
+            'foreign_id' => 'integer',
             'amount' => 'decimal:2',
             'transaction_id' => 'string',
             'additional_transaction_id' => 'string',

@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\Api\Order;
 
-use App\Http\Requests\Api\Order\OrderCreateRequest;
+use App\Http\Requests\Api\Order\{OrderCreateRequest,OrderSetWebCallBackRequest};
 use App\Http\Services\OrderService;
 use App\Http\Services\PaymentService;
 use App\Models\Order;
-use Symfony\Component\HttpFoundation\Response;
 
 class OrderController extends \App\Http\Controllers\Controller
 {
@@ -27,9 +26,20 @@ class OrderController extends \App\Http\Controllers\Controller
         if (!$order instanceof Order) return $this->sendErrorResponse($order['message'], $order['error']);
 
         $result = $this->payment_service->create($order->id, 127, 'order');
-        if (in_array('error', $result)) return $this->sendErrorResponse($order['message'], $order['error']);
+        if (in_array('error', $result)) return $this->sendErrorResponse($result['message'], $result['error']);
 
         $this->setResponse(data: $result, message: 'Order is created.');
+        return $this->sendResponse();
+    }
+
+    public function webCallBack(OrderSetWebCallBackRequest $request): \Illuminate\Http\JsonResponse
+    {
+        $request_data = $request->validated();
+        $result = $this->payment_service->setTransaction($request_data['order_id'], $request_data['transaction_id']);
+
+        if (in_array('error', $result)) return $this->sendErrorResponse($result['message'], $result['error']);
+
+        $this->setResponse(message: $result['message']);
         return $this->sendResponse();
     }
 }

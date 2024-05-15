@@ -2,8 +2,8 @@
 
 namespace App\Http\Services;
 
-use App\Enums\OrderStatus;
 use App\Models\Payment;
+use Symfony\Component\HttpFoundation\Response;
 
 class PaymentService
 {
@@ -28,5 +28,17 @@ class PaymentService
         } catch (\Throwable $exception) {
             return ['message' => $exception->getMessage(), 'error' => $exception->getCode()];
         }
+    }
+
+    public function setTransaction(int $order_id, int $transaction_id): array
+    {
+        $payment = Payment::query()->where('foreign_id', $order_id)->where('type', 'order')->first();
+
+        if (!$payment) return ['message' => 'Transaction not found.', 'error' => Response::HTTP_NOT_FOUND];
+
+        $payment->transaction_id = $transaction_id;
+        $payment->save();
+
+        return ['message' => 'Transaction updated successfully.', 'success' => true];
     }
 }
