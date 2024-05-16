@@ -90,7 +90,7 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasRole(['Super-Admin', 'Moderator']);
     }
 
-    public function getRoleName(): string
+    public function getRoleName(): string|null
     {
         return $this->getRoleNames()->value('name');
     }
