@@ -24,8 +24,9 @@ class RegisterRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'name' => 'required',
-            'last_name' => 'required',
+//            'name' => 'required',
+//            'last_name' => 'required',
+            'login' => 'required|string',
             'role' => 'required|string',
             'email' => [
                 'required',
@@ -46,8 +47,10 @@ class RegisterRequest extends BaseRequest
     public function messages(): array
     {
         return [
-            'name.required' => 'The name field is required.',
-            'last_name.required' => 'The last name field is required.',
+//            'name.required' => 'The name field is required.',
+//            'last_name.required' => 'The last name field is required.',
+            'login.required' => 'The login field is required.',
+            'login.string' => 'The login must be a string.',
             'role.required' => 'The role field is required.',
             'role.string' => 'The role must be a string.',
             'email.required' => 'The email field is required.',
