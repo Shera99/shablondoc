@@ -92,6 +92,6 @@ class User extends Authenticatable implements FilamentUser
 
     public function getRoleName(): string|null
     {
-        return $this->getRoleNames()->value('name');
+        return $this->getRoleNames()->first();
     }
 }

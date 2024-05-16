@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\Profile;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -15,8 +17,14 @@ class ProfileController extends Controller
     {
         auth()->user()->tokens()->delete();
 
-        $this->setResponse(data: [], http_status_code: Response::HTTP_OK, message: 'Logout success.');
+        $this->setResponse(message: 'Logout successful.');
 
         return $this->sendResponse();
+    }
+
+    public function show(User $user): JsonResponse
+    {
+        $this->setResponse();
+        return $this->sendResourceResponse(new UserResource(), $user);
     }
 }

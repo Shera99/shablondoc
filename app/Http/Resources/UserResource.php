@@ -11,6 +11,7 @@ class UserResource implements Resource
     public function toArray(Model $model, array $other_data = []): array
     {
         $userData = [
+            'id' => $model->id,
             'name' => $model->name,
             'last_name' => $model->last_name,
             'login' => $model->login,
