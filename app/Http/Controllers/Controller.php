@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 abstract class Controller
 {
     protected array $response = ['success' => true, 'data' => [], 'message' => ''];
-    protected int $http_status_code;
+    protected int $http_status_code = Response::HTTP_OK;
 
     protected function setResponse(array $data = [], int $http_status_code = Response::HTTP_OK, string $message = ''): void
     {

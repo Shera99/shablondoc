@@ -6,7 +6,7 @@ use BenSampo\Enum\Enum;
 
 final class RoleType extends Enum
 {
-    const ANONYMOUS = 'Anonymous';
+    const EMPLOYEE = 'Employee';
     const ADMINISTRATOR = 'Super-Admin';
     const CORPORATE = 'Corporate';
     const MODERATOR = 'Moderator';

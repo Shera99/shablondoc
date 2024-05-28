@@ -18,13 +18,13 @@ class CompanyAddressController extends \App\Http\Controllers\Controller
         $company = $request->company_id;
         $city = $request->city_id;
 
-        $companies = CompanyAddress::query()
+        $addresses = CompanyAddress::query()
             ->where('company_id', $company)
             ->where('city_id', $city)
             ->where('status', true)
             ->get(['id', 'name'])->toArray();
 
-        $this->setResponse($companies);
+        $this->setResponse($addresses);
 
         return $this->sendResponse();
     }
@@ -62,6 +62,29 @@ class CompanyAddressController extends \App\Http\Controllers\Controller
         $companyAddress->update();
 
         $this->setResponse($companyAddress->toArray());
+
+        return $this->sendResponse();
+    }
+
+    public function byCompany(int $company): JsonResponse
+    {
+        $addresses = CompanyAddress::with('city:id,name')
+            ->where('company_id', $company)
+            ->get(['id', 'name', 'city_id', 'status']);
+
+        if ($addresses->isEmpty()) $this->setResponse();
+        else {
+            $addressesWithCity = $addresses->map(function ($address) {
+                return [
+                    'id' => $address->id,
+                    'name' => $address->name,
+                    'city_id' => $address->city_id,
+                    'status' => $address->status,
+                    'city_name' => $address->city ? $address->city->name : null,
+                ];
+            });
+            $this->setResponse($addressesWithCity->toArray());
+        }
 
         return $this->sendResponse();
     }

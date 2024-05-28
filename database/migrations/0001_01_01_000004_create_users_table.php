@@ -27,7 +27,6 @@ return new class extends Migration
             $table->foreignId('city_id')->nullable()->constrained('cities');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->enum('user_type', ['standard', 'corporate'])->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

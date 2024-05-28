@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers\Api\References;
 
-use App\Http\Requests\Api\Company\{CompanyAddressCreateRequest, CompanyAddressUpdateRequest};
+use App\Http\Requests\Api\Company\CompanyCreateRequest;
+use App\Http\Requests\Api\Company\EmployeeUpdateRequest;
 use App\Models\Company;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -31,11 +32,11 @@ class CompanyController extends \App\Http\Controllers\Controller
     }
 
     /**
-     * @param CompanyAddressCreateRequest $request
+     * @param CompanyCreateRequest $request
      * @param Company $company
      * @return JsonResponse
      */
-    public function create(CompanyAddressCreateRequest $request, Company $company): JsonResponse
+    public function create(CompanyCreateRequest $request, Company $company): JsonResponse
     {
         $validate_data = $request->validated();
 
@@ -50,16 +51,32 @@ class CompanyController extends \App\Http\Controllers\Controller
     }
 
     /**
-     * @param CompanyAddressUpdateRequest $request
+     * @param EmployeeUpdateRequest $request
      * @param Company $company
      * @return JsonResponse
      */
-    public function update(CompanyAddressUpdateRequest $request, Company $company): JsonResponse
+    public function update(EmployeeUpdateRequest $request, Company $company): JsonResponse
     {
         $company->name = $request->validated()['name'];
         $company->update();
 
         $this->setResponse($company->toArray());
+
+        return $this->sendResponse();
+    }
+
+    public function byUser(Request $request): JsonResponse
+    {
+        $company = Company::with('country:id,name')
+            ->where('user_id', auth()->user()->getAuthIdentifier())
+            ->first(['id', 'name', 'country_id']);
+
+        if ($company) {
+            $companyData = $company->toArray();
+            $companyData['country'] = $company->country ? $company->country->name : null;
+
+            $this->setResponse($companyData);
+        }
 
         return $this->sendResponse();
     }
