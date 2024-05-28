@@ -27,7 +27,7 @@ Route::post('/password-reset/confirm', [ResetPasswordController::class, 'passwor
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [ProfileController::class, 'logout']);
-    Route::get('/profile/{user}', [ProfileController::class, 'show']);
+    Route::get('/profile', [ProfileController::class, 'show']);
 
     Route::get('/user/company', [CompanyController::class, 'byUser']);
     Route::post('/company', [CompanyController::class, 'create']);

@@ -4,9 +4,8 @@ namespace App\Http\Controllers\Api\Profile;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
-use App\Models\User;
 use Illuminate\Http\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {
@@ -22,9 +21,9 @@ class ProfileController extends Controller
         return $this->sendResponse();
     }
 
-    public function show(User $user): JsonResponse
+    public function show(): JsonResponse
     {
         $this->setResponse();
-        return $this->sendResourceResponse(new UserResource(), $user);
+        return $this->sendResourceResponse(new UserResource(), Auth::user());
     }
 }
