@@ -38,7 +38,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::match(['PUT', 'PATCH'], '/address/{companyAddress}', [CompanyAddressController::class, 'update']);
 
     Route::post('/employee', [EmployeeController::class, 'create']);
-    Route::match(['PUT', 'PATCH'], '/employee/{employee}', [EmployeeController::class, 'update']);
+    Route::match(['PUT', 'PATCH'], '/employee/{user}', [EmployeeController::class, 'update']);
     Route::get('/employee/{company}', [EmployeeController::class, 'list']);
 });
 

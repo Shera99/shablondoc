@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Api\Employee;
 
 use App\Http\Requests\BaseRequest;
-use Illuminate\Validation\Rule;
 
 class EmployeeUpdateRequest extends BaseRequest
 {
@@ -27,14 +26,13 @@ class EmployeeUpdateRequest extends BaseRequest
             'email' => [
                 'required',
                 'string',
-                'email',
-                Rule::unique('users', 'email')
+                'email'
             ],
-            'company_id' => [
-                'required',
-                'int',
-                Rule::exists('companies', 'id')
-            ]
+            'status' => 'required|string',
+            'name' => 'nullable|string',
+            'last_name' => 'nullable|string',
+            'phone' => 'nullable|string',
+            'address' => 'nullable|string'
         ];
     }
 
@@ -46,8 +44,13 @@ class EmployeeUpdateRequest extends BaseRequest
     public function messages(): array
     {
         return [
-            'name.required' => 'The name field is required.',
-            'name.string' => 'The name must be a string.',
+            'login.required' => 'The login field is required.',
+            'login.string' => 'The login must be a string.',
+            'status.required' => 'The status field is required.',
+            'status.string' => 'The status must be a string.',
+            'email.required' => 'The email field is required.',
+            'email.string' => 'The email must be a string.',
+            'email.email' => 'The email must be a valid email address.',
         ];
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Employee;
 
 use App\Http\Controllers\Controller;
 use App\Http\Services\UserService;
+use App\Models\User;
 use App\Http\Requests\Api\Employee\{EmployeeCreateRequest,EmployeeUpdateRequest};
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
@@ -33,12 +34,20 @@ class EmployeeController extends Controller
         }
     }
 
-    public function update(EmployeeUpdateRequest $request): JsonResponse
+    public function update(User $user, EmployeeUpdateRequest $request): JsonResponse
     {
-        $validate_data = $request->validated();
-        //update code
+        try {
+            $validate_data = $request->validated();
 
-        return $this->sendResponse();
+            if (User::where('email', $validate_data['email'])->where('id', '<>', $user->id)->exists())
+                return $this->sendErrorResponse('A user with this email already exists', Response::HTTP_BAD_REQUEST);
+
+            $this->userService->update($user, $validate_data);
+
+            return $this->sendResponse();
+        } catch (\Exception $e) {
+            return $this->sendErrorResponse($e->getMessage(), Response::HTTP_BAD_REQUEST);
+        }
     }
 
     public function list(int $company): JsonResponse

@@ -13,16 +13,9 @@ class UserService
     {
         $user = app(User::class);
 
-        $user->login = $data['login'];
-        $user->email = $data['email'];
         $user->password = Hash::make($data['password']);
 
-        $optionalFields = ['name', 'last_name', 'phone', 'address'];
-        foreach ($optionalFields as $field) {
-            if (isset($data[$field])) {
-                $user->$field = $data[$field];
-            }
-        }
+        $this->setUserData($user, $data);
 
         $user->save();
 
@@ -30,6 +23,26 @@ class UserService
         $user->assignRole($role);
 
         return $user;
+    }
+
+    public function update(User $user, array $data)
+    {
+        $user->status = $data['status'];
+        $this->setUserData($user, $data);
+        $user->save();
+    }
+
+    private function setUserData(User &$user, array $data)
+    {
+        $user->login = $data['login'];
+        $user->email = $data['email'];
+
+        $optionalFields = ['name', 'last_name', 'phone', 'address'];
+        foreach ($optionalFields as $field) {
+            if (isset($data[$field])) {
+                $user->$field = $data[$field];
+            }
+        }
     }
 
     public function employeeCreate(int $user_id, int $company_id): void
