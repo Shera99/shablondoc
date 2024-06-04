@@ -15,6 +15,7 @@ class OrderService
     {
         $this->order = app(Order::class);
     }
+
     public function create(array $request_data, $request)
     {
         $this->order->phone_number = $request_data['phone_number'];
@@ -31,6 +32,8 @@ class OrderService
 
             $this->order->document_file = $image_save_result['storedImagePath'];
             $this->order->document_name = $request_data['document_name'];
+            $this->order->country_id = $request_data['country_id'];
+            $this->order->language_id = $request_data['language_id'];
         } else {
             return ['error' => Response::HTTP_BAD_REQUEST, 'message' => 'Document image is required.'];
         }

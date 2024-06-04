@@ -15,4 +15,13 @@ class ApiHelper
 
         return $code;
     }
+
+    public static function getConvertedAmount(string $currency, int $amount): int
+    {
+        // Добавить код для конвертирования цены $currency
+        if ($currency != 'USD') {
+            $amount = $amount * 89;
+        }
+        return $amount;
+    }
 }

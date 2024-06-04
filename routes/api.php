@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Payment\PaymentController;
 use App\Http\Controllers\Api\References\{CompanyAddressController,
     CountryController,
     LanguageController,
@@ -7,6 +8,7 @@ use App\Http\Controllers\Api\References\{CompanyAddressController,
     DocumentTypeController,
     CityController,
     CompanyController,
+    SubscriptionController,
     TemplateController,
     CurrencyController};
 use App\Http\Controllers\Api\Auth\{RegisterController, AuthController, ResetPasswordController};
@@ -40,6 +42,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/employee', [EmployeeController::class, 'create']);
     Route::match(['PUT', 'PATCH'], '/employee/{user}', [EmployeeController::class, 'update']);
     Route::get('/employee/{company}', [EmployeeController::class, 'list']);
+
+    Route::get('/subscription/{currency}', [SubscriptionController::class, 'list']);
 });
 
 Route::get('/country', [CountryController::class, 'list']);
@@ -55,3 +59,4 @@ Route::get('/currency', [CurrencyController::class, 'list']);
 
 Route::post('/order', [OrderController::class, 'create']);
 Route::post('/web-call-back', [OrderController::class, 'webCallBack']);
+Route::post('/payment/freedom/callback/{secret}', [PaymentController::class, 'callBack']);

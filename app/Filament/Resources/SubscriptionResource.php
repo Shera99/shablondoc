@@ -33,15 +33,21 @@ class SubscriptionResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
+                Forms\Components\TextInput::make('name_ru')
                     ->required()
                     ->maxLength(200)
-                    ->label('Название'),
-                Forms\Components\TextInput::make('price')
+                    ->label('Название ru'),
+                Forms\Components\TextInput::make('name_en')
                     ->required()
-                    ->numeric()
-                    ->prefix('$')
-                    ->label('Цена'),
+                    ->maxLength(200)
+                    ->label('Название en'),
+                Forms\Components\RichEditor::make('description_ru')
+                    ->required()->columnSpanFull()->columnSpan(8)->label('Описание ru'),
+                Forms\Components\RichEditor::make('description_en')
+                    ->required()->columnSpanFull()->columnSpan(8)->label('Описание en'),
+                Forms\Components\Select::make('price_id')
+                    ->relationship('price', 'price')
+                    ->required()->prefix('$')->label('Цена'),
                 Forms\Components\TextInput::make('day_count')
                     ->required()
                     ->numeric()
@@ -60,10 +66,13 @@ class SubscriptionResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                Tables\Columns\TextColumn::make('name_ru')
                     ->searchable()
-                    ->label('Название'),
-                Tables\Columns\TextColumn::make('price')
+                    ->label('Название ru'),
+                Tables\Columns\TextColumn::make('name_en')
+                    ->searchable()
+                    ->label('Название en'),
+                Tables\Columns\TextColumn::make('price.price')
                     ->money()
                     ->sortable()
                     ->label('Цена'),

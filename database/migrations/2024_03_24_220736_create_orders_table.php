@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        DB::statement("CREATE TYPE order_status AS ENUM ('pending', 'completed', 'translation', 'delivery', 'delivered')");
+//        DB::statement("CREATE TYPE order_status AS ENUM ('pending', 'completed', 'translation', 'delivery', 'delivered', 'failed')");
 
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
@@ -21,12 +21,13 @@ return new class extends Migration
             $table->foreignId('template_id')->nullable()->constrained('templates');
             $table->foreignId('template_data_id')->nullable()->constrained('template_data');
             $table->foreignId('company_address_id')->constrained('company_addresses');
+            $table->foreignId('country_id')->nullable()->constrained('countries');
+            $table->foreignId('language_id')->nullable()->constrained('languages');
             $table->text('document_name')->nullable();
             $table->text('document_file')->nullable();
             $table->string('email', 100)->nullable();
             $table->string('phone_number', 20)->nullable(false);
             $table->timestamp('delivery_date')->nullable();
-            $table->time('delivery_time')->nullable();
             $table->text('comment')->nullable();
             $table->timestamps();
         });

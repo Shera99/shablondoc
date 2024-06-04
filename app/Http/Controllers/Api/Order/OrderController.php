@@ -25,7 +25,7 @@ class OrderController extends \App\Http\Controllers\Controller
         $order = $this->service->create($data, $request);
         if (!$order instanceof Order) return $this->sendErrorResponse($order['message'], $order['error']);
 
-        $result = $this->payment_service->create($order->id, 127, 'order');
+        $result = $this->payment_service->create($order->id, 127, $data['currency'],  'order');
         if (in_array('error', $result)) return $this->sendErrorResponse($result['message'], $result['error']);
 
         $this->setResponse(data: $result, message: 'Order is created.');

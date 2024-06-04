@@ -73,6 +73,12 @@ return [
             'replace_placeholders' => true,
         ],
 
+        'http' => [
+            'driver' => 'custom',
+            'via' => \App\Logging\HttpDailyLogger::class,
+            'level' => env('LOG_LEVEL', 'debug'),
+        ],
+
         'slack' => [
             'driver' => 'slack',
             'url' => env('LOG_SLACK_WEBHOOK_URL'),

@@ -2,17 +2,16 @@
 
 namespace App\Filament\Resources;
 
-use App\Enums\OrderStatus;
 use App\Filament\Resources\OrderResource\Pages;
-use App\Filament\Resources\OrderResource\RelationManagers;
 use App\Models\Order;
 use Filament\Forms;
+use Filament\Forms\Components\Card;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Hash;
 
 class OrderResource extends Resource
 {
@@ -32,37 +31,50 @@ class OrderResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('email')
-                    ->maxLength(100)
-                    ->label('Почта заказчика'),
-                Forms\Components\TextInput::make('phone_number')
-                    ->required()
-                    ->maxLength(20)
-                    ->label('Номер заказчика'),
-                Forms\Components\Select::make('company_address_id')
-                    ->relationship('company_addresses', 'name')
-                    ->required()
-                    ->label('Адрес выдачи'),
-                Forms\Components\Select::make('template_id')
-                    ->relationship('template', 'name')
-                    ->required()
-                    ->label('Шаблон'),
-                Forms\Components\TextInput::make('document_file')
-                    ->required()
-                    ->maxLength(255)
-                    ->label('Файл'),
-                Forms\Components\DatePicker::make('delivery_date')
-                    ->required()
-                    ->label('Дата доставки'),
-                Forms\Components\Select::make('status')
-                    ->options([
-                        'pending' => 'В процессе модерации',
-                        'completed' => 'Оформлен',
-                        'translation' => 'В процессе перевода',
-                        'delivery' => 'В процессе доставки',
-                        'delivered' => 'Доставлено'
-                    ])
-                    ->default('active')->required()->label('Статус'),
+                Card::make()->schema([
+                    Forms\Components\TextInput::make('email')
+                        ->maxLength(100)
+                        ->label('Почта заказчика'),
+                    Forms\Components\TextInput::make('phone_number')
+                        ->required()
+                        ->maxLength(20)
+                        ->label('Номер заказчика'),
+                    Forms\Components\Select::make('company_address_id')
+                        ->relationship('companyAddress', 'name')
+                        ->required()
+                        ->label('Адрес выдачи'),
+                    Forms\Components\Select::make('template_id')
+                        ->relationship('template', 'name')
+                        ->required()
+                        ->label('Шаблон'),
+                    Forms\Components\Select::make('country_id')
+                        ->relationship('country', 'name')
+                        ->label('Страна'),
+                    Forms\Components\Select::make('language_id')
+                        ->relationship('language', 'name')
+                        ->label('Язык'),
+                    Forms\Components\TextInput::make('document_file')
+                        ->required()
+                        ->maxLength(255)
+                        ->label('Файл'),
+                    Forms\Components\DateTimePicker::make('delivery_date')
+                        ->required()
+                        ->label('Дата доставки'),
+                    Forms\Components\Select::make('status')
+                        ->options([
+                            'pending' => 'В процессе модерации',
+                            'completed' => 'Оформлен',
+                            'translation' => 'В процессе перевода',
+                            'delivery' => 'В процессе доставки',
+                            'delivered' => 'Доставлено',
+                            'failed' => 'Не оплачен!'
+                        ])
+                        ->default('pending')
+                        ->required()
+                        ->label('Статус'),
+                    Forms\Components\Textarea::make('comment')
+                        ->label('Комментарий'),
+                ]),
             ]);
     }
 
@@ -79,24 +91,31 @@ class OrderResource extends Resource
                     ->sortable()
                     ->label('Номер заказчика'),
                 Tables\Columns\TextColumn::make('companyAddress.name')
-                    ->numeric()
                     ->sortable()
                     ->label('Адрес выдачи'),
                 Tables\Columns\TextColumn::make('template.name')
-                    ->numeric()
                     ->sortable()
                     ->label('Шаблон'),
+                Tables\Columns\TextColumn::make('country.name')
+                    ->sortable()
+                    ->label('Страна'),
+                Tables\Columns\TextColumn::make('language.name')
+                    ->sortable()
+                    ->label('Язык'),
                 Tables\Columns\TextColumn::make('delivery_date')
-                    ->date()
+                    ->dateTime()
                     ->sortable()
                     ->label('Дата доставки'),
-                Tables\Columns\SelectColumn::make('status')->options([
-                    'pending' => 'В процессе модерации',
-                    'completed' => 'Оформлен',
-                    'translation' => 'В процессе перевода',
-                    'delivery' => 'В процессе доставки',
-                    'delivered' => 'Доставлено'
-                ])->label('Статус'),
+                Tables\Columns\SelectColumn::make('status')
+                    ->options([
+                        'pending' => 'В процессе модерации',
+                        'completed' => 'Оформлен',
+                        'translation' => 'В процессе перевода',
+                        'delivery' => 'В процессе доставки',
+                        'delivered' => 'Доставлено',
+                        'failed' => 'Не оплачен!'
+                    ])
+                    ->label('Статус'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -116,22 +135,20 @@ class OrderResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 
     public static function getRelations(): array
     {
         return [
-            //
+            // Add any necessary relationships here
         ];
     }
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::where('status', OrderStatus::PENDING)->count();
+        return static::getModel()::where('status', 'pending')->count();
     }
 
     public static function getPages(): array

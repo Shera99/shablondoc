@@ -88,7 +88,7 @@ class UserResource extends Resource
                     ->relationship('userSubscription')
                     ->schema([
                         Forms\Components\Select::make('subscription')
-                            ->relationship('subscription', 'name')->preload()
+                            ->relationship('subscription', 'name_ru')->preload()
                             ->label('Тип'),
                         Forms\Components\TextInput::make('count_translation')
                             ->label('Кол-во переводов'),
@@ -107,6 +107,9 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('role_name')
+                    ->label('Роль')
+                    ->getStateUsing(fn (User $record): ?string => $record->getRoleName()),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->label('Имя'),

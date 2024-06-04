@@ -16,12 +16,13 @@ class Order extends Model
         'template_id',
         'template_data_id',
         'company_address_id',
+        'country_id',
+        'language_id',
         'document_name',
         'document_file',
         'email',
         'phone_number',
         'delivery_date',
-        'delivery_time',
         'comment',
         'status',
     ];
@@ -56,5 +57,15 @@ class Order extends Model
     public function companyAddress(): BelongsTo
     {
         return $this->belongsTo(CompanyAddress::class);
+    }
+
+    public function country(): BelongsTo
+    {
+        return $this->belongsTo(Country::class);
+    }
+
+    public function language(): BelongsTo
+    {
+        return $this->belongsTo(Language::class);
     }
 }

@@ -25,11 +25,14 @@ class OrderCreateRequest extends BaseRequest
             'phone_number' => 'required|string',
             'address_id' => 'required|int',
             'delivery_date' => 'required|date',
-            'delivery_time' => [
-                'required',
-                'string',
-                'regex:/^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/'
-            ],
+            'template_id' => 'null|int',
+            'document_image' => 'null|file',
+            'document_name' => 'null|string',
+            'email' => 'null|string|email',
+            'comment' => 'null|string',
+            'country_id' => 'null|int',
+            'language_id' => 'null|int',
+            'currency' => 'required|string'
         ];
     }
 
@@ -47,9 +50,8 @@ class OrderCreateRequest extends BaseRequest
             'address_id.int' => 'Address ID must be an integer.',
             'delivery_date.required' => 'Delivery date is required.',
             'delivery_date.date' => 'Delivery date must be a valid date.',
-            'delivery_time.required' => 'Delivery time is required.',
-            'delivery_time.string' => 'Delivery time must be a string.',
-            'delivery_time.regex' => 'Delivery time must be in the format HH:MM.',
+            'currency.required' => 'Currency number is required.',
+            'currency.string' => 'Currency number must be a string.',
         ];
     }
 }

@@ -11,10 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::create('prices', function (Blueprint $table) {
+            $table->id();
+            $table->integer('price')->nullable(false);
+            $table->timestamps();
+        });
+
         Schema::create('subscriptions', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 200)->nullable(false);
-            $table->integer('price')->nullable(false);
+            $table->string('name_ru', 200)->nullable(false);
+            $table->string('name_en', 200)->nullable(false);
+            $table->text('description_ru')->nullable(false);
+            $table->text('description_en')->nullable(false);
+            $table->foreignId('price_id')->constrained('prices');
             $table->integer('day_count')->nullable(false);
             $table->integer('count_translation');
             $table->boolean('is_active')->default(true);

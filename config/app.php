@@ -123,4 +123,7 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'payment_key' => env('PAYMENT_KEY'),
+    'payment_secret' => env('PAYMENT_SECRET'),
+    'payment_public' => env('PAYMENT_PUBLIC'),
 ];
