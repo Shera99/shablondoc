@@ -21,7 +21,6 @@ class OrderService
         $this->order->phone_number = $request_data['phone_number'];
         $this->order->company_address_id = $request_data['address_id'];
         $this->order->delivery_date = $request_data['delivery_date'];
-        $this->order->delivery_time = $request_data['delivery_time'];
 
         if (!empty($request_data['template_id'])) $this->order->template_id = $request_data['template_id'];
         elseif ($request->hasFile('document_image')) {
