@@ -25,13 +25,13 @@ class OrderCreateRequest extends BaseRequest
             'phone_number' => 'required|string',
             'address_id' => 'required|int',
             'delivery_date' => 'required|date',
-            'template_id' => 'null|int',
-            'document_image' => 'null|file',
-            'document_name' => 'null|string',
-            'email' => 'null|string|email',
-            'comment' => 'null|string',
-            'country_id' => 'null|int',
-            'language_id' => 'null|int',
+            'template_id' => 'nullable|int',
+            'document_image' => 'nullable|file',
+            'document_name' => 'nullable|string',
+            'email' => 'nullable|string|email',
+            'comment' => 'nullable|string',
+            'country_id' => 'nullable|int',
+            'language_id' => 'nullable|int',
         ];
     }
 
