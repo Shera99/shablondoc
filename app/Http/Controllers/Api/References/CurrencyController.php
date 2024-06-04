@@ -13,7 +13,8 @@ class CurrencyController extends \App\Http\Controllers\Controller
      */
     public function list(): JsonResponse
     {
-        $currencies = Currency::query()->where('status', true)->get(['id', 'name', 'code'])->toArray();
+        $currencies = Currency::query()->where('status', true)
+            ->get(['id', 'name', 'code', 'convert'])->toArray();
         $this->setResponse($currencies);
 
         return $this->sendResponse();

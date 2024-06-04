@@ -32,7 +32,6 @@ class OrderCreateRequest extends BaseRequest
             'comment' => 'null|string',
             'country_id' => 'null|int',
             'language_id' => 'null|int',
-            'currency' => 'required|string'
         ];
     }
 
@@ -50,8 +49,6 @@ class OrderCreateRequest extends BaseRequest
             'address_id.int' => 'Address ID must be an integer.',
             'delivery_date.required' => 'Delivery date is required.',
             'delivery_date.date' => 'Delivery date must be a valid date.',
-            'currency.required' => 'Currency number is required.',
-            'currency.string' => 'Currency number must be a string.',
         ];
     }
 }

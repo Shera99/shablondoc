@@ -40,7 +40,7 @@ class PaymentService
 
             $this->payment->save();
 
-            return ['payment_id' => $this->payment->id, 'salt' => $this->payment->additional_transaction_id, 'amount' => $this->payment->amount];
+            return ['payment_id' => $this->payment->id, 'salt' => $this->payment->additional_transaction_id, 'amount' => $this->payment->amount, 'currency' => $currency];
         } catch (\Throwable $exception) {
             return ['message' => $exception->getMessage(), 'error' => $exception->getCode()];
         }

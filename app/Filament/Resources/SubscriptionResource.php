@@ -45,9 +45,8 @@ class SubscriptionResource extends Resource
                     ->required()->columnSpanFull()->columnSpan(8)->label('Описание ru'),
                 Forms\Components\RichEditor::make('description_en')
                     ->required()->columnSpanFull()->columnSpan(8)->label('Описание en'),
-                Forms\Components\Select::make('price_id')
-                    ->relationship('price', 'price')
-                    ->required()->prefix('$')->label('Цена'),
+                Forms\Components\TextInput::make('price')
+                    ->required()->numeric()->label('Цена'),
                 Forms\Components\TextInput::make('day_count')
                     ->required()
                     ->numeric()
@@ -72,7 +71,7 @@ class SubscriptionResource extends Resource
                 Tables\Columns\TextColumn::make('name_en')
                     ->searchable()
                     ->label('Название en'),
-                Tables\Columns\TextColumn::make('price.price')
+                Tables\Columns\TextColumn::make('price')
                     ->money()
                     ->sortable()
                     ->label('Цена'),

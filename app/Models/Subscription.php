@@ -32,19 +32,4 @@ class Subscription extends Model
     {
         return $this->belongsTo(Price::class);
     }
-
-    // Accessor for the price attribute
-    public function getPriceAttribute()
-    {
-        return $this->price()->first()->price ?? 0;
-    }
-
-    // Mutator for the price attribute
-    public function setPriceAttribute($value)
-    {
-        $price = $this->price()->first();
-        if ($price) {
-            $price->price = $value;
-        }
-    }
 }

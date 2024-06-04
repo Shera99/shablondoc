@@ -43,7 +43,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::match(['PUT', 'PATCH'], '/employee/{user}', [EmployeeController::class, 'update']);
     Route::get('/employee/{company}', [EmployeeController::class, 'list']);
 
-    Route::get('/subscription/{currency}', [SubscriptionController::class, 'list']);
+    Route::get('/subscription', [SubscriptionController::class, 'list']);
+    Route::post('/subscription/buy', [SubscriptionController::class, 'buy']);
 });
 
 Route::get('/country', [CountryController::class, 'list']);
