@@ -41,8 +41,8 @@ class SubscriptionController extends \App\Http\Controllers\Controller
             $user_subscription->user_id = Auth::id();
             $user_subscription->subscription_id = $subscription->id;
             $user_subscription->count_translation = $subscription->count_translation;
-            $user_subscription->subscription_date = Carbon::now();
-            $user_subscription->subscription_end_date = Carbon::now()->addDays($subscription->day_count);
+            $user_subscription->subscription_date = Carbon::now()->format("Y-m-d");
+            $user_subscription->subscription_end_date = Carbon::now()->addDays($subscription->day_count)->format("Y-m-d");
             $user_subscription->is_active = false;
             $user_subscription->save();
 
