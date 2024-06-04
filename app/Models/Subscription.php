@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -22,14 +21,9 @@ class Subscription extends Model
         'name_en',
         'description_ru',
         'description_en',
-        'price_id',
+        'price',
         'day_count',
         'count_translation',
         'is_active'
     ];
-
-    public function price(): BelongsTo
-    {
-        return $this->belongsTo(Price::class);
-    }
 }

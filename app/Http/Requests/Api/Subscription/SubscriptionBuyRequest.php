@@ -27,8 +27,7 @@ class SubscriptionBuyRequest extends BaseRequest
                 'required',
                 'int',
                 Rule::exists('subscriptions', 'id')
-            ],
-            'currency' => 'required|string'
+            ]
         ];
     }
 
@@ -42,9 +41,7 @@ class SubscriptionBuyRequest extends BaseRequest
         return [
             'subscription_id.required' => 'Subscription ID number is required.',
             'subscription_id.int' => 'Subscription ID must be an integer.',
-            'subscription_id.exists' => 'The provided subscription does not exist in our records.',
-            'currency.required' => 'Currency number is required.',
-            'currency.string' => 'Currency number must be a string.',
+            'subscription_id.exists' => 'The provided subscription does not exist in our records.'
         ];
     }
 }
