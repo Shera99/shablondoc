@@ -8,7 +8,7 @@ class Image
 {
     public static function save($image): array
     {
-        $path = 'images/';
+        $path = 'public/images/';
 
         try {
             if ($image->getSize() > 10 * 1024 * 1024) {

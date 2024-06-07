@@ -10,8 +10,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class OrderResource extends Resource
 {
@@ -52,11 +51,11 @@ class OrderResource extends Resource
                         ->label('Страна'),
                     Forms\Components\Select::make('language_id')
                         ->relationship('language', 'name')
-                        ->label('Язык'),
-                    Forms\Components\TextInput::make('document_file')
-                        ->required()
-                        ->maxLength(255)
-                        ->label('Файл'),
+                        ->label('Язык перевода'),
+//                    Forms\Components\TextInput::make('document_file')
+//                        ->required()
+//                        ->maxLength(255)
+//                        ->label('Файл'),
                     Forms\Components\DateTimePicker::make('delivery_date')
                         ->required()
                         ->label('Дата доставки'),
@@ -101,11 +100,22 @@ class OrderResource extends Resource
                     ->label('Страна'),
                 Tables\Columns\TextColumn::make('language.name')
                     ->sortable()
-                    ->label('Язык'),
+                    ->label('Язык перевода'),
                 Tables\Columns\TextColumn::make('delivery_date')
                     ->dateTime()
                     ->sortable()
                     ->label('Дата доставки'),
+                Tables\Columns\ImageColumn::make('document_file')
+                    ->label('Файл')
+                    ->getStateUsing(function ($record) {
+                        return $record->document_file
+                            ? Storage::url($record->document_file)
+                            : null;
+                    })
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('document_name')
+                    ->sortable()
+                    ->label('Название документа'),
                 Tables\Columns\SelectColumn::make('status')
                     ->options([
                         'pending' => 'В процессе модерации',
@@ -128,7 +138,7 @@ class OrderResource extends Resource
                     ->label('Дата изменения заказа'),
             ])
             ->filters([
-                //
+//
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
@@ -142,7 +152,7 @@ class OrderResource extends Resource
     public static function getRelations(): array
     {
         return [
-            // Add any necessary relationships here
+// Add any necessary relationships here
         ];
     }
 
