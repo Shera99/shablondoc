@@ -10,7 +10,6 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Support\Facades\Storage;
 
 class OrderResource extends Resource
 {
@@ -44,7 +43,6 @@ class OrderResource extends Resource
                         ->label('Адрес выдачи'),
                     Forms\Components\Select::make('template_id')
                         ->relationship('template', 'name')
-                        ->required()
                         ->label('Шаблон'),
                     Forms\Components\Select::make('country_id')
                         ->relationship('country', 'name')
@@ -52,10 +50,6 @@ class OrderResource extends Resource
                     Forms\Components\Select::make('language_id')
                         ->relationship('language', 'name')
                         ->label('Язык перевода'),
-//                    Forms\Components\TextInput::make('document_file')
-//                        ->required()
-//                        ->maxLength(255)
-//                        ->label('Файл'),
                     Forms\Components\DateTimePicker::make('delivery_date')
                         ->required()
                         ->label('Дата доставки'),
@@ -73,6 +67,13 @@ class OrderResource extends Resource
                         ->label('Статус'),
                     Forms\Components\Textarea::make('comment')
                         ->label('Комментарий'),
+                    Forms\Components\TextInput::make('document_name')
+                        ->label('Название документа'),
+                    Forms\Components\FileUpload::make('document_file')
+                        ->disk('public')
+                        ->directory('images')
+                        ->label('Файл')
+                        ->visible(fn ($record) => $record && $record->document_file),
                 ]),
             ]);
     }
@@ -106,13 +107,10 @@ class OrderResource extends Resource
                     ->sortable()
                     ->label('Дата доставки'),
                 Tables\Columns\ImageColumn::make('document_file')
+                    ->disk('public')
+                    ->width(200)
                     ->label('Файл')
-                    ->getStateUsing(function ($record) {
-                        return $record->document_file
-                            ? Storage::url($record->document_file)
-                            : null;
-                    })
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('document_name')
                     ->sortable()
                     ->label('Название документа'),
