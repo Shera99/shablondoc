@@ -104,7 +104,7 @@ class PaymentService
     {
         $this->post_data = [
             'pg_merchant_id' => $this->public,
-            'pg_order_id' => $this->transaction->id,
+            'pg_order_id' => strval($this->transaction->id),
             'pg_salt' => $this->transaction->additional_transaction_id,
         ];
         $this->base_link .= 'get_status3.php';
