@@ -25,7 +25,7 @@ class PaymentService
     {
         $this->payment = app(Payment::class);
         $this->secret = config('app.payment_secret');
-        $this->public = config('app.payment_public');
+        $this->public = intval(config('app.payment_public'));
         $this->base_link = config('app.payment_url');
     }
 
