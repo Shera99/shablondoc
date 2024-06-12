@@ -64,9 +64,6 @@ class PaymentService
         $this->transaction = Payment::where('id', intval($request_data['order']))->first();
 
         if ($this->transaction) {
-            $this->transaction->transaction_id = $request_data['id'] ?? null;
-            $this->transaction->additional_transaction_id = $request_data['salt'] ?? '';
-
             $this->checkStatus();
             $this->transaction->save();
         }
@@ -107,9 +104,8 @@ class PaymentService
     {
         $this->post_data = [
             'pg_merchant_id' => $this->public,
-            'pg_payment_id' => $this->transaction->transaction_id,
+            'pg_order_id' => $this->transaction->id,
             'pg_salt' => $this->transaction->additional_transaction_id,
-            'pg_order_id' => $this->transaction->id
         ];
         $this->base_link .= 'get_status3.php';
         $this->hashSign('get_status3.php');
@@ -132,9 +128,11 @@ class PaymentService
     private function httpQuery()
     {
         try {
+            Log::channel('http')->info('Проверка статуса платежа SEND - ' . json_encode($this->post_data));
+
             $response = Http::retry(3, 3)->asForm()->post($this->base_link, $this->post_data);
 
-            Log::channel('http')->info('Проверка статуса платежа - ' . $response);
+            Log::channel('http')->info('Проверка статуса платежа RESPONSE - ' . $response);
 
             if ($response->serverError()) {
                 $response = [
