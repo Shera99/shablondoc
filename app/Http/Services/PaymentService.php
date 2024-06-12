@@ -60,7 +60,7 @@ class PaymentService
 
     public function callBack(array $request_data): void
     {
-        $this->transaction = Payment::where('id', $request_data['order'])->first();
+        $this->transaction = Payment::where('id', intval($request_data['order']))->first();
 
         if ($this->transaction) {
             $this->checkStatus();
