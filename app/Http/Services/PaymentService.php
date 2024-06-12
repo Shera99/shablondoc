@@ -19,7 +19,7 @@ class PaymentService
     private string $base_link;
     private array $post_data;
     private string $secret;
-    private string $public;
+    private int $public;
 
     public function __construct()
     {
