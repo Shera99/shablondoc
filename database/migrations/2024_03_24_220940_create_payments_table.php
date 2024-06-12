@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreignId('user_id')->nullable(true)->constrained('users');
             $table->integer('foreign_id');
             $table->decimal('amount');
-            $table->string('transaction_id', 150)->nullable();
+            $table->integer('transaction_id')->nullable();
             $table->string('additional_transaction_id', 150);
             $table->enum('type', ['subscription', 'order']);
             $table->jsonb('payload')->nullable();
