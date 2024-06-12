@@ -64,6 +64,7 @@ class PaymentService
         $this->transaction = Payment::where('id', intval($request_data['order']))->first();
 
         if ($this->transaction) {
+            $this->transaction->additional_transaction_id = $request_data['salt'];
             $this->checkStatus();
             $this->transaction->save();
         }
