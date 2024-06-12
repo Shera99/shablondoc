@@ -16,7 +16,7 @@ class PaymentService
 {
     private Payment $payment;
     private $transaction;
-    private string $base_link = 'get_status3.php';
+    private string $base_link;
     private array $post_data;
     private string $secret;
     private string $public;
@@ -26,6 +26,7 @@ class PaymentService
         $this->payment = app(Payment::class);
         $this->secret = config('app.payment_secret');
         $this->public = config('app.payment_public');
+        $this->base_link = config('app.payment_url');
     }
 
     public function create(int $foreign_id, int $amount, string $currency, string $type, int $user_id = 0): array
@@ -107,7 +108,8 @@ class PaymentService
             'pg_salt' => $this->transaction->additional_transaction_id,
             'pg_order_id' => $this->transaction->id
         ];
-        $this->hashSign();
+        $this->base_link .= 'get_status3.php';
+        $this->hashSign('get_status3.php');
         return $this->httpQuery();
     }
 
@@ -115,10 +117,10 @@ class PaymentService
      * * Генерация подписи
      * @return void
      */
-    private function hashSign(): void
+    private function hashSign(string $endpoint): void
     {
         ksort($this->post_data);
-        array_unshift($this->post_data, 'get_status3.php');
+        array_unshift($this->post_data, $endpoint);
         $this->post_data[] = $this->secret;
         $this->post_data['pg_sig'] = md5(implode(';', $this->post_data));
         unset($this->post_data[0], $this->post_data[1]);

@@ -126,4 +126,5 @@ return [
     'payment_key' => env('PAYMENT_KEY'),
     'payment_secret' => env('PAYMENT_SECRET'),
     'payment_public' => env('PAYMENT_PUBLIC'),
+    'payment_url' => env('PAYMENT_URL'),
 ];
