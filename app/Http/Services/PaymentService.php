@@ -40,7 +40,7 @@ class PaymentService
 
             $this->payment->save();
 
-            return ['payment_id' => $this->payment->id, 'salt' => $this->payment->additional_transaction_id, 'amount' => $this->payment->amount, 'currency' => $currency];
+            return ['payment_id' => strval($this->payment->id), 'salt' => $this->payment->additional_transaction_id, 'amount' => $this->payment->amount, 'currency' => $currency];
         } catch (\Throwable $exception) {
             return ['message' => $exception->getMessage(), 'error' => $exception->getCode()];
         }
@@ -60,9 +60,7 @@ class PaymentService
 
     public function callBack(array $request_data): void
     {
-        Log::channel('http')->info('Уведомление о платеже - ' . json_encode($request_data));
-
-        $this->transaction = Payment::where('transaction_id', $request_data['pg_payment_id'])->first();
+        $this->transaction = Payment::where('id', $request_data['order'])->first();
 
         if ($this->transaction) {
             $this->checkStatus();
