@@ -6,6 +6,7 @@ use App\Filament\Resources\CertificationSignatureResource\Pages;
 use App\Filament\Resources\CertificationSignatureResource\RelationManagers;
 use App\Models\CertificationSignature;
 use Filament\Forms;
+use Filament\Forms\Components\Card;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -33,44 +34,50 @@ class CertificationSignatureResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('country_id')
-                    ->relationship('country', 'name')
-                    ->label('Страна')
-                    ->required(),
-                Forms\Components\Select::make('city_id')
-                    ->relationship('city', 'name')
-                    ->label('Город')
-                    ->required(),
-                Forms\Components\Select::make('company_id')
-                    ->relationship('companies', 'name')
-                    ->label('Компания')
-                    ->required(),
-                Forms\Components\Select::make('certification_signature_type_id')
-                    ->relationship('certificationSignatureType', 'name')
-                    ->label('Тип')
-                    ->required(),
-                Forms\Components\Select::make('language_id')
-                    ->relationship('languages', 'name')
-                    ->label('Язык')
-                    ->required(),
-                Forms\Components\TextInput::make('view')
-                    ->label('Вид')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('user')
-                    ->label('Пользователь')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('file')
-                    ->label('Логотип')
-                    ->maxLength(255),
-                Forms\Components\Select::make('is_deleted')
-                    ->label('Статус')
-                    ->options([
-                        true => 'Удален',
-                        false => 'Активен'
+                Card::make()->schema([
+                    Forms\Components\Grid::make()->schema([
+                        Forms\Components\Select::make('country_id')
+                            ->relationship('country', 'name')
+                            ->label('Страна')
+                            ->required(),
+                        Forms\Components\Select::make('city_id')
+                            ->relationship('city', 'name')
+                            ->label('Город')
+                            ->required(),
+                        Forms\Components\Select::make('company_id')
+                            ->relationship('company', 'name')
+                            ->label('Компания')
+                            ->required(),
+                        Forms\Components\Select::make('certification_signature_type_id')
+                            ->relationship('certificationSignatureType', 'name')
+                            ->label('Тип')
+                            ->required(),
+                        Forms\Components\Select::make('language_id')
+                            ->relationship('language', 'name')
+                            ->label('Язык')
+                            ->required(),
                     ]),
-                Forms\Components\Textarea::make('certification_text')
-                    ->label('Удостоверяющаю надпись')
-                    ->columnSpanFull(),
+                    Forms\Components\Grid::make()->schema([
+                        Forms\Components\TextInput::make('view')
+                            ->label('Вид')
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('user')
+                            ->label('Пользователь')
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('file')
+                            ->label('Логотип')
+                            ->maxLength(255),
+                    ]),
+                    Forms\Components\RichEditor::make('certification_text')
+                        ->required()->columnSpanFull()->columnSpan(8)
+                        ->label('Удостоверяющаю надпись'),
+                    Forms\Components\Select::make('is_deleted')
+                        ->label('Статус')
+                        ->options([
+                            true => 'Удален',
+                            false => 'Активен'
+                        ]),
+                ]),
             ]);
     }
 
@@ -128,6 +135,7 @@ class CertificationSignatureResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
