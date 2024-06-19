@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\Payment\PaymentController;
 use App\Http\Middleware\{CorporateRoleAccessMiddleware,StandardAndCorporateRoleAccessMiddleware,SubscriptionHasActive};
 use App\Http\Controllers\Api\References\{CertificationSignatureController,
+    CertificationSignatureTypeController,
     CompanyAddressController,
     CountryController,
     LanguageController,
@@ -47,6 +48,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
             Route::post('/certification-signature', [CertificationSignatureController::class, 'create']);
             Route::post('/certification-signature/{certification_signature}', [CertificationSignatureController::class, 'update']);
             Route::delete('/certification-signature/{certification_signature}', [CertificationSignatureController::class, 'delete']);
+
+            Route::get('/certification-signature-type', [CertificationSignatureTypeController::class, 'list']);
         });
 
         Route::get('/address/{company}', [CompanyAddressController::class, 'byCompany']);
