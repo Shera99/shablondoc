@@ -25,7 +25,7 @@ class OrderService
         if (!empty($request_data['template_id'])) $this->order->template_id = $request_data['template_id'];
         elseif ($request->hasFile('document_image')) {
             $image = $request->file('document_image');
-            $image_save_result = Image::save($image);
+            $image_save_result = Image::save($image, 'order');
 
             if (in_array('error', $image_save_result)) return $image_save_result;
 

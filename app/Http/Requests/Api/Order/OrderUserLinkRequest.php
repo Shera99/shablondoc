@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Api\Company;
+namespace App\Http\Requests\Api\Order;
 
 use App\Http\Requests\BaseRequest;
 use Illuminate\Validation\Rule;
 
-class CompanyCreateRequest extends BaseRequest
+class OrderUserLinkRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,12 +23,7 @@ class CompanyCreateRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string',
-            'country_id' => [
-                'required',
-                'int',
-                Rule::exists('countries', 'id')
-            ]
+            'user_id' => ['required', 'int', Rule::exists('users', 'id')]
         ];
     }
 
@@ -40,11 +35,9 @@ class CompanyCreateRequest extends BaseRequest
     public function messages(): array
     {
         return [
-            'name.required' => 'The name field is required.',
-            'name.string' => 'The name must be a string.',
-            'country_id.required' => 'The country_id field is required.',
-            'country_id.int' => 'The country_id must be a int.',
-            'country_id.exists' => 'The provided countries does not exist in our records.'
+            'user_id.required' => 'User ID is required.',
+            'user_id.int' => 'User ID must be an integer.',
+            'user_id.exists' => 'The provided users does not exist in our records.'
         ];
     }
 }

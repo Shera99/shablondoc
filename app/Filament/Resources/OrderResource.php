@@ -53,6 +53,9 @@ class OrderResource extends Resource
                     Forms\Components\DateTimePicker::make('delivery_date')
                         ->required()
                         ->label('Дата доставки'),
+                    Forms\Components\DateTimePicker::make('print_date')
+                        ->required()
+                        ->label('Дата печати'),
                     Forms\Components\Select::make('status')
                         ->options([
                             'pending' => 'В процессе модерации',
@@ -96,6 +99,9 @@ class OrderResource extends Resource
                 Tables\Columns\TextColumn::make('template.name')
                     ->sortable()
                     ->label('Шаблон'),
+                Tables\Columns\TextColumn::make('certificationSignature.view')
+                    ->sortable()
+                    ->label('Заверительная подпись'),
                 Tables\Columns\TextColumn::make('country.name')
                     ->sortable()
                     ->label('Страна'),
@@ -106,6 +112,10 @@ class OrderResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->label('Дата доставки'),
+                Tables\Columns\TextColumn::make('print_date')
+                    ->dateTime()
+                    ->sortable()
+                    ->label('Дата печати'),
                 Tables\Columns\ImageColumn::make('document_file')
                     ->disk('public')
                     ->width(200)
@@ -144,7 +154,8 @@ class OrderResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
-            ]);
+            ])
+            ->defaultSort('id', 'desc');
     }
 
     public static function getRelations(): array

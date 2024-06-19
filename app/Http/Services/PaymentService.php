@@ -4,6 +4,7 @@ namespace App\Http\Services;
 
 use App\Helpers\ApiHelper;
 use App\Models\UserSubscription;
+use Carbon\Carbon;
 use App\Enums\{PaymentStatus,OrderStatus};
 use App\Models\Order;
 use App\Models\Payment;
@@ -41,7 +42,9 @@ class PaymentService
 
             $this->payment->save();
 
-            return ['payment_id' => strval($this->payment->id), 'salt' => $this->payment->additional_transaction_id, 'amount' => $this->payment->amount, 'currency' => $currency];
+            return ['payment_id' => strval($this->payment->id), 'salt' => $this->payment->additional_transaction_id,
+                'amount' => $this->payment->amount, 'currency' => $currency,
+                'expires_at' => Carbon::now()->addMinutes(45)->format('Y-m-d H:i:s')];
         } catch (\Throwable $exception) {
             return ['message' => $exception->getMessage(), 'error' => $exception->getCode()];
         }

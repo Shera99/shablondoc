@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\Api\Payment\PaymentController;
-use App\Http\Controllers\Api\References\{CompanyAddressController,
+use App\Http\Middleware\{CorporateRoleAccessMiddleware,StandardAndCorporateRoleAccessMiddleware,SubscriptionHasActive};
+use App\Http\Controllers\Api\References\{CertificationSignatureController,
+    CompanyAddressController,
     CountryController,
     LanguageController,
     FaqController,
@@ -10,13 +12,15 @@ use App\Http\Controllers\Api\References\{CompanyAddressController,
     CompanyController,
     SubscriptionController,
     TemplateController,
-    CurrencyController};
+    CurrencyController,
+    TranslationDirectionController};
 use App\Http\Controllers\Api\Auth\{RegisterController, AuthController, ResetPasswordController};
 use App\Http\Controllers\Api\Order\OrderController;
 use App\Http\Controllers\Api\Profile\ProfileController;
 use App\Http\Controllers\Api\Employee\EmployeeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
 
 Route::get('/user', function (Request $request) {
     echo 'Success';
@@ -31,20 +35,41 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [ProfileController::class, 'logout']);
     Route::get('/profile', [ProfileController::class, 'show']);
 
-    Route::get('/user/company', [CompanyController::class, 'byUser']);
-    Route::post('/company', [CompanyController::class, 'create']);
-    Route::match(['PUT', 'PATCH'], '/company/{company}', [CompanyController::class, 'update']);
+    Route::middleware([SubscriptionHasActive::class])->group( function () {
+        Route::middleware([CorporateRoleAccessMiddleware::class])->group(function () {
+            Route::get('/user/company', [CompanyController::class, 'byUser']);
+            Route::post('/company', [CompanyController::class, 'create']);
+            Route::match(['PUT', 'PATCH'], '/company/{company}', [CompanyController::class, 'update']);
+        });
 
-    Route::get('/address/{company}', [CompanyAddressController::class, 'byCompany']);
-    Route::post('/address', [CompanyAddressController::class, 'create']);
-    Route::match(['PUT', 'PATCH'], '/address/{companyAddress}', [CompanyAddressController::class, 'update']);
+        Route::middleware([StandardAndCorporateRoleAccessMiddleware::class])->group(function () {
+            Route::get('/certification-signature', [CertificationSignatureController::class, 'list']);
+            Route::post('/certification-signature', [CertificationSignatureController::class, 'create']);
+            Route::post('/certification-signature/{certification_signature}', [CertificationSignatureController::class, 'update']);
+            Route::delete('/certification-signature/{certification_signature}', [CertificationSignatureController::class, 'delete']);
+        });
 
-    Route::post('/employee', [EmployeeController::class, 'create']);
-    Route::match(['PUT', 'PATCH'], '/employee/{user}', [EmployeeController::class, 'update']);
-    Route::get('/employee/{company}', [EmployeeController::class, 'list']);
+        Route::get('/address/{company}', [CompanyAddressController::class, 'byCompany']);
+        Route::post('/address', [CompanyAddressController::class, 'create']);
+        Route::match(['PUT', 'PATCH'], '/address/{companyAddress}', [CompanyAddressController::class, 'update']);
 
-    Route::get('/subscription', [SubscriptionController::class, 'list']);
-    Route::post('/subscription/buy', [SubscriptionController::class, 'buy']);
+        Route::post('/employee', [EmployeeController::class, 'create']);
+        Route::match(['PUT', 'PATCH'], '/employee/{user}', [EmployeeController::class, 'update']);
+        Route::get('/employee/{company}', [EmployeeController::class, 'list']);
+
+        Route::get('/subscription', [SubscriptionController::class, 'list']);
+        Route::post('/subscription/buy', [SubscriptionController::class, 'buy']);
+
+        Route::get('/order/{order}', [OrderController::class, 'show']);
+        Route::get('/order/print/{order}', [OrderController::class, 'print']);
+        Route::get('/order', [OrderController::class, 'list']);
+        Route::post('/order/{order}/user-link', [OrderController::class, 'userLink']);
+
+        Route::get('/template/{template}', [TemplateController::class, 'show']);
+        Route::match(['PUT', 'PATCH'], '/template/{template}', [TemplateController::class, 'update']);
+
+        Route::get('/translation-directions', [TranslationDirectionController::class, 'list']);
+    });
 });
 
 Route::get('/country', [CountryController::class, 'list']);

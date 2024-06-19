@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers\Api\Order;
 
-use App\Http\Requests\Api\Order\{OrderCreateRequest,OrderSetWebCallBackRequest};
+use App\Models\Employee;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Requests\Api\Order\{OrderCreateRequest, OrderSetWebCallBackRequest, OrderUserLinkRequest};
 use App\Http\Services\OrderService;
 use App\Http\Services\PaymentService;
 use App\Models\Order;
@@ -40,6 +44,103 @@ class OrderController extends \App\Http\Controllers\Controller
         if (in_array('error', $result)) return $this->sendErrorResponse($result['message'], $result['error']);
 
         $this->setResponse(message: $result['message']);
+        return $this->sendResponse();
+    }
+
+    public function list(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $query = DB::table('orders as o')
+            ->join('payments as p', 'o.id', '=', 'p.foreign_id')
+            ->join('company_addresses as c_a', 'o.company_address_id', '=', 'c_a.id')
+            ->leftJoin('templates as t', 'o.template_id', '=', 't.id')
+            ->leftJoin('countries as c', 'o.country_id', '=', 'c.id')
+            ->leftJoin('languages as l', 'o.language_id', '=', 'l.id')
+            ->leftJoin('users as u', 'o.user_id', '=', 'u.id')
+            ->where('p.type', 'order')->where('p.status', 'completed');
+
+        if (auth()->user()->hasRole('Employee')) {
+            $companies = Employee::where('user_id', auth()->user()->id)->pluck('company_id');
+        } else {
+            $companies = auth()->user()->companies->pluck('id');
+        }
+
+        $company_addresses = DB::table('company_addresses')
+            ->whereIn('company_id', $companies)
+            ->pluck('id');
+        $query = $query->whereIn('o.company_address_id', $company_addresses);
+
+        if ($request->get('search')) {
+            $search_text = '%' . $request->get('search') . '%';
+            $query = $query->where(function ($query) use($search_text) {
+                return $query->where('c_a.name', 'LIKE', $search_text)
+                    ->orWhere('o.document_name', 'LIKE', $search_text)
+                    ->orWhere('t.name', 'LIKE', $search_text);
+            });
+        }
+
+        if ($request->get('filter')) {
+            $filter_array = (array)json_decode($request->get('filter'));
+
+            if (isset($filter_array['by_date']) && !empty($filter_array['by_date'])) {
+                $query = $query->orderBy('o.delivery_date', $filter_array['by_date']);
+            } else if (isset($filter_array['by_employee']) && !empty($filter_array['by_employee'])) {
+                $query = $query->orderBy('u.name', $filter_array['by_employee']);
+            } else if (isset($filter_array['by_phone']) && !empty($filter_array['by_phone'])) {
+                $query = $query->orderBy('o.phone_number', $filter_array['by_phone']);
+            }
+        }
+
+        $orders = $query->select(
+            'o.id', 'o.user_id', 'o.template_id', 'o.template_data_id', 'o.company_address_id', 'o.country_id',
+            'o.language_id', 'o.document_name', 'o.document_file', 'o.email', 'o.phone_number', 'o.delivery_date',
+            'o.comment', 'o.status', 'c_a.name as company_address_name', 't.name as template_name',
+            'c.name as country_name', 'l.name as language_name', 'l.name_en as language_name_en', 'u.login as translator_login',
+            'u.name as translator_name', 'u.last_name as translator_last_name'
+        )->paginate(15)->toArray();
+
+        $this->setResponse($orders);
+        return $this->sendResponse();
+    }
+
+    public function userLink(Order $order, OrderUserLinkRequest $request): \Illuminate\Http\JsonResponse
+    {
+        $order->user_id = $request->user_id;
+        $order->save();
+        return $this->sendResponse();
+    }
+
+    public function print(Order $order): \Illuminate\Http\JsonResponse
+    {
+        $order->print_date = Carbon::now();
+        $order->save();
+
+        $order->load([
+            'user',
+            'template',
+            'templateData',
+            'companyAddress',
+            'country',
+            'language',
+            'certificationSignature'
+        ]);
+
+        $this->setResponse($order->toArray());
+        return $this->sendResponse();
+    }
+
+    public function show(Order $order): \Illuminate\Http\JsonResponse
+    {
+        $order->load([
+            'user',
+            'template',
+            'templateData',
+            'companyAddress',
+            'country',
+            'language',
+            'certificationSignature'
+        ]);
+
+        $this->setResponse($order->toArray());
         return $this->sendResponse();
     }
 }

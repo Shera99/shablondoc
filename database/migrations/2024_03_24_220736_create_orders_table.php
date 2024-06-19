@@ -23,11 +23,13 @@ return new class extends Migration
             $table->foreignId('company_address_id')->constrained('company_addresses');
             $table->foreignId('country_id')->nullable()->constrained('countries');
             $table->foreignId('language_id')->nullable()->constrained('languages');
+            $table->foreignId('certification_signature_id')->nullable()->constrained('certification_signatures');
             $table->text('document_name')->nullable();
             $table->text('document_file')->nullable();
             $table->string('email', 100)->nullable();
             $table->string('phone_number', 20)->nullable(false);
             $table->timestamp('delivery_date')->nullable();
+            $table->timestamp('print_date')->nullable();
             $table->text('comment')->nullable();
             $table->timestamps();
         });

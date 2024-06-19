@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\DocumentTypeResource\Pages;
-use App\Filament\Resources\DocumentTypeResource\RelationManagers;
-use App\Models\DocumentType;
+use App\Filament\Resources\CertificationSignatureTypeResource\Pages;
+use App\Filament\Resources\CertificationSignatureTypeResource\RelationManagers;
+use App\Models\CertificationSignatureType;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,19 +13,19 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class DocumentTypeResource extends Resource
+class CertificationSignatureTypeResource extends Resource
 {
-    protected static ?string $model = DocumentType::class;
+    protected static ?string $model = CertificationSignatureType::class;
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 2;
 
     protected static ?string $navigationIcon = 'heroicon-o-document';
 
-    protected static ?string $navigationLabel = 'Типы документов';
+    protected static ?string $navigationLabel = 'Типы подписей';
 
-    protected static ?string $modelLabel = 'Тип документа';
+    protected static ?string $modelLabel = 'Тип подписи';
 
-    protected static ?string $pluralModelLabel = 'Типы документов';
+    protected static ?string $pluralModelLabel = 'Типы подписей';
 
     protected static bool $hasTitleCaseModelLabel = false;
 
@@ -37,9 +37,7 @@ class DocumentTypeResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required()
-                    ->maxLength(255)
-                    ->unique()
-                    ->label('Название'),
+                    ->maxLength(255),
             ]);
     }
 
@@ -48,23 +46,20 @@ class DocumentTypeResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->searchable()->label('Название'),
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->label('Дата создания'),
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->label('Дата изменения'),
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -85,10 +80,9 @@ class DocumentTypeResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListDocumentTypes::route('/'),
-            'create' => Pages\CreateDocumentType::route('/create'),
-            'view' => Pages\ViewDocumentType::route('/{record}'),
-            'edit' => Pages\EditDocumentType::route('/{record}/edit'),
+            'index' => Pages\ListCertificationSignatureTypes::route('/'),
+            'create' => Pages\CreateCertificationSignatureType::route('/create'),
+            'edit' => Pages\EditCertificationSignatureType::route('/{record}/edit'),
         ];
     }
 }

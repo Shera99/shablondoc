@@ -14,7 +14,6 @@ class Template extends Model
     protected $fillable = [
         'name',
         'template_json',
-        'template_file',
         'country_id',
         'document_type_id',
         'translation_direction_id',

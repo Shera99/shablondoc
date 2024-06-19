@@ -18,11 +18,13 @@ class Order extends Model
         'company_address_id',
         'country_id',
         'language_id',
+        'certification_signature_id',
         'document_name',
         'document_file',
         'email',
         'phone_number',
         'delivery_date',
+        'print_date',
         'comment',
         'status',
     ];
@@ -67,5 +69,10 @@ class Order extends Model
     public function language(): BelongsTo
     {
         return $this->belongsTo(Language::class);
+    }
+
+    public function certificationSignature(): BelongsTo
+    {
+        return $this->belongsTo(CertificationSignature::class);
     }
 }

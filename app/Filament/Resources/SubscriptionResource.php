@@ -105,7 +105,8 @@ class SubscriptionResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                 ]),
-            ]);
+            ])
+            ->defaultSort('id', 'desc');
     }
 
     public static function getRelations(): array

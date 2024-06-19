@@ -6,9 +6,11 @@ use Illuminate\Support\Facades\Storage;
 
 class Image
 {
-    public static function save($image): array
+    public static function save($image, $type): array
     {
-        $path = 'public/images/';
+        $basePath = 'public/images/';
+        $datePath = date('Y/m/d');
+        $path = $basePath . $type . '/' . $datePath . '/';
 
         try {
             if ($image->getSize() > 10 * 1024 * 1024) {
@@ -19,7 +21,7 @@ class Image
             $storedImagePath = $image->storeAs($path, $imageName);
             $imageUrl = Storage::url($storedImagePath);
 
-            return ['storedImagePath' => $storedImagePath, 'imageUrl' => $imageUrl];
+            return ['storedImagePath' => 'images/' . $type . '/' . $datePath . '/' . $imageName, 'imageUrl' => $imageUrl];
         } catch (\Exception $e) {
             return ['error' => $e->getCode(), 'message' => $e->getMessage()];
         }
