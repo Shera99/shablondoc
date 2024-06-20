@@ -6,6 +6,7 @@ use App\Http\Requests\Api\Certification\CertificationSignatureCU;
 use App\Http\Services\CertificationService;
 use App\Models\CertificationSignature;
 use App\Models\Company;
+use App\Models\Employee;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -27,7 +28,11 @@ class CertificationSignatureController extends \App\Http\Controllers\Controller
      */
     public function list(Request $request): JsonResponse
     {
-        $companies_ids = Company::query()->where('user_id', auth()->user()->id)->pluck('id');
+        if (auth()->user()->hasRole('Employee')) {
+            $companies_ids = Employee::where('user_id', auth()->user()->id)->pluck('company_id');
+        } else {
+            $companies_ids = auth()->user()->companies->pluck('id');
+        }
 
         $certification_signatures = CertificationSignature::with(['certificationSignatureType', 'country', 'city', 'company', 'language'])
             ->whereIn('company_id', $companies_ids)->where('is_deleted', false)
