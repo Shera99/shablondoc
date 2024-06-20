@@ -41,11 +41,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
             Route::post('/certification-signature', [CertificationSignatureController::class, 'create']);
             Route::post('/certification-signature/{certification_signature}', [CertificationSignatureController::class, 'update']);
             Route::delete('/certification-signature/{certification_signature}', [CertificationSignatureController::class, 'delete']);
-
-            Route::get('/certification-signature-type', [CertificationSignatureTypeController::class, 'list']);
         });
 
         Route::get('/certification-signature', [CertificationSignatureController::class, 'list']);
+        Route::get('/certification-signature-type', [CertificationSignatureTypeController::class, 'list']);
 
         Route::get('/order/{order}', [OrderController::class, 'show']);
         Route::get('/order/print/{order}', [OrderController::class, 'print']);
