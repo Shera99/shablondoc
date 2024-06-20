@@ -39,4 +39,9 @@ class Employee extends Model
     {
         return $this->belongsTo(Company::class);
     }
+
+    public function getCompanyUser()
+    {
+        return $this->company->user;
+    }
 }

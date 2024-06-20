@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Employee;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Closure;
@@ -18,6 +19,10 @@ class SubscriptionHasActive
     public function handle(Request $request, Closure $next): Response
     {
         $user = Auth::user();
+
+        if ($user->hasRole('Employee')) {
+            $user = $user->employee->getCompanyUser();
+        }
 
         $subscription = $user->userSubscription()
             ->where('is_active', true)
