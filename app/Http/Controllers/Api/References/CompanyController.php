@@ -67,16 +67,11 @@ class CompanyController extends \App\Http\Controllers\Controller
 
     public function byUser(Request $request): JsonResponse
     {
-        $company = Company::with('country:id,name')
+        $companies = Company::with('country:id,name')
             ->where('user_id', auth()->user()->getAuthIdentifier())
-            ->first(['id', 'name', 'country_id']);
+            ->get();
 
-        if ($company) {
-            $companyData = $company->toArray();
-            $companyData['country'] = $company->country ? $company->country->name : null;
-
-            $this->setResponse($companyData);
-        }
+        if ($companies) $this->setResponse($companies->toArray());
 
         return $this->sendResponse();
     }
