@@ -13,7 +13,7 @@ class TemplateData extends Model
         'data_json',
     ];
 
-    protected $casts = [
-        'data_json' => 'array',
-    ];
+//    protected $casts = [
+//        'data_json' => 'array',
+//    ];
 }

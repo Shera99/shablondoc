@@ -49,24 +49,21 @@ class TemplateController extends \App\Http\Controllers\Controller
         return $this->sendResponse();
     }
 
-    public function update(Template $template, TemplateUpdateRequest $request): JsonResponse
+    public function update(TemplateCreateRequest $request, Template $template): JsonResponse
     {
         $validated_data = $request->validated();
+        $template->update($validated_data);
 
-        $template->name = $validated_data['name'];
-        $template->template_json = $validated_data['template_json'];
-        $template->country_id = $validated_data['country_id'];
-        $template->document_type_id = $validated_data['document_type_id'];
-        $template->translation_direction_id = $validated_data['translation_direction_id'];
-
+        $this->setResponse($template->toArray());
         return $this->sendResponse();
     }
 
     public function create(TemplateCreateRequest $request): JsonResponse
     {
-
         $validated_data = $request->validated();
+        $template = Template::create($validated_data);
 
+        $this->setResponse($template->toArray());
         return $this->sendResponse();
     }
 }

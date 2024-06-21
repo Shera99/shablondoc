@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\References;
 
 use App\Http\Requests\Api\Company\CompanyCreateRequest;
-use App\Http\Requests\Api\Company\EmployeeUpdateRequest;
+use App\Http\Requests\Api\Company\CompanyUpdateRequest;
 use App\Models\Company;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -51,11 +51,11 @@ class CompanyController extends \App\Http\Controllers\Controller
     }
 
     /**
-     * @param EmployeeUpdateRequest $request
+     * @param CompanyUpdateRequest $request
      * @param Company $company
      * @return JsonResponse
      */
-    public function update(EmployeeUpdateRequest $request, Company $company): JsonResponse
+    public function update(CompanyUpdateRequest $request, Company $company): JsonResponse
     {
         $company->name = $request->validated()['name'];
         $company->update();

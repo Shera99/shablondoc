@@ -26,7 +26,7 @@ class OrderCreateRequest extends BaseRequest
             'address_id' => 'required|int',
             'delivery_date' => 'required|date',
             'template_id' => 'nullable|int',
-            'document_image' => 'nullable|file',
+            'document_image' => 'required|file',
             'document_name' => 'nullable|string',
             'email' => 'nullable|string|email',
             'comment' => 'nullable|string',

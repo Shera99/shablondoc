@@ -3,10 +3,15 @@
 namespace App\Http\Controllers\Api\Order;
 
 use App\Models\Employee;
+use App\Models\Template;
+use App\Models\TemplateData;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Requests\Api\Order\{OrderCreateRequest, OrderSetWebCallBackRequest, OrderUserLinkRequest};
+use App\Http\Requests\Api\Order\{OrderCreateRequest,
+    OrderSetWebCallBackRequest,
+    OrderTranslateRequest,
+    OrderUserLinkRequest};
 use App\Http\Services\OrderService;
 use App\Http\Services\PaymentService;
 use App\Models\Order;
@@ -93,7 +98,8 @@ class OrderController extends \App\Http\Controllers\Controller
         $orders = $query->select(
             'o.id', 'o.user_id', 'o.template_id', 'o.template_data_id', 'o.company_address_id', 'o.country_id',
             'o.language_id', 'o.document_name', 'o.document_file', 'o.email', 'o.phone_number', 'o.delivery_date',
-            'o.comment', 'o.status', 'c_a.name as company_address_name', 't.name as template_name',
+            'o.comment', 'o.status', 'o.created_at', 'o.print_date', 'o.updated_at',
+            'c_a.name as company_address_name', 't.name as template_name',
             'c.name as country_name', 'l.name as language_name', 'l.name_en as language_name_en', 'u.login as translator_login',
             'u.name as translator_name', 'u.last_name as translator_last_name'
         )->paginate(15)->toArray();
@@ -106,7 +112,8 @@ class OrderController extends \App\Http\Controllers\Controller
     {
         $order->user_id = $request->user_id;
         $order->save();
-        return $this->sendResponse();
+
+        return $this->responseOrder($order);
     }
 
     public function print(Order $order): \Illuminate\Http\JsonResponse
@@ -114,21 +121,44 @@ class OrderController extends \App\Http\Controllers\Controller
         $order->print_date = Carbon::now();
         $order->save();
 
-        $order->load([
-            'user',
-            'template',
-            'templateData',
-            'companyAddress',
-            'country',
-            'language',
-            'certificationSignature'
-        ]);
-
-        $this->setResponse($order->toArray());
-        return $this->sendResponse();
+        return $this->responseOrder($order);
     }
 
     public function show(Order $order): \Illuminate\Http\JsonResponse
+    {
+        return $this->responseOrder($order);
+    }
+
+    public function linkTemplate(Order $order, Template $template): \Illuminate\Http\JsonResponse
+    {
+        $order->template_id = $template->id;
+        $order->save();
+
+        return $this->responseOrder($order);
+    }
+
+    public function translate(OrderTranslateRequest $request, Order $order): \Illuminate\Http\JsonResponse
+    {
+        if ($request->exists('template_data_id') && $request->get('template_data_id')) {
+            $order->template_data_id = $request->get('template_data_id');
+            $template_data = TemplateData::where('id', $order->template_data_id)->first();
+            $template_data->data_json = $request->get('template_data');
+            $template_data->save();
+        } else {
+            $template_data = app(TemplateData::class);
+            $template_data->data_json = $request->get('template_data');
+            $template_data->save();
+            $order->template_data_id = $template_data->id;
+        }
+
+        if ($request->exists('certification_signature_id') && $request->get('certification_signature_id'))
+            $order->certification_signature_id = $request->exists('certification_signature_id');
+
+        $order->save();
+        return $this->responseOrder($order);
+    }
+
+    private function responseOrder(Order $order): \Illuminate\Http\JsonResponse
     {
         $order->load([
             'user',

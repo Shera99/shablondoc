@@ -50,8 +50,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('/order/print/{order}', [OrderController::class, 'print']);
         Route::get('/order', [OrderController::class, 'list']);
         Route::post('/order/{order}/user-link', [OrderController::class, 'userLink']);
+        Route::get('/order/{order}/template-link/{template}', [OrderController::class, 'linkTemplate']);
+        Route::post('/order/{order}/translate', [OrderController::class, 'translate']);
 
         Route::get('/template/{template}', [TemplateController::class, 'show']);
+        Route::post('/template', [TemplateController::class, 'create']);
         Route::match(['PUT', 'PATCH'], '/template/{template}', [TemplateController::class, 'update']);
     });
 

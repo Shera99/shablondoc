@@ -139,7 +139,7 @@ class TemplateResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::count();
+        return static::getModel()::where('status', 'moderation')->count();
     }
 
     public static function getPages(): array

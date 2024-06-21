@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api\References;
 use App\Http\Requests\Api\Certification\CertificationSignatureCU;
 use App\Http\Services\CertificationService;
 use App\Models\CertificationSignature;
-use App\Models\Company;
 use App\Models\Employee;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;

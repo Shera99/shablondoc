@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\Employee;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Closure;
