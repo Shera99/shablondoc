@@ -126,7 +126,7 @@ class OrderResource extends Resource
                     ->label('Название документа'),
                 Tables\Columns\SelectColumn::make('status')
                     ->options([
-                        'pending' => 'В процессе модерации',
+                        'pending' => 'В процессе оплаты',
                         'completed' => 'Оформлен',
                         'translation' => 'В процессе перевода',
                         'delivery' => 'В процессе доставки',

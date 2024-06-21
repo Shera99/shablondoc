@@ -54,7 +54,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('/order/{order}/translate', [OrderController::class, 'translate']);
 
         Route::get('/template/{template}', [TemplateController::class, 'show']);
-        Route::post('/template', [TemplateController::class, 'create']);
         Route::match(['PUT', 'PATCH'], '/template/{template}', [TemplateController::class, 'update']);
     });
 
@@ -77,6 +76,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::get('/translation-directions', [TranslationDirectionController::class, 'list']);
 });
+
+Route::post('/template', [TemplateController::class, 'create']);
 
 Route::get('/country', [CountryController::class, 'list']);
 Route::get('/language', [LanguageController::class, 'list']);
