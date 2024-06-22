@@ -59,7 +59,7 @@ class TemplateResource extends Resource
                     Forms\Components\Grid::make()->schema([
                         Forms\Components\Select::make('document_type_id')
                             ->relationship('documentType', 'name')
-                            ->required()->label('Тип документа'),
+                            ->label('Тип документа'),
                         Forms\Components\Select::make('translation_direction_id')
                             ->relationship('translationDirection', 'id')
                             ->required()->label('Языковое направление'),
@@ -67,6 +67,9 @@ class TemplateResource extends Resource
                 ]),
                 Card::make()->schema([
                     Forms\Components\Grid::make()->schema([
+                        Forms\Components\TextInput::make('new_document_type')
+                            ->maxLength(200)
+                            ->label('Новый тип документа'),
                         Forms\Components\Select::make('status')
                             ->options([
                                 'active' => 'Активный',
@@ -100,6 +103,8 @@ class TemplateResource extends Resource
                 Tables\Columns\TextColumn::make('documentType.name')
                     ->numeric()
                     ->sortable()->label('Тип документа'),
+                Tables\Columns\TextColumn::make('new_document_type')
+                    ->searchable()->label('Новый тип документа'),
                 Tables\Columns\TextColumn::make('translationDirection.id')
                     ->numeric()
                     ->sortable()->label('Языковое направление'),

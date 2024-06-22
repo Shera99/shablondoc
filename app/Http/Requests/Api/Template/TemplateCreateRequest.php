@@ -25,7 +25,8 @@ class TemplateCreateRequest extends FormRequest
             'name' => 'required|string',
             'template_json' => 'required|json',
             'country_id' => 'required|int|exists:countries,id',
-            'document_type_id' => 'required|int|exists:document_types,id',
+            'document_type_id' => 'nullable|int|exists:document_types,id',
+            'new_document_type' => 'nullable|string',
             'translation_direction_id' => 'required|int|exists:translation_directions,id',
         ];
     }
@@ -45,7 +46,7 @@ class TemplateCreateRequest extends FormRequest
             'country_id.required' => 'The country field is required.',
             'country_id.int' => 'The country field must be an integer.',
             'country_id.exists' => 'The selected country is invalid.',
-            'document_type_id.required' => 'The document type field is required.',
+            'new_document_type.string' => 'The new document type must be a string.',
             'document_type_id.int' => 'The document type field must be an integer.',
             'document_type_id.exists' => 'The selected document type is invalid.',
             'translation_direction_id.required' => 'The translation direction field is required.',
