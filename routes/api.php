@@ -76,8 +76,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::get('/subscription', [SubscriptionController::class, 'list']);
     Route::post('/subscription/buy', [SubscriptionController::class, 'buy']);
-
-    Route::get('/translation-directions', [TranslationDirectionController::class, 'list']);
 });
 
 Route::middleware([CheckAccessTokenForModeration::class])->group( function () {
@@ -98,6 +96,7 @@ Route::get('/company', [CompanyController::class, 'list']);
 Route::get('/address', [CompanyAddressController::class, 'list']);
 Route::get('/template', [TemplateController::class, 'list']);
 Route::get('/currency', [CurrencyController::class, 'list']);
+Route::get('/translation-directions', [TranslationDirectionController::class, 'list']);
 
 Route::post('/order', [OrderController::class, 'create']);
 Route::post('/web-call-back', [OrderController::class, 'webCallBack']);
