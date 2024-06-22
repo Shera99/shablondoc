@@ -1,7 +1,10 @@
 <?php
 
 use App\Http\Controllers\Api\Payment\PaymentController;
-use App\Http\Middleware\{CorporateRoleAccessMiddleware,StandardAndCorporateRoleAccessMiddleware,SubscriptionHasActive};
+use App\Http\Middleware\{CheckAccessTokenForModeration,
+    CorporateRoleAccessMiddleware,
+    StandardAndCorporateRoleAccessMiddleware,
+    SubscriptionHasActive};
 use App\Http\Controllers\Api\References\{CertificationSignatureController,
     CertificationSignatureTypeController,
     CompanyAddressController,
@@ -76,6 +79,12 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::get('/translation-directions', [TranslationDirectionController::class, 'list']);
 });
+
+Route::middleware([CheckAccessTokenForModeration::class])->group( function () {
+    Route::get('/template/{template}', [TemplateController::class, 'show']);
+    Route::match(['PUT', 'PATCH'], '/template/{template}', [TemplateController::class, 'update']);
+});
+
 
 Route::post('/template', [TemplateController::class, 'create']);
 

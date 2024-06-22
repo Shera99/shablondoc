@@ -153,6 +153,9 @@ class OrderResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\AssociateAction::make()
+                    ->label('Проверить шаблон')
+                    ->url(fn ($record) => '/view?id=' . $record->id . '&user=' . auth()->user()->getAuthIdentifier() . '&token=' . config('app.admin_secret')),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

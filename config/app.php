@@ -127,4 +127,7 @@ return [
     'payment_secret' => env('PAYMENT_SECRET'),
     'payment_public' => env('PAYMENT_PUBLIC'),
     'payment_url' => env('PAYMENT_URL'),
+
+    'admin_secret' => env('ADMIN_SECRET'),
+    'front_url' => env('FRONT_APP_URL', 'http://localhost:3000'),
 ];

@@ -119,7 +119,8 @@ class TemplateResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
+                Tables\Actions\ViewAction::make()
+                    ->url(fn ($record) => config('app.front_url') . '/view?id=' . $record->id . '&user=' . auth()->user()->getAuthIdentifier() . '&token=' . config('app.admin_secret')),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
