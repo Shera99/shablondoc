@@ -85,7 +85,7 @@ class PaymentService
 
                 if ($this->transaction->type == 'order') {
                     $order = Order::where('id', $this->transaction->foreign_id)->first();
-                    $order->status = OrderStatus::TRANSLATION;
+                    $order->status = OrderStatus::MODERATION;
                 } else {
                     $order = UserSubscription::where('id', $this->transaction->foreign_id)->first();
                     $order->is_active = true;

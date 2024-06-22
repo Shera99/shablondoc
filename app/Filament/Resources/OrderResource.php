@@ -59,6 +59,7 @@ class OrderResource extends Resource
                     Forms\Components\Select::make('status')
                         ->options([
                             'pending' => 'В процессе модерации',
+                            'moderation' => 'Модерация',
                             'completed' => 'Оформлен',
                             'translation' => 'В процессе перевода',
                             'delivery' => 'В процессе доставки',
@@ -127,6 +128,7 @@ class OrderResource extends Resource
                 Tables\Columns\SelectColumn::make('status')
                     ->options([
                         'pending' => 'В процессе оплаты',
+                        'moderation' => 'Модерация',
                         'completed' => 'Оформлен',
                         'translation' => 'В процессе перевода',
                         'delivery' => 'В процессе доставки',
@@ -167,7 +169,7 @@ class OrderResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::where('status', 'pending')->count();
+        return static::getModel()::where('status', 'moderation')->count();
     }
 
     public static function getPages(): array
