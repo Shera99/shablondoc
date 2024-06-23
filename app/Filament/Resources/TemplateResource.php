@@ -38,9 +38,6 @@ class TemplateResource extends Resource
                             ->required()
                             ->maxLength(200)
                             ->label('Название'),
-                        Forms\Components\Select::make('user_id')
-                            ->relationship('user', 'name')
-                            ->required()->label('Пользователь'),
                     ])
                 ]),
                 Card::make()->schema([
@@ -86,9 +83,6 @@ class TemplateResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()->label('Название'),
-                Tables\Columns\TextColumn::make('user.name')
-                    ->numeric()
-                    ->sortable()->label('Пользователь'),
                 Tables\Columns\TextColumn::make('country.name')
                     ->numeric()
                     ->sortable()->label('Страна'),
