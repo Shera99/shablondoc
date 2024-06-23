@@ -29,6 +29,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('subscription_id')->constrained('subscriptions');
             $table->integer('count_translation');
+            $table->integer('used_count_translation')->default(0);
             $table->boolean('is_active')->default(true);
             $table->date('subscription_date');
             $table->date('subscription_end_date');

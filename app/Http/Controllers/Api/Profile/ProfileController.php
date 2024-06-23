@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Profile;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
@@ -23,7 +24,19 @@ class ProfileController extends Controller
 
     public function show(): JsonResponse
     {
-        $this->setResponse();
-        return $this->sendResourceResponse(new UserResource(), Auth::user());
+        $user = Auth::user();
+
+        if ($user->hasRole('Corporate') || $user->hasRole('Standard')) {
+            $subscription = $user->userSubscription()
+                ->with(['subscription'])
+                ->where('is_active', true)
+                ->whereDate('subscription_date', '<=', Carbon::now())
+                ->whereDate('subscription_end_date', '>=', Carbon::now())
+                ->first()->toArray();
+
+            $this->setResponse($subscription);
+        } else $this->setResponse();
+
+        return $this->sendResourceResponse(new UserResource(), $user);
     }
 }

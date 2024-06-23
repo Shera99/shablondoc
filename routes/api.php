@@ -4,7 +4,8 @@ use App\Http\Controllers\Api\Payment\PaymentController;
 use App\Http\Middleware\{CheckAccessTokenForModeration,
     CorporateRoleAccessMiddleware,
     StandardAndCorporateRoleAccessMiddleware,
-    SubscriptionHasActive};
+    SubscriptionHasActive,
+    SubscriptionTranslateCount};
 use App\Http\Controllers\Api\References\{CertificationSignatureController,
     CertificationSignatureTypeController,
     CompanyAddressController,
@@ -52,9 +53,12 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('/order/{order}', [OrderController::class, 'show']);
         Route::get('/order/print/{order}', [OrderController::class, 'print']);
         Route::get('/order', [OrderController::class, 'list']);
-        Route::post('/order/{order}/user-link', [OrderController::class, 'userLink']);
-        Route::get('/order/{order}/template-link/{template}', [OrderController::class, 'linkTemplate']);
-        Route::post('/order/{order}/translate', [OrderController::class, 'translate']);
+
+        Route::middleware([SubscriptionTranslateCount::class])->group( function () {
+            Route::post('/order/{order}/user-link', [OrderController::class, 'userLink']);
+            Route::get('/order/{order}/template-link/{template}', [OrderController::class, 'linkTemplate']);
+            Route::post('/order/{order}/translate', [OrderController::class, 'translate']);
+        });
 
         Route::get('/template/{template}', [TemplateController::class, 'show']);
         Route::match(['PUT', 'PATCH'], '/template/{template}', [TemplateController::class, 'update']);

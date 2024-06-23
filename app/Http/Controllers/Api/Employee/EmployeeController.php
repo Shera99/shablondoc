@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Employee;
 
 use App\Http\Controllers\Controller;
 use App\Http\Services\UserService;
+use App\Models\Employee;
 use App\Models\User;
 use App\Http\Requests\Api\Employee\{EmployeeCreateRequest,EmployeeUpdateRequest};
 use Illuminate\Http\JsonResponse;
@@ -52,10 +53,17 @@ class EmployeeController extends Controller
 
     public function list(int $company): JsonResponse
     {
-        $employees = DB::table('employees')->join('users', 'employees.user_id', '=', 'users.id')
-            ->where('employees.company_id', $company)
-            ->get(['users.id', 'users.name', 'users.last_name', 'users.email',
-                'users.phone', 'users.address', 'users.status']);
+        $employees = Employee::with(['user'])
+            ->where('company_id', $company)
+            ->get()
+            ->map(function ($employee) {
+                return [
+                    'id' => $employee->id,
+                    'name' => $employee->name,
+                    'user' => $employee->user,
+                    'order_count' => $employee->order_count,
+                ];
+            });
 
         if ($employees->isNotEmpty()) $this->setResponse($employees->toArray());
 

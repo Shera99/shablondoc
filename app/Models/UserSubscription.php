@@ -21,6 +21,7 @@ class UserSubscription extends Model
         'user_id',
         'subscription_id',
         'count_translation',
+        'used_count_translation',
         'is_active',
         'subscription_date',
         'subscription_end_date'
