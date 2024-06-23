@@ -15,8 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class PaymentService
 {
-    private Payment $payment;
-    private $transaction;
+    private Payment $transaction;
     private string $base_link;
     private array $post_data;
     private string $secret;
@@ -24,7 +23,6 @@ class PaymentService
 
     public function __construct()
     {
-        $this->payment = app(Payment::class);
         $this->secret = config('app.payment_secret');
         $this->public = intval(config('app.payment_public'));
         $this->base_link = config('app.payment_url');
@@ -33,17 +31,19 @@ class PaymentService
     public function create(int $foreign_id, int $amount, string $currency, string $type, int $user_id = 0): array
     {
         try {
+            $payment = app(Payment::class);
+
             $new_amount = ApiHelper::getConvertedAmount($currency, $amount);
-            if ($user_id !== 0) $this->payment->user_id = $user_id;
-            $this->payment->foreign_id = $foreign_id;
-            $this->payment->amount = $new_amount;
-            $this->payment->type = $type;
-            $this->payment->additional_transaction_id = Str::random(60);
+            if ($user_id !== 0) $payment->user_id = $user_id;
+            $payment->foreign_id = $foreign_id;
+            $payment->amount = $new_amount;
+            $payment->type = $type;
+            $payment->additional_transaction_id = Str::random(60);
 
-            $this->payment->save();
+            $payment->save();
 
-            return ['payment_id' => strval($this->payment->id), 'salt' => $this->payment->additional_transaction_id,
-                'amount' => $this->payment->amount, 'currency' => $currency,
+            return ['payment_id' => strval($payment->id), 'salt' => $payment->additional_transaction_id,
+                'amount' => $payment->amount, 'currency' => $currency,
                 'expires_at' => Carbon::now()->addMinutes(45)->format('Y-m-d H:i:s')];
         } catch (\Throwable $exception) {
             return ['message' => $exception->getMessage(), 'error' => $exception->getCode()];
@@ -67,7 +67,6 @@ class PaymentService
         $this->transaction = Payment::where('id', intval($request_data['order']))->first();
 
         if ($this->transaction) {
-            $this->transaction->additional_transaction_id = $request_data['salt'];
             $this->checkStatus();
             $this->transaction->save();
         }
@@ -157,5 +156,10 @@ class PaymentService
         }
 
         return $response;
+    }
+
+    public function setPayment(Payment $payment): void
+    {
+        $this->transaction = $payment;
     }
 }
