@@ -38,8 +38,6 @@ class TemplateResource extends Resource
                             ->required()
                             ->maxLength(200)
                             ->label('Название'),
-        //                Forms\Components\TextInput::make('template_json')
-        //                    ->required(),
                         Forms\Components\Select::make('user_id')
                             ->relationship('user', 'name')
                             ->required()->label('Пользователь'),
@@ -50,16 +48,6 @@ class TemplateResource extends Resource
                         Forms\Components\Select::make('country_id')
                             ->relationship('country', 'name')
                             ->required()->label('Страна'),
-                        Forms\Components\Select::make('city_id')
-                            ->relationship('city', 'name')
-                            ->required()->label('Город'),
-                    ])
-                ]),
-                Card::make()->schema([
-                    Forms\Components\Grid::make()->schema([
-                        Forms\Components\Select::make('document_type_id')
-                            ->relationship('documentType', 'name')
-                            ->label('Тип документа'),
                         Forms\Components\Select::make('translation_direction_id')
                             ->relationship('translationDirection', 'id')
                             ->required()->label('Языковое направление'),
@@ -67,9 +55,16 @@ class TemplateResource extends Resource
                 ]),
                 Card::make()->schema([
                     Forms\Components\Grid::make()->schema([
+                        Forms\Components\Select::make('document_type_id')
+                            ->relationship('documentType', 'name')
+                            ->label('Тип документа'),
                         Forms\Components\TextInput::make('new_document_type')
                             ->maxLength(200)
                             ->label('Новый тип документа'),
+                    ])
+                ]),
+                Card::make()->schema([
+                    Forms\Components\Grid::make()->schema([
                         Forms\Components\Select::make('status')
                             ->options([
                                 'active' => 'Активный',
@@ -97,9 +92,6 @@ class TemplateResource extends Resource
                 Tables\Columns\TextColumn::make('country.name')
                     ->numeric()
                     ->sortable()->label('Страна'),
-                Tables\Columns\TextColumn::make('city.name')
-                    ->numeric()
-                    ->sortable()->label('Город'),
                 Tables\Columns\TextColumn::make('documentType.name')
                     ->numeric()
                     ->sortable()->label('Тип документа'),
