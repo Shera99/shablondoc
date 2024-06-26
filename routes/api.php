@@ -84,7 +84,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
 Route::middleware([CheckAccessTokenForModeration::class])->group( function () {
     Route::get('/admin/template/{template}', [TemplateController::class, 'show']);
-    Route::match(['PUT', 'PATCH'], '/admin/template/{template}', [TemplateController::class, 'update']);
+    Route::post('/admin/template/{template}', [TemplateController::class, 'update']);
+//    Route::match(['PUT', 'PATCH'], '/admin/template/{template}', [TemplateController::class, 'update']);
 });
 
 
