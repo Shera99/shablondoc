@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Api\Profile;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\ProfileUpdateRequest;
 use App\Http\Resources\UserResource;
+use App\Models\User;
 use App\Models\UserSubscription;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
@@ -47,6 +49,19 @@ class ProfileController extends Controller
             ->orderBy('id', 'desc')->get()->toArray();
 
         $this->setResponse($transactions);
+        return $this->sendResponse();
+    }
+
+    public function update(User $user, ProfileUpdateRequest $request)
+    {
+        $validate_data = $request->validated();
+
+        if (User::query()->where('id', '<>', $user->id)->where('email', $validate_data['email'])->exists())
+            return $this->sendErrorResponse('The email has already been taken.', 422);
+
+        $user->update($validate_data);
+
+        $this->setResponse($user->toArray());
         return $this->sendResponse();
     }
 }

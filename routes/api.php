@@ -39,6 +39,7 @@ Route::post('/password-reset/confirm', [ResetPasswordController::class, 'passwor
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [ProfileController::class, 'logout']);
     Route::get('/profile', [ProfileController::class, 'show']);
+    Route::post('/profile/{user}', [ProfileController::class, 'update']);
 
     Route::middleware([SubscriptionHasActive::class])->group( function () {
         Route::middleware([StandardAndCorporateRoleAccessMiddleware::class])->group(function () {
