@@ -62,7 +62,8 @@ class OrderController extends \App\Http\Controllers\Controller
             ->leftJoin('countries as c', 'o.country_id', '=', 'c.id')
             ->leftJoin('languages as l', 'o.language_id', '=', 'l.id')
             ->leftJoin('users as u', 'o.user_id', '=', 'u.id')
-            ->where('p.type', 'order')->whereIn('p.status', ['completed', 'translation']);
+            ->where('p.type', 'order')->whereIn('o.status', ['completed', 'translated'])
+            ->where('p.status', 'completed');
 
         if (auth()->user()->hasRole('Employee')) {
             $companies = Employee::where('user_id', auth()->user()->id)->pluck('company_id');
@@ -162,7 +163,7 @@ class OrderController extends \App\Http\Controllers\Controller
         if ($request->exists('certification_signature_id') && $request->get('certification_signature_id'))
             $order->certification_signature_id = $request->exists('certification_signature_id');
 
-        if ($request->exists('admin')) $order->status = OrderStatus::TRANSLATION;
+        if ($request->exists('admin')) $order->status = OrderStatus::TRANSLATED;
         else $order->status = OrderStatus::TRANSLATE_MODERATION;
 
         $order->save();

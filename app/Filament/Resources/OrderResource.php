@@ -58,10 +58,11 @@ class OrderResource extends Resource
                         ->label('Дата печати'),
                     Forms\Components\Select::make('status')
                         ->options([
-                            'pending' => 'В процессе модерации',
+                            'pending' => 'В процессе оплаты',
                             'moderation' => 'Модерация',
+                            'translate_moderation' => 'Модерация перевода',
                             'completed' => 'Оформлен',
-                            'translation' => 'В процессе перевода',
+                            'translated' => 'Переводен',
                             'delivery' => 'В процессе доставки',
                             'delivered' => 'Доставлено',
                             'failed' => 'Не оплачен!'
@@ -129,8 +130,9 @@ class OrderResource extends Resource
                     ->options([
                         'pending' => 'В процессе оплаты',
                         'moderation' => 'Модерация',
+                        'translate_moderation' => 'Модерация перевода',
                         'completed' => 'Оформлен',
-                        'translation' => 'В процессе перевода',
+                        'translated' => 'Переводен',
                         'delivery' => 'В процессе доставки',
                         'delivered' => 'Доставлено',
                         'failed' => 'Не оплачен!'

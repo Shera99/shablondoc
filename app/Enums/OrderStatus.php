@@ -8,7 +8,7 @@ final class OrderStatus extends Enum
 {
     const PENDING = 'pending';
     const COMPLETED = 'completed';
-    const TRANSLATION = 'translation';
+    const TRANSLATED = 'translated';
     const DELIVERY = 'delivery';
     const DELIVERED = 'delivered';
     const FAILED = 'failed';
