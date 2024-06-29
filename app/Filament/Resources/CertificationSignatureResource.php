@@ -72,6 +72,11 @@ class CertificationSignatureResource extends Resource
                         ->disk('public')
                         ->directory('images')
                         ->label('Логотип')
+                        ->openable()
+                        ->downloadable()
+                        ->imageEditor()
+                        ->imageEditorViewportWidth('1920')
+                        ->imageEditorViewportHeight('1080')
                         ->visible(fn ($record) => $record && $record->file),
                     Forms\Components\Select::make('is_deleted')
                         ->label('Статус')

@@ -10,6 +10,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Storage;
 
 class OrderResource extends Resource
 {
@@ -78,6 +79,8 @@ class OrderResource extends Resource
                         ->disk('public')
                         ->directory('images')
                         ->label('Файл')
+                        ->openable()
+                        ->downloadable()
                         ->visible(fn ($record) => $record && $record->document_file),
                 ]),
             ]);
