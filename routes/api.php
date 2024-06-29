@@ -45,6 +45,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
             Route::post('/certification-signature', [CertificationSignatureController::class, 'create']);
             Route::post('/certification-signature/{certification_signature}', [CertificationSignatureController::class, 'update']);
             Route::delete('/certification-signature/{certification_signature}', [CertificationSignatureController::class, 'delete']);
+
+            Route::get('/transaction', [ProfileController::class, 'subscriptionTransactionList']);
         });
 
         Route::get('/certification-signature', [CertificationSignatureController::class, 'list']);

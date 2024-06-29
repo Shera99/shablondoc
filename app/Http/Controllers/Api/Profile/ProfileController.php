@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Profile;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
+use App\Models\UserSubscription;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
@@ -38,5 +39,13 @@ class ProfileController extends Controller
         } else $this->setResponse();
 
         return $this->sendResourceResponse(new UserResource(), $user);
+    }
+
+    public function subscriptionTransactionList(): JsonResponse
+    {
+        $transactions = UserSubscription::with(['subscription', 'payment'])->where('user_id', Auth::user()->getAuthIdentifier())->get();
+
+        $this->setResponse($transactions);
+        return $this->sendResponse();
     }
 }
