@@ -13,6 +13,10 @@ class ViewUserSubscription extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
+            Actions\Action::make('back')
+                ->label('Назад')
+                ->url($this->getResource()::getUrl('index'))
+                ->color('primary'),
             Actions\EditAction::make(),
         ];
     }

@@ -13,6 +13,10 @@ class EditDocumentType extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
+            Actions\Action::make('back')
+                ->label('Назад')
+                ->url($this->getResource()::getUrl('index'))
+                ->color('primary'),
             Actions\ViewAction::make(),
             Actions\DeleteAction::make(),
         ];
