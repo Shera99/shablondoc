@@ -43,7 +43,8 @@ class ProfileController extends Controller
 
     public function subscriptionTransactionList(): JsonResponse
     {
-        $transactions = UserSubscription::with(['subscription', 'payment'])->where('user_id', Auth::user()->getAuthIdentifier())->get();
+        $transactions = UserSubscription::with(['subscription', 'payment'])->where('user_id', Auth::user()->getAuthIdentifier())
+            ->get()->toArray();
 
         $this->setResponse($transactions);
         return $this->sendResponse();
