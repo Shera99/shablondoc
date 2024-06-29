@@ -120,15 +120,16 @@ class OrderController extends \App\Http\Controllers\Controller
 
     public function print(Order $order): \Illuminate\Http\JsonResponse
     {
+        $order->load(['companyAddress.company.user']);
+
         if (!empty($order->print_date)) {
-            $order->print_date = Carbon::now();
-            $order->save();
-            $order->load(['companyAddress.company']);
-            dd($order);
-        } else {
-            $order->print_date = Carbon::now();
-            $order->save();
+            $user_subscription = $order->companyAddress->company->user->userSubscription;
+            $user_subscription->used_count_translation++;
+            $user_subscription->save();
         }
+
+        $order->print_date = Carbon::now();
+        $order->save();
 
         return $this->responseOrder($order);
     }

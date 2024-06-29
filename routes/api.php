@@ -51,13 +51,13 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('/certification-signature-type', [CertificationSignatureTypeController::class, 'list']);
 
         Route::get('/order/{order}', [OrderController::class, 'show']);
-        Route::get('/order/print/{order}', [OrderController::class, 'print']);
         Route::get('/order', [OrderController::class, 'list']);
 
         Route::middleware([SubscriptionTranslateCount::class])->group( function () {
             Route::post('/order/{order}/user-link', [OrderController::class, 'userLink']);
             Route::get('/order/{order}/template-link/{template}', [OrderController::class, 'linkTemplate']);
             Route::post('/order/{order}/translate', [OrderController::class, 'translate']);
+            Route::get('/order/print/{order}', [OrderController::class, 'print']);
         });
 
         Route::get('/template/{template}', [TemplateController::class, 'show']);
