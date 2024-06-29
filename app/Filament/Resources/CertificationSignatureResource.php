@@ -68,17 +68,17 @@ class CertificationSignatureResource extends Resource
                     Forms\Components\RichEditor::make('certification_text')
                         ->required()->columnSpanFull()->columnSpan(8)
                         ->label('Удостоверяющаю надпись'),
+                    Forms\Components\FileUpload::make('file')
+                        ->disk('public')
+                        ->directory('images')
+                        ->label('Логотип')
+                        ->visible(fn ($record) => $record && $record->file),
                     Forms\Components\Select::make('is_deleted')
                         ->label('Статус')
                         ->options([
                             true => 'Удален',
                             false => 'Активен'
                         ]),
-                    Forms\Components\FileUpload::make('file')
-                        ->disk('public')
-                        ->directory('images')
-                        ->label('Логотип')
-                        ->visible(fn ($record) => $record && $record->file),
                 ]),
             ]);
     }
