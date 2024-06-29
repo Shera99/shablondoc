@@ -27,7 +27,7 @@ class AuthController extends Controller
             return $this->sendErrorResponse('Invalid Credentials', Response::HTTP_BAD_REQUEST);
         }
 
-        if (!$user->hasRole([RoleType::CORPORATE, RoleType::STANDARD])) {
+        if (!$user->hasRole([RoleType::CORPORATE, RoleType::STANDARD, RoleType::EMPLOYEE])) {
             return $this->sendErrorResponse('Access denied for this role', Response::HTTP_FORBIDDEN);
         }
 

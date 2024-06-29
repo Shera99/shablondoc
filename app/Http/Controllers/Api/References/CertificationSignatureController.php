@@ -35,7 +35,7 @@ class CertificationSignatureController extends \App\Http\Controllers\Controller
 
         $certification_signatures = CertificationSignature::with(['certificationSignatureType', 'country', 'city', 'company', 'language'])
             ->whereIn('company_id', $companies_ids)->where('is_deleted', false)
-            ->paginate(15)->toArray();
+            ->get()->toArray();
 
         $this->setResponse($certification_signatures);
         return $this->sendResponse();

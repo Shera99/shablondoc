@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Order;
 
+use App\Enums\OrderStatus;
 use App\Models\Employee;
 use App\Models\Template;
 use App\Models\TemplateData;
@@ -61,7 +62,7 @@ class OrderController extends \App\Http\Controllers\Controller
             ->leftJoin('countries as c', 'o.country_id', '=', 'c.id')
             ->leftJoin('languages as l', 'o.language_id', '=', 'l.id')
             ->leftJoin('users as u', 'o.user_id', '=', 'u.id')
-            ->where('p.type', 'order')->where('p.status', 'completed');
+            ->where('p.type', 'order')->whereIn('p.status', ['completed', 'translation']);
 
         if (auth()->user()->hasRole('Employee')) {
             $companies = Employee::where('user_id', auth()->user()->id)->pluck('company_id');
@@ -118,8 +119,15 @@ class OrderController extends \App\Http\Controllers\Controller
 
     public function print(Order $order): \Illuminate\Http\JsonResponse
     {
-        $order->print_date = Carbon::now();
-        $order->save();
+        if (!empty($order->print_date)) {
+            $order->print_date = Carbon::now();
+            $order->save();
+            $order->load(['companyAddress.company']);
+            dd($order);
+        } else {
+            $order->print_date = Carbon::now();
+            $order->save();
+        }
 
         return $this->responseOrder($order);
     }
@@ -153,6 +161,9 @@ class OrderController extends \App\Http\Controllers\Controller
 
         if ($request->exists('certification_signature_id') && $request->get('certification_signature_id'))
             $order->certification_signature_id = $request->exists('certification_signature_id');
+
+        if ($request->exists('admin')) $order->status = OrderStatus::TRANSLATION;
+        else $order->status = OrderStatus::TRANSLATE_MODERATION;
 
         $order->save();
         return $this->responseOrder($order);

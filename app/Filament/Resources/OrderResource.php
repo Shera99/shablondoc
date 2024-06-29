@@ -153,9 +153,9 @@ class OrderResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-//                Tables\Actions\AssociateAction::make()
-//                    ->label('Проверить шаблон')
-//                    ->url(fn ($record) => config('app.front_url') . '/view?id=' . $record->id . '&user=' . auth()->user()->getAuthIdentifier() . '&token=' . config('app.admin_secret')),
+                Tables\Actions\AssociateAction::make()
+                    ->label('Проверить перевод')
+                    ->url(fn ($record) => config('app.front_url') . '/translate-view?id=' . $record->id . '&user=' . auth()->user()->getAuthIdentifier() . '&token=' . config('app.admin_secret_order')),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
@@ -172,7 +172,7 @@ class OrderResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::where('status', 'moderation')->count();
+        return static::getModel()::whereIn('status', ['moderation', 'translate_moderation'])->count();
     }
 
     public static function getPages(): array

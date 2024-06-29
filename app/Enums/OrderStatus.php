@@ -13,4 +13,5 @@ final class OrderStatus extends Enum
     const DELIVERED = 'delivered';
     const FAILED = 'failed';
     const MODERATION = 'moderation';
+    const TRANSLATE_MODERATION = 'translate_moderation';
 }

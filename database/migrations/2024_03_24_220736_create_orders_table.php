@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-//        DB::statement("CREATE TYPE order_status AS ENUM ('moderation', 'pending', 'completed', 'translation', 'delivery', 'delivered', 'failed')");
+//        DB::statement("CREATE TYPE order_status AS ENUM ('moderation', 'pending', 'completed', 'translation', 'delivery', 'delivered', 'failed', 'translate_moderation')");
 
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
