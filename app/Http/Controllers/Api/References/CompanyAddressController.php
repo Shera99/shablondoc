@@ -22,6 +22,7 @@ class CompanyAddressController extends \App\Http\Controllers\Controller
             ->where('company_id', $company)
             ->where('city_id', $city)
             ->where('status', true)
+            ->orderBy('name', 'asc')
             ->get(['id', 'name'])->toArray();
 
         $this->setResponse($addresses);
@@ -70,6 +71,7 @@ class CompanyAddressController extends \App\Http\Controllers\Controller
     {
         $addresses = CompanyAddress::with('city:id,name')
             ->where('company_id', $company)
+            ->orderBy('name', 'asc')
             ->get(['id', 'name', 'city_id', 'status']);
 
         if ($addresses->isEmpty()) $this->setResponse();

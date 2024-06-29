@@ -13,7 +13,7 @@ class DocumentTypeController extends Controller
      */
     public function list(): JsonResponse
     {
-        $document_types = DocumentType::all(['id', 'name'])->toArray();
+        $document_types = DocumentType::orderBy('name', 'asc')->get(['id', 'name'])->toArray();
         $this->setResponse($document_types);
 
         return $this->sendResponse();

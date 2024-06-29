@@ -13,7 +13,7 @@ class CertificationSignatureTypeController extends Controller
      */
     public function list(): JsonResponse
     {
-        $certification_signature_types = CertificationSignatureType::all(['id', 'name'])->toArray();
+        $certification_signature_types = CertificationSignatureType::orderBy('name', 'asc')->get(['id', 'name'])->toArray();
         $this->setResponse($certification_signature_types);
 
         return $this->sendResponse();

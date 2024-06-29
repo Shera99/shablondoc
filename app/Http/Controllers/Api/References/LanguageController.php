@@ -12,7 +12,7 @@ class LanguageController extends \App\Http\Controllers\Controller
      */
     public function list(): JsonResponse
     {
-        $languages = Language::all(['id', 'code', 'name', 'name_en'])->toArray();
+        $languages = Language::orderBy('name', 'asc')->get(['id', 'code', 'name', 'name_en'])->toArray();
         $this->setResponse($languages);
 
         return $this->sendResponse();

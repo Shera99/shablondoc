@@ -25,6 +25,7 @@ class TemplateController extends \App\Http\Controllers\Controller
             ->whereHas('translationDirection', function ($query) use ($language_id) {
                 $query->where('target_language_id', $language_id);
             })
+            ->orderBy('name', 'asc')
             ->get(['id', 'name'])->toArray();
 
         $this->setResponse($templates);

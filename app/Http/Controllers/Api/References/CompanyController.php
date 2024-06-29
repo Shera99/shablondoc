@@ -24,6 +24,7 @@ class CompanyController extends \App\Http\Controllers\Controller
             ->whereHas('companyAddress', function ($query) use ($city) {
                 $query->where('city_id', $city);
             })
+            ->orderBy('name', 'asc')
             ->get(['id', 'name'])->toArray();
 
         $this->setResponse($companies);
