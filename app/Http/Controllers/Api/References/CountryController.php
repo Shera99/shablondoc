@@ -12,7 +12,7 @@ class CountryController extends \App\Http\Controllers\Controller
      */
     public function list(): JsonResponse
     {
-        $countries = Country::all(['id', 'name', 'code'])->toArray();
+        $countries = Country::orderBy('name', 'asc')->all(['id', 'name', 'code'])->toArray();
         $this->setResponse($countries);
 
         return $this->sendResponse();
