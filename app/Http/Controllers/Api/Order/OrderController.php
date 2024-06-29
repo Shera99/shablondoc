@@ -58,6 +58,7 @@ class OrderController extends \App\Http\Controllers\Controller
         $query = DB::table('orders as o')
             ->join('payments as p', 'o.id', '=', 'p.foreign_id')
             ->join('company_addresses as c_a', 'o.company_address_id', '=', 'c_a.id')
+            ->join('companies as cm', 'c_a.company_id', '=', 'cm.id')
             ->leftJoin('templates as t', 'o.template_id', '=', 't.id')
             ->leftJoin('countries as c', 'o.country_id', '=', 'c.id')
             ->leftJoin('languages as l', 'o.language_id', '=', 'l.id')
@@ -101,10 +102,10 @@ class OrderController extends \App\Http\Controllers\Controller
             'o.id', 'o.user_id', 'o.template_id', 'o.template_data_id', 'o.company_address_id', 'o.country_id',
             'o.language_id', 'o.document_name', 'o.document_file', 'o.email', 'o.phone_number', 'o.delivery_date',
             'o.comment', 'o.status', 'o.created_at', 'o.print_date', 'o.updated_at',
-            'c_a.name as company_address_name', 't.name as template_name',
+            'c_a.name as company_address_name', 't.name as template_name', 'cm.name as company_name',
             'c.name as country_name', 'l.name as language_name', 'l.name_en as language_name_en', 'u.login as translator_login',
             'u.name as translator_name', 'u.last_name as translator_last_name'
-        )->paginate(15)->toArray();
+        )->orderBy('o.id', 'desc')->paginate(15)->toArray();
 
         $this->setResponse($orders);
         return $this->sendResponse();
