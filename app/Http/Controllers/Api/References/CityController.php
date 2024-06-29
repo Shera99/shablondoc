@@ -13,7 +13,7 @@ class CityController extends \App\Http\Controllers\Controller
      */
     public function list(): JsonResponse
     {
-        $cities = City::with('country:id,name')->get(['id', 'name', 'country_id'])->toArray();
+        $cities = City::with('country:id,name')->orderBy('name', 'asc')->get(['id', 'name', 'country_id'])->toArray();
         $this->setResponse($cities);
 
         return $this->sendResponse();

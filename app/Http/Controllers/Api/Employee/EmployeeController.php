@@ -55,6 +55,7 @@ class EmployeeController extends Controller
     {
         $employees = Employee::with(['user'])
             ->where('company_id', $company)
+            ->orderBy('id', 'desc')
             ->get()
             ->map(function ($employee) {
                 return [
