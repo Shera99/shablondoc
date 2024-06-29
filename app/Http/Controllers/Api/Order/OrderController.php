@@ -96,6 +96,8 @@ class OrderController extends \App\Http\Controllers\Controller
             } else if (isset($filter_array['by_phone']) && !empty($filter_array['by_phone'])) {
                 $query = $query->orderBy('o.phone_number', $filter_array['by_phone']);
             }
+        } else {
+            $query = $query->orderBy('o.id', 'desc');
         }
 
         $orders = $query->select(
@@ -105,7 +107,7 @@ class OrderController extends \App\Http\Controllers\Controller
             'c_a.name as company_address_name', 't.name as template_name', 'cm.name as company_name',
             'c.name as country_name', 'l.name as language_name', 'l.name_en as language_name_en', 'u.login as translator_login',
             'u.name as translator_name', 'u.last_name as translator_last_name'
-        )->orderBy('o.id', 'desc')->paginate(15)->toArray();
+        )->paginate(15)->toArray();
 
         $this->setResponse($orders);
         return $this->sendResponse();
