@@ -64,12 +64,12 @@ class CertificationSignatureResource extends Resource
                         Forms\Components\TextInput::make('user')
                             ->label('Пользователь')
                             ->maxLength(255),
-                        Forms\Components\FileUpload::make('file')
-                            ->disk('public')
-                            ->directory('images')
-                            ->label('Логотип')
-                            ->visible(fn ($record) => $record && $record->file),
                     ]),
+                    Forms\Components\FileUpload::make('file')
+                        ->disk('public')
+                        ->directory('images')
+                        ->label('Логотип')
+                        ->visible(fn ($record) => $record && $record->file),
                     Forms\Components\RichEditor::make('certification_text')
                         ->required()->columnSpanFull()->columnSpan(8)
                         ->label('Удостоверяющаю надпись'),
