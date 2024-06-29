@@ -27,8 +27,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/user', function (Request $request) {
-    echo 'Success';
+Route::get('/php-info', function (Request $request) {
+    phpinfo();
 });
 
 Route::post('/register',[RegisterController::class, 'register']);
