@@ -13,7 +13,7 @@ class EditCertificationSignature extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('back')
+            Actions\ViewAction::make('back')
                 ->label('Назад')
                 ->url($this->getResource()::getUrl('index'))
                 ->color('secondary'),
