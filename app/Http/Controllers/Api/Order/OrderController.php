@@ -122,7 +122,7 @@ class OrderController extends \App\Http\Controllers\Controller
     {
         $order->load(['companyAddress.company.user']);
 
-        if (!empty($order->print_date)) {
+        if (empty($order->print_date)) {
             $user_subscription = $order->companyAddress->company->user->userSubscription;
             $user_subscription->used_count_translation++;
             $user_subscription->save();
