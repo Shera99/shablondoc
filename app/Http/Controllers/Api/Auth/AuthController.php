@@ -31,6 +31,8 @@ class AuthController extends Controller
             return $this->sendErrorResponse('Access denied for this role', Response::HTTP_FORBIDDEN);
         }
 
+        $user->tokens()->delete();
+
         $this->setResponse([
             'access_token' => $user->createToken($user->email.'-AuthToken')->plainTextToken,
         ], Response::HTTP_OK);
