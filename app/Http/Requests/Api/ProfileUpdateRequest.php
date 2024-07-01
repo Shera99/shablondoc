@@ -25,7 +25,6 @@ class ProfileUpdateRequest extends BaseRequest
             'name' => 'nullable|string',
             'last_name' => 'nullable|string',
             'phone' => 'nullable|string',
-            'login' => 'required|string',
             'email' => [
                 'required',
                 'string',
