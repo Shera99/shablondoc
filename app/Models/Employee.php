@@ -55,7 +55,7 @@ class Employee extends Model
     public function getOrderCountAttribute()
     {
         return $this->orders()
-            ->whereIn('status', [OrderStatus::TRANSLATION, OrderStatus::DELIVERY, OrderStatus::DELIVERED])
+            ->whereIn('status', [OrderStatus::TRANSLATED, OrderStatus::DELIVERY, OrderStatus::DELIVERED])
             ->count();
     }
 }
