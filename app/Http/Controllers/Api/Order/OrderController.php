@@ -177,7 +177,7 @@ class OrderController extends \App\Http\Controllers\Controller
         }
 
         if ($request->exists('certification_signature_id') && $request->get('certification_signature_id'))
-            $order->certification_signature_id = $request->exists('certification_signature_id');
+            $order->certification_signature_id = $request->get('certification_signature_id');
 
         if ($request->exists('admin')) $order->status = OrderStatus::TRANSLATED;
         else $order->status = OrderStatus::TRANSLATE_MODERATION;
