@@ -61,10 +61,18 @@ class OrderController extends \App\Http\Controllers\Controller
             ->join('companies as cm', 'c_a.company_id', '=', 'cm.id')
             ->leftJoin('templates as t', 'o.template_id', '=', 't.id')
             ->leftJoin('countries as c', 'o.country_id', '=', 'c.id')
-            ->leftJoin('languages as l', 'o.language_id', '=', 'l.id')
             ->leftJoin('users as u', 'o.user_id', '=', 'u.id')
             ->where('p.type', 'order')->whereIn('o.status', ['completed', 'translated'])
             ->where('p.status', 'completed');
+
+        $query->when(DB::raw('o.language_id IS NOT NULL'), function($q) {
+            $q->leftJoin('languages as l', 'o.language_id', '=', 'l.id');
+        });
+
+        $query->when(DB::raw('o.language_id IS NULL AND o.template_id IS NOT NULL'), function($q) {
+            $q->leftJoin('translation_directions as td', 't.translation_direction_id', '=', 'td.id')
+                ->leftJoin('languages as l', 'td.target_language_id', '=', 'l.id');
+        });
 
         if (auth()->user()->hasRole('Employee')) {
             $companies = Employee::where('user_id', auth()->user()->id)->pluck('company_id');
