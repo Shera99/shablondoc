@@ -67,9 +67,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::match(['PUT', 'PATCH'], '/template/{template}', [TemplateController::class, 'update']);
     });
 
-    Route::post('/company', [CompanyController::class, 'create'])->middleware([StandardAndCorporateRoleAccessMiddleware::class]);
-    Route::match(['PUT', 'PATCH'], '/company/{company}', [CompanyController::class, 'update'])->middleware([StandardAndCorporateRoleAccessMiddleware::class]);
-    Route::get('/user/company', [CompanyController::class, 'byUser'])->middleware([CorporateRoleAccessMiddleware::class]);
+    Route::middleware([StandardAndCorporateRoleAccessMiddleware::class])->group( function () {
+        Route::post('/company', [CompanyController::class, 'create']);
+        Route::match(['PUT', 'PATCH'], '/company/{company}', [CompanyController::class, 'update']);
+        Route::get('/user/company', [CompanyController::class, 'byUser']);
+    });
 
     Route::get('/address/{company}', [CompanyAddressController::class, 'byCompany']);
     Route::post('/address', [CompanyAddressController::class, 'create']);
