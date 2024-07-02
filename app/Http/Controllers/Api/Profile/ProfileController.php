@@ -35,9 +35,8 @@ class ProfileController extends Controller
                 ->where('is_active', true)
                 ->whereDate('subscription_date', '<=', Carbon::now())
                 ->whereDate('subscription_end_date', '>=', Carbon::now())
-                ->first()->toArray();
-
-            $this->setResponse($subscription);
+                ->first();
+            if ($subscription) $this->setResponse($subscription->toArray());
         } else $this->setResponse();
 
         return $this->sendResourceResponse(new UserResource(), $user);
