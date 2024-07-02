@@ -37,12 +37,18 @@ class ProfileController extends Controller
                 ->whereDate('subscription_end_date', '>=', Carbon::now())
                 ->first();
         } else {
-            $corporate_user = $user->employee()->getCompanyUser();
-            $subscription = $corporate_user->userSubscription()->with(['subscription'])
-                ->where('is_active', true)
-                ->whereDate('subscription_date', '<=', Carbon::now())
-                ->whereDate('subscription_end_date', '>=', Carbon::now())
-                ->first();
+            $employee = $user->employee; // Get the employee instance
+            if ($employee) {
+                $corporate_user = $employee->getCompanyUser(); // Call the method on the employee instance
+                $subscription = $corporate_user->userSubscription()->with(['subscription'])
+                    ->where('is_active', true)
+                    ->whereDate('subscription_date', '<=', Carbon::now())
+                    ->whereDate('subscription_end_date', '>=', Carbon::now())
+                    ->first();
+            } else {
+                // Handle the case when the user does not have an associated employee
+                $subscription = null;
+            }
         }
 
         if ($subscription) $this->setResponse($subscription->toArray());
