@@ -26,7 +26,7 @@ class RegisterRequest extends BaseRequest
         return [
             'name' => 'nullable|string',
             'last_name' => 'nullable|string',
-            'phone_number' => 'nullable|string',
+            'phone' => 'nullable|string',
             'login' => 'required|string',
             'role' => 'required|string',
             'email' => [
