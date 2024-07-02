@@ -33,10 +33,10 @@ class PaymentService
         try {
             $payment = app(Payment::class);
 
-            $new_amount = ApiHelper::getConvertedAmount($currency, $amount);
+            //$new_amount = ApiHelper::getConvertedAmount($currency, $amount);
             if ($user_id !== 0) $payment->user_id = $user_id;
             $payment->foreign_id = $foreign_id;
-            $payment->amount = $new_amount;
+            $payment->amount = $amount;
             $payment->type = $type;
             $payment->additional_transaction_id = Str::random(60);
 
