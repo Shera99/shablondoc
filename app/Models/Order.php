@@ -11,6 +11,8 @@ class Order extends Model
 {
     use HasFactory;
 
+    const UPDATED_AT = null;
+
     protected $fillable = [
         'user_id',
         'template_id',
