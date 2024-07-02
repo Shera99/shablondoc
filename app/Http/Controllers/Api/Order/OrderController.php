@@ -68,14 +68,14 @@ class OrderController extends \App\Http\Controllers\Controller
         $query->when(function($q) {
             return DB::raw('o.language_id IS NOT NULL');
         }, function($q) {
-            $q->leftJoin('languages as l1', 'o.language_id', '=', 'l1.id');
+            $q->leftJoin('languages as l', 'o.language_id', '=', 'l.id');
         });
 
         $query->when(function($q) {
             return DB::raw('o.language_id IS NULL AND o.template_id IS NOT NULL');
         }, function($q) {
             $q->leftJoin('translation_directions as td', 't.translation_direction_id', '=', 'td.id')
-                ->leftJoin('languages as l2', 'td.target_language_id', '=', 'l2.id');
+                ->leftJoin('languages as ld', 'td.target_language_id', '=', 'ld.id');
         });
 
         if (auth()->user()->hasRole('Employee')) {
@@ -118,7 +118,7 @@ class OrderController extends \App\Http\Controllers\Controller
             'o.comment', 'o.status', 'o.created_at', 'o.print_date', 'o.updated_at',
             'c_a.name as company_address_name', 't.name as template_name', 'cm.id as company_id', 'cm.name as company_name',
             'c.name as country_name', 'l.name as language_name', 'l.name_en as language_name_en', 'u.login as translator_login',
-            'u.name as translator_name', 'u.last_name as translator_last_name'
+            'u.name as translator_name', 'u.last_name as translator_last_name', 'ld.name as l_language_name', 'ld.name_en as l_language_name_en',
         )->paginate(15)->toArray();
 
         $this->setResponse($orders);
