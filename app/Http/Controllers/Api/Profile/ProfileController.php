@@ -35,6 +35,7 @@ class ProfileController extends Controller
                 ->where('is_active', true)
                 ->whereDate('subscription_date', '<=', Carbon::now())
                 ->whereDate('subscription_end_date', '>=', Carbon::now())
+                ->select('count_translation', 'used_count_translation', 'is_active', 'subscription_date', 'subscription_end_date')
                 ->first();
         } else {
             $employee = $user->employee; // Get the employee instance
@@ -44,6 +45,7 @@ class ProfileController extends Controller
                     ->where('is_active', true)
                     ->whereDate('subscription_date', '<=', Carbon::now())
                     ->whereDate('subscription_end_date', '>=', Carbon::now())
+                    ->select('count_translation', 'used_count_translation', 'is_active', 'subscription_date', 'subscription_end_date')
                     ->first();
             } else {
                 // Handle the case when the user does not have an associated employee
@@ -51,8 +53,9 @@ class ProfileController extends Controller
             }
         }
 
-        if ($subscription) $this->setResponse($subscription->toArray());
-        else $this->setResponse([
+        if ($subscription) {
+            $this->setResponse($subscription->toArray());
+        } else $this->setResponse([
             'count_translation' => 0,
             'used_count_translation' => 0
         ]);
