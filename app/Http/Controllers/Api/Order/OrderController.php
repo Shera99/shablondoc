@@ -65,13 +65,17 @@ class OrderController extends \App\Http\Controllers\Controller
             ->where('p.type', 'order')->whereIn('o.status', ['completed', 'translated'])
             ->where('p.status', 'completed');
 
-        $query->when(DB::raw('o.language_id IS NOT NULL'), function($q) {
-            $q->leftJoin('languages as l', 'o.language_id', '=', 'l.id');
+        $query->when(function($q) {
+            return DB::raw('o.language_id IS NOT NULL');
+        }, function($q) {
+            $q->leftJoin('languages as l1', 'o.language_id', '=', 'l1.id');
         });
 
-        $query->when(DB::raw('o.language_id IS NULL AND o.template_id IS NOT NULL'), function($q) {
+        $query->when(function($q) {
+            return DB::raw('o.language_id IS NULL AND o.template_id IS NOT NULL');
+        }, function($q) {
             $q->leftJoin('translation_directions as td', 't.translation_direction_id', '=', 'td.id')
-                ->leftJoin('languages as l', 'td.target_language_id', '=', 'l.id');
+                ->leftJoin('languages as l2', 'td.target_language_id', '=', 'l2.id');
         });
 
         if (auth()->user()->hasRole('Employee')) {
