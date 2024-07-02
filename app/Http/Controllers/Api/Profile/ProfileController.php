@@ -37,6 +37,10 @@ class ProfileController extends Controller
                 ->whereDate('subscription_end_date', '>=', Carbon::now())
                 ->first();
             if ($subscription) $this->setResponse($subscription->toArray());
+            else $this->setResponse([
+                'count_translation' => 0,
+                'used_count_translation' => 0
+            ]);
         } else $this->setResponse();
 
         return $this->sendResourceResponse(new UserResource(), $user);
