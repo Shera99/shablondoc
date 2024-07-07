@@ -193,7 +193,7 @@ class OrderController extends \App\Http\Controllers\Controller
     {
         $order->load([
             'user',
-            'template',
+            'template.translationDirection',
             'templateData',
             'companyAddress',
             'country',
