@@ -138,9 +138,16 @@ class OrderController extends \App\Http\Controllers\Controller
         $order->load(['companyAddress.company.user']);
 
         if (empty($order->print_date)) {
-            $user_subscription = $order->companyAddress->company->user->userSubscription;
-            $user_subscription->used_count_translation++;
-            $user_subscription->save();
+            $user = $order->companyAddress->company->user;
+
+            $subscription = $user->userSubscription()
+                ->where('is_active', true)
+                ->whereDate('subscription_date', '<=', Carbon::now())
+                ->whereDate('subscription_end_date', '>=', Carbon::now())
+                ->first();
+
+            $subscription->used_count_translation++;
+            $subscription->save();
         }
 
         $order->print_date = Carbon::now();
