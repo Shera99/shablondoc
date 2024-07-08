@@ -137,18 +137,16 @@ class OrderController extends \App\Http\Controllers\Controller
     {
         $order->load(['companyAddress.company.user']);
 
-        if (empty($order->print_date)) {
-            $user = $order->companyAddress->company->user;
+        $user = $order->companyAddress->company->user;
 
-            $subscription = $user->userSubscription()
-                ->where('is_active', true)
-                ->whereDate('subscription_date', '<=', Carbon::now())
-                ->whereDate('subscription_end_date', '>=', Carbon::now())
-                ->first();
+        $subscription = $user->userSubscription()
+            ->where('is_active', true)
+            ->whereDate('subscription_date', '<=', Carbon::now())
+            ->whereDate('subscription_end_date', '>=', Carbon::now())
+            ->first();
 
-            $subscription->used_count_translation++;
-            $subscription->save();
-        }
+        $subscription->used_count_translation++;
+        $subscription->save();
 
         $order->print_date = Carbon::now();
         $order->save();
@@ -186,11 +184,8 @@ class OrderController extends \App\Http\Controllers\Controller
         if ($request->exists('certification_signature_id') && $request->get('certification_signature_id'))
             $order->certification_signature_id = $request->get('certification_signature_id');
 
-        if ($request->exists('admin')) {
-            $order->status = OrderStatus::TRANSLATED;
-            $order->updated_at = Carbon::now();
-        }
-        else $order->status = OrderStatus::TRANSLATE_MODERATION;
+        $order->status = OrderStatus::TRANSLATED;
+        $order->updated_at = Carbon::now();
 
         $order->save();
         return $this->responseOrder($order);

@@ -15,6 +15,15 @@ class DocumentType extends Model
      * @var array
      */
     protected $fillable = [
-        'name'
+        'name',
+        'country_id'
     ];
+
+    /**
+     * Get the country that the city belongs to.
+     */
+    public function country(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Country::class);
+    }
 }

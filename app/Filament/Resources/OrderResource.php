@@ -178,7 +178,7 @@ class OrderResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::whereIn('status', ['moderation', 'translate_moderation'])->count();
+        return static::getModel()::whereIn('status', ['moderation'])->count();
     }
 
     public static function getPages(): array

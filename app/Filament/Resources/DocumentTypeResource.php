@@ -40,6 +40,11 @@ class DocumentTypeResource extends Resource
                     ->maxLength(255)
                     ->unique()
                     ->label('Название'),
+                Forms\Components\Select::make('country_id')
+                    ->relationship('country', 'name')
+                    ->label('Страна')
+                    ->searchable()
+                    ->required(),
             ]);
     }
 
@@ -49,6 +54,11 @@ class DocumentTypeResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()->label('Название'),
+                Tables\Columns\TextColumn::make('country.name')
+                    ->label('Страна')
+                    ->numeric()
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

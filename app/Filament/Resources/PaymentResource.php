@@ -49,21 +49,21 @@ class PaymentResource extends Resource
                             'subscription' => 'Подписка',
                         ])
                         ->required()
-                        ->label('Статус'),
-//                    Select::make('foreign_id')
-//                        ->label('Заказ/Подписка')
-//                        ->options(function (callable $get) {
-//                            $type = $get('type');
-//                            if ($type == 'subscription') {
-//                                return UserSubscription::all()->pluck('name', 'id'); // Adjust 'name' to the appropriate field
-//                            } else {
-//                                return Order::all()->pluck('name', 'id'); // Adjust 'name' to the appropriate field
-//                            }
-//                        })
-//                        ->searchable(),
-//                    TextInput::make('payload')
-//                        ->label('Payload')
-//                        ->json(),
+                        ->label('Тип'),
+                    Select::make('foreign_id')
+                        ->label('Заказ/Подписка')
+                        ->options(function (callable $get) {
+                            $type = $get('type');
+                            if ($type == 'subscription') {
+                                return UserSubscription::all()->pluck('name', 'id')->filter()->all(); // Adjust 'name' to the appropriate field
+                            } else {
+                                return Order::all()->pluck('email', 'id')->filter()->all(); // Adjust 'name' to the appropriate field
+                            }
+                        })
+                        ->searchable(),
+                    TextInput::make('payload')
+                        ->label('Payload')
+                        ->json(),
                     Select::make('status')
                         ->options([
                             'pending' => 'В процессе',
