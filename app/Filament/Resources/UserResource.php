@@ -140,7 +140,8 @@ class UserResource extends Resource
                     ->options([
                         'active' => 'Активный',
                         'inactive' => 'Неактивный'
-                    ])->label('Статус'),
+                    ])->label('Статус')
+                    ->extraAttributes(['class' => 'custom-width']),
             ])
             ->filters([
                 //

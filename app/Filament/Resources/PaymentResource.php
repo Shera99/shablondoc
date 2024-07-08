@@ -124,7 +124,8 @@ class PaymentResource extends Resource
                         'refunded' => 'Возврат'
                     ])
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->extraAttributes(['class' => 'custom-width']),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Дата создания')
                     ->sortable()

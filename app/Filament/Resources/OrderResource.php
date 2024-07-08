@@ -140,7 +140,8 @@ class OrderResource extends Resource
                         'delivered' => 'Доставлено',
                         'failed' => 'Не оплачен!'
                     ])
-                    ->label('Статус'),
+                    ->label('Статус')
+                    ->extraAttributes(['class' => 'custom-width']),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

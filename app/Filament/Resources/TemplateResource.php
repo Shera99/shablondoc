@@ -104,7 +104,8 @@ class TemplateResource extends Resource
                         'active' => 'Активный',
                         'inactive' => 'Неактивный',
                         'moderation' => 'Модерация'
-                    ])->label('Статус'),
+                    ])->label('Статус')
+                    ->extraAttributes(['class' => 'custom-width']),
             ])
             ->filters([
                 //
