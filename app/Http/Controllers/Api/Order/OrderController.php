@@ -102,11 +102,15 @@ class OrderController extends \App\Http\Controllers\Controller
             $filter_array = (array)json_decode($request->get('filter'));
 
             if (isset($filter_array['by_date']) && !empty($filter_array['by_date'])) {
-                $query = $query->orderBy('o.delivery_date', $filter_array['by_date']);
+                $filter_data = explode('-', $filter_array['by_date']);
+                $query = $query->whereBetween('o.delivery_date', [
+                    Carbon::parse($filter_data[0])->format('Y-m-d H:i:s'),
+                    Carbon::parse($filter_data[1])->format('Y-m-d H:i:s')
+                ]);
             } else if (isset($filter_array['by_employee']) && !empty($filter_array['by_employee'])) {
-                $query = $query->orderBy('u.name', $filter_array['by_employee']);
-            } else if (isset($filter_array['by_phone']) && !empty($filter_array['by_phone'])) {
-                $query = $query->orderBy('o.phone_number', $filter_array['by_phone']);
+                $query = $query->where('o.user_id', $filter_array['by_employee']);
+            } else if (isset($filter_array['by_document_type']) && !empty($filter_array['by_document_type'])) {
+                $query = $query->where('t.document_type_id', $filter_array['by_document_type']);
             }
         } else {
             $query = $query->orderBy('o.id', 'desc');
