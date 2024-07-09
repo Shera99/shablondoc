@@ -18,7 +18,7 @@ return new class extends Migration
             $table->id();
             $table->string('name', 200)->nullable(false);
             $table->jsonb('template_json')->nullable(false);
-            $table->string('template_file', 255)->nullable(false);
+            $table->string('template_file', 255)->nullable();
             $table->foreignId('country_id')->constrained('countries')->cascadeOnUpdate()->restrictOnDelete();
             $table->foreignId('document_type_id')->nullable()->constrained('document_types')->restrictOnDelete();
             $table->string('new_document_type', 200)->nullable();

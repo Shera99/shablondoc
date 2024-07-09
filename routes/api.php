@@ -94,6 +94,7 @@ Route::middleware([CheckAccessTokenForModeration::class])->group( function () {
 });
 
 Route::post('/template', [TemplateController::class, 'create']);
+Route::post('/template/{template}/image', [TemplateController::class, 'imageSave']);
 
 Route::get('/country', [CountryController::class, 'list']);
 Route::get('/language', [LanguageController::class, 'list']);

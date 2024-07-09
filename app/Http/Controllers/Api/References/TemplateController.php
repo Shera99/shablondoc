@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Api\References;
 
 use App\Enums\TemplateStatus;
+use App\Http\Modules\Image;
 use App\Http\Requests\Api\Template\TemplateCreateRequest;
 use App\Http\Requests\Api\Template\TemplateUpdateRequest;
 use App\Models\Template;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class TemplateController extends \App\Http\Controllers\Controller
 {
@@ -66,5 +68,24 @@ class TemplateController extends \App\Http\Controllers\Controller
 
         $this->setResponse($template->toArray());
         return $this->sendResponse();
+    }
+
+    public function imageSave(Request $request, Template $template): JsonResponse
+    {
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $image_save_result = Image::save($image, 'template');
+
+            if (in_array('error', $image_save_result))
+                return $this->sendErrorResponse($image_save_result['message'], $image_save_result['error']);
+
+            $template->template_file = $image_save_result['storedImagePath'];
+            $template->save();
+
+            $this->setResponse(['image' => $template->template_file]);
+            return $this->sendResponse();
+        }
+
+        return $this->sendErrorResponse('Image is required.', Response::HTTP_BAD_REQUEST);
     }
 }
