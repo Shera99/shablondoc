@@ -71,16 +71,16 @@ class TemplateResource extends Resource
                             ->default('moderation')->required()->label('Статус'),
                     ])
                 ]),
-                Forms\Components\FileUpload::make('template_file')
-                    ->disk('public')
-                    ->directory('images')
-                    ->label('Изображение')
-                    ->openable()
-                    ->downloadable()
-                    ->imageEditor()
-                    ->imageEditorViewportWidth('1920')
-                    ->imageEditorViewportHeight('1080')
-                    ->visible(fn ($record) => $record && $record->template_file),
+//                Forms\Components\FileUpload::make('template_file')
+//                    ->disk('public')
+//                    ->directory('images')
+//                    ->label('Изображение')
+//                    ->openable()
+//                    ->downloadable()
+//                    ->imageEditor()
+//                    ->imageEditorViewportWidth('1920')
+//                    ->imageEditorViewportHeight('1080')
+//                    ->visible(fn ($record) => $record && $record->template_file),
 //                Forms\Components\TextInput::make('template_file')
 //                    ->required()
 //                    ->maxLength(255),
@@ -104,11 +104,6 @@ class TemplateResource extends Resource
                 Tables\Columns\TextColumn::make('translationDirection.id')
                     ->numeric()
                     ->sortable()->label('Языковое направление'),
-                Tables\Columns\ImageColumn::make('template_file')
-                    ->disk('public')
-                    ->width(200)
-                    ->label('Изображение')
-                    ->toggleable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

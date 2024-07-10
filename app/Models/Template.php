@@ -18,7 +18,7 @@ class Template extends Model
         'document_type_id',
         'translation_direction_id',
         'new_document_type',
-        'template_file',
+//        'template_file',
         'status'
     ];
 
