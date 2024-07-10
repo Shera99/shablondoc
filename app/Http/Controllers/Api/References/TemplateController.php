@@ -70,7 +70,7 @@ class TemplateController extends \App\Http\Controllers\Controller
         return $this->sendResponse();
     }
 
-    public function imageSave(Request $request, Template $template): JsonResponse
+    public function imageSave(Request $request): JsonResponse
     {
         if ($request->hasFile('image')) {
             $image = $request->file('image');
@@ -79,10 +79,7 @@ class TemplateController extends \App\Http\Controllers\Controller
             if (in_array('error', $image_save_result))
                 return $this->sendErrorResponse($image_save_result['message'], $image_save_result['error']);
 
-            $template->template_file = $image_save_result['storedImagePath'];
-            $template->save();
-
-            $this->setResponse(['image' => $template->template_file]);
+            $this->setResponse(['image' => $image_save_result['storedImagePath']]);
             return $this->sendResponse();
         }
 
