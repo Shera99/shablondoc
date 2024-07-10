@@ -59,7 +59,7 @@ class OrderController extends \App\Http\Controllers\Controller
             ->join('payments as p', 'o.id', '=', 'p.foreign_id')
             ->join('company_addresses as c_a', 'o.company_address_id', '=', 'c_a.id')
             ->join('companies as cm', 'c_a.company_id', '=', 'cm.id')
-            ->leftJoin('templates as t', 'o.template_id', '=', 't.id')
+            ->join('templates as t', 'o.template_id', '=', 't.id')
             ->leftJoin('countries as c', 'o.country_id', '=', 'c.id')
             ->leftJoin('users as u', 'o.user_id', '=', 'u.id')
             ->where('p.type', 'order')->whereIn('o.status', ['completed', 'translated'])
