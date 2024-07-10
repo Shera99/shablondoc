@@ -98,8 +98,8 @@ class OrderController extends \App\Http\Controllers\Controller
             });
         }
 
-        if ($request->get('filter')) {
-            $filter_array = (array)json_decode($request->get('filter'));
+        if ($request->get('filters')) {
+            $filter_array = (array)json_decode($request->get('filters'));
 
             if (isset($filter_array['by_date']) && !empty($filter_array['by_date'])) {
                 $filter_data = explode('-', $filter_array['by_date']);
@@ -111,6 +111,8 @@ class OrderController extends \App\Http\Controllers\Controller
                 $query = $query->where('o.user_id', $filter_array['by_employee']);
             } else if (isset($filter_array['by_document_type']) && !empty($filter_array['by_document_type'])) {
                 $query = $query->where('t.document_type_id', $filter_array['by_document_type']);
+            } else if (isset($filter_array['by_company']) && !empty($filter_array['by_company'])) {
+                $query = $query->where('cm.id', $filter_array['by_company']);
             }
         } else {
             $query = $query->orderBy('o.id', 'desc');
