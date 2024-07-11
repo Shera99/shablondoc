@@ -8,6 +8,7 @@ use App\Models\Template;
 use App\Models\TemplateData;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\Api\Order\{OrderCreateRequest,
     OrderSetWebCallBackRequest,
@@ -151,8 +152,18 @@ class OrderController extends \App\Http\Controllers\Controller
             ->where('is_active', true)
             ->whereDate('subscription_date', '<=', Carbon::now())
             ->whereDate('subscription_end_date', '>=', Carbon::now())
-            ->where('count_translation', '>', 'used_count_translation')
+            ->whereColumn('count_translation', '>', 'used_count_translation')
             ->first();
+
+        if ($subscription) {
+            $subscription->used_count_translation++;
+            $subscription->save();
+
+            $order->print_date = Carbon::now();
+            $order->save();
+        } else {
+            return $this->sendErrorResponse('No valid subscription found', Response::HTTP_BAD_REQUEST);
+        }
 
         $subscription->used_count_translation++;
         $subscription->save();
