@@ -94,7 +94,9 @@ class OrderController extends \App\Http\Controllers\Controller
             $query = $query->where(function ($query) use($search_text) {
                 return $query->where('c_a.name', 'LIKE', $search_text)
                     ->orWhere('o.document_name', 'LIKE', $search_text)
-                    ->orWhere('t.name', 'LIKE', $search_text);
+                    ->orWhere('t.name', 'LIKE', $search_text)
+                    ->orWhere('o.email', 'LIKE', $search_text)
+                    ->orWhere('o.phone_number', 'LIKE', $search_text);
             });
         }
 
@@ -149,6 +151,7 @@ class OrderController extends \App\Http\Controllers\Controller
             ->where('is_active', true)
             ->whereDate('subscription_date', '<=', Carbon::now())
             ->whereDate('subscription_end_date', '>=', Carbon::now())
+            ->where('count_translation', '>', 'used_count_translation')
             ->first();
 
         $subscription->used_count_translation++;
