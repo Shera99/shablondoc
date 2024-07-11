@@ -106,10 +106,9 @@ class OrderController extends \App\Http\Controllers\Controller
 
             if (isset($filter_array['by_date']) && !empty($filter_array['by_date'])) {
                 $filter_data = explode('-', $filter_array['by_date']);
-                $query = $query->whereBetween('o.delivery_date', [
-                    Carbon::parse($filter_data[0])->format('Y-m-d H:i:s'),
-                    Carbon::parse($filter_data[1])->format('Y-m-d H:i:s')
-                ]);
+                $startDate = Carbon::createFromFormat('Y.m.d', $filter_data[0])->startOfDay()->format('Y-m-d H:i:s');
+                $endDate = Carbon::createFromFormat('Y.m.d', $filter_data[1])->endOfDay()->format('Y-m-d H:i:s');
+                $query = $query->whereBetween('o.created_at', [$startDate, $endDate]);
             } else if (isset($filter_array['by_employee']) && !empty($filter_array['by_employee'])) {
                 $query = $query->where('o.user_id', $filter_array['by_employee']);
             } else if (isset($filter_array['by_document_type']) && !empty($filter_array['by_document_type'])) {
