@@ -21,13 +21,25 @@ class CompanyController extends \App\Http\Controllers\Controller
         $city = $request->city_id;
 
         $companies = Company::query()
-            ->with('companyType')
+            ->with('companyType') // Ensure the companyType relationship is eager loaded
             ->where('country_id', $country_id)
             ->whereHas('companyAddress', function ($query) use ($city) {
                 $query->where('city_id', $city);
             })
             ->orderBy('name', 'asc')
-            ->get(['id', 'name'])->toArray();
+            ->get(); // Get all fields, including relationships
+
+        // Transform the result to include companyType
+        $companies = $companies->map(function ($company) {
+            return [
+                'id' => $company->id,
+                'name' => $company->name,
+                'company_type' => $company->companyType ? [
+                    'id' => $company->companyType->id,
+                    'name' => $company->companyType->name
+                ] : null,
+            ];
+        });
 
         $this->setResponse($companies);
 
