@@ -41,7 +41,7 @@ class CompanyController extends \App\Http\Controllers\Controller
             ];
         });
 
-        $this->setResponse($companies);
+        $this->setResponse($companies->toArray());
 
         return $this->sendResponse();
     }
