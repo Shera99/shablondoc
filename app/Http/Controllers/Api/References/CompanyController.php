@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\References;
 use App\Http\Requests\Api\Company\CompanyCreateRequest;
 use App\Http\Requests\Api\Company\CompanyUpdateRequest;
 use App\Models\Company;
+use App\Models\CompanyType;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -20,6 +21,7 @@ class CompanyController extends \App\Http\Controllers\Controller
         $city = $request->city_id;
 
         $companies = Company::query()
+            ->with('companyType')
             ->where('country_id', $country_id)
             ->whereHas('companyAddress', function ($query) use ($city) {
                 $query->where('city_id', $city);
@@ -44,6 +46,8 @@ class CompanyController extends \App\Http\Controllers\Controller
         $company->name = $validate_data['name'];
         $company->user_id = auth()->user()->getAuthIdentifier();
         $company->country_id = $validate_data['country_id'];
+        $company->company_type_id = $validate_data['company_type_id'];
+
         $company->save();
 
         $this->setResponse($company->toArray());
@@ -68,11 +72,20 @@ class CompanyController extends \App\Http\Controllers\Controller
 
     public function byUser(Request $request): JsonResponse
     {
-        $companies = Company::with('country:id,name')
+        $companies = Company::with('country:id,name', 'companyType')
             ->where('user_id', auth()->user()->getAuthIdentifier())
             ->get();
 
         if ($companies) $this->setResponse($companies->toArray());
+
+        return $this->sendResponse();
+    }
+
+    public function companyType(): JsonResponse
+    {
+        $company_types = CompanyType::all();
+
+        if ($company_types) $this->setResponse($company_types->toArray());
 
         return $this->sendResponse();
     }

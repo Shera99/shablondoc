@@ -103,6 +103,7 @@ Route::get('/document-type', [DocumentTypeController::class, 'list']);
 Route::get('/city', [CityController::class, 'list']);
 Route::get('/city/by-country', [CityController::class, 'showByCountry']);
 Route::get('/company', [CompanyController::class, 'list']);
+Route::get('/company-type', [CompanyController::class, 'companyType']);
 Route::get('/address', [CompanyAddressController::class, 'list']);
 Route::get('/template', [TemplateController::class, 'list']);
 Route::get('/currency', [CurrencyController::class, 'list']);

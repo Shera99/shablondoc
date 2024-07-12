@@ -15,15 +15,17 @@ class CompanyAddressController extends \App\Http\Controllers\Controller
      */
     public function list(Request $request): JsonResponse
     {
-        $company = $request->company_id;
+        $company_type = $request->company_type_id;
         $city = $request->city_id;
 
         $addresses = CompanyAddress::query()
-            ->where('company_id', $company)
-            ->where('city_id', $city)
-            ->where('status', true)
-            ->orderBy('name', 'asc')
-            ->get(['id', 'name'])->toArray();
+            ->join('companies', 'company_addresses.company_id', '=', 'companies.id')
+            ->where('companies.company_type_id', $company_type)
+            ->where('company_addresses.city_id', $city)
+            ->where('company_addresses.status', true)
+            ->orderBy('company_addresses.name', 'asc')
+            ->get(['company_addresses.id', 'company_addresses.name'])
+            ->toArray();
 
         $this->setResponse($addresses);
 

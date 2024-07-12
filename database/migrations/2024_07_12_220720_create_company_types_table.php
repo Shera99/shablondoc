@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('companies', function (Blueprint $table) {
+        Schema::create('company_types', function (Blueprint $table) {
             $table->id();
             $table->string('name', 200)->nullable();
-            $table->foreignId('user_id')->nullable()->constrained('users');
-            $table->foreignId('country_id')->constrained('countries');
-            $table->foreignId('company_type_id')->constrained('company_types');
             $table->timestamps();
         });
     }
@@ -26,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('companies');
+        Schema::dropIfExists('company_types');
     }
 };

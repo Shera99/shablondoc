@@ -4,28 +4,26 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\DocumentTypeResource\Pages;
 use App\Filament\Resources\DocumentTypeResource\RelationManagers;
-use App\Models\DocumentType;
+use App\Models\CompanyType;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class DocumentTypeResource extends Resource
+class CompanyTypeResource extends Resource
 {
-    protected static ?string $model = DocumentType::class;
+    protected static ?string $model = CompanyType::class;
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 3;
 
     protected static ?string $navigationIcon = 'heroicon-o-document';
 
-    protected static ?string $navigationLabel = 'Типы документов';
+    protected static ?string $navigationLabel = 'Типы компаний';
 
-    protected static ?string $modelLabel = 'Тип документа';
+    protected static ?string $modelLabel = 'Тип компании';
 
-    protected static ?string $pluralModelLabel = 'Типы документов';
+    protected static ?string $pluralModelLabel = 'Типы компаний';
 
     protected static bool $hasTitleCaseModelLabel = false;
 
@@ -40,11 +38,6 @@ class DocumentTypeResource extends Resource
                     ->maxLength(255)
                     ->unique()
                     ->label('Название'),
-//                Forms\Components\Select::make('country_id')
-//                    ->relationship('country', 'name')
-//                    ->label('Страна')
-//                    ->searchable()
-//                    ->required(),
             ]);
     }
 
@@ -54,11 +47,6 @@ class DocumentTypeResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()->label('Название'),
-//                Tables\Columns\TextColumn::make('country.name')
-//                    ->label('Страна')
-//                    ->numeric()
-//                    ->searchable()
-//                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

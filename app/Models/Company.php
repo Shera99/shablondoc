@@ -14,6 +14,7 @@ class Company extends Model
         'name',
         'user_id',
         'country_id',
+        'company_type_id'
     ];
 
     /**
@@ -27,6 +28,7 @@ class Company extends Model
             'name' => 'string',
             'user_id' => 'integer',
             'country_id' => 'integer',
+            'company_type_id' => 'integer'
         ];
     }
 
@@ -38,6 +40,11 @@ class Company extends Model
     public function country(): BelongsTo
     {
         return $this->belongsTo(Country::class);
+    }
+
+    public function companyType(): BelongsTo
+    {
+        return $this->belongsTo(CompanyType::class);
     }
 
     public function companyAddress(): HasMany

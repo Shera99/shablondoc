@@ -28,6 +28,11 @@ class CompanyCreateRequest extends BaseRequest
                 'required',
                 'int',
                 Rule::exists('countries', 'id')
+            ],
+            'company_type_id' => [
+                'required',
+                'int',
+                Rule::exists('company_types', 'id')
             ]
         ];
     }
@@ -44,7 +49,10 @@ class CompanyCreateRequest extends BaseRequest
             'name.string' => 'The name must be a string.',
             'country_id.required' => 'The country_id field is required.',
             'country_id.int' => 'The country_id must be a int.',
-            'country_id.exists' => 'The provided countries does not exist in our records.'
+            'country_id.exists' => 'The provided countries does not exist in our records.',
+            'company_type_id.required' => 'The company type field is required.',
+            'company_type_id.int' => 'The company type must be an integer.',
+            'company_type_id.exists' => 'The selected company type is invalid.'
         ];
     }
 }
