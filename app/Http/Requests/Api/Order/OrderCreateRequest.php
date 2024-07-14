@@ -23,15 +23,17 @@ class OrderCreateRequest extends BaseRequest
     {
         return [
             'phone_number' => 'required|string',
-            'address_id' => 'required|int',
+            'address_id' => 'nullable|int',
             'delivery_date' => 'required|date',
             'template_id' => 'nullable|int',
             'document_image' => 'required|file',
             'document_name' => 'nullable|string',
             'email' => 'nullable|string|email',
             'comment' => 'nullable|string',
+            'mynumer' => 'nullable|string',
             'country_id' => 'nullable|int',
             'language_id' => 'nullable|int',
+            'user_id' => 'nullable|int',
         ];
     }
 
@@ -45,8 +47,8 @@ class OrderCreateRequest extends BaseRequest
         return [
             'phone_number.required' => 'Phone number is required.',
             'phone_number.string' => 'Phone number must be a string.',
-            'address_id.required' => 'Address ID is required.',
             'address_id.int' => 'Address ID must be an integer.',
+            'user_id.int' => 'User ID must be an integer.',
             'delivery_date.required' => 'Delivery date is required.',
             'delivery_date.date' => 'Delivery date must be a valid date.',
         ];

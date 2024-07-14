@@ -19,7 +19,6 @@ class OrderService
     public function create(array $request_data, $request)
     {
         $this->order->phone_number = $request_data['phone_number'];
-        $this->order->company_address_id = $request_data['address_id'];
         $this->order->delivery_date = $request_data['delivery_date'];
 
         if (!empty($request_data['template_id'])) $this->order->template_id = $request_data['template_id'];
@@ -45,6 +44,8 @@ class OrderService
         if (!empty($request_data['email'])) $this->order->email = $request_data['email'];
         if (!empty($request_data['comment'])) $this->order->comment = $request_data['comment'];
         if (!empty($request_data['mynumer'])) $this->order->mynumer = $request_data['mynumer'];
+        if (!empty($request_data['address_id'])) $this->order->company_address_id = $request_data['address_id'];
+        if (!empty($request_data['user_id'])) $this->order->user_id = $request_data['user_id'];
 
         $this->order->status = OrderStatus::PENDING;
         $this->order->save();
