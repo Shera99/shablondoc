@@ -75,6 +75,9 @@ class OrderResource extends Resource
                         ->label('Комментарий'),
                     Forms\Components\TextInput::make('document_name')
                         ->label('Название документа'),
+                    Forms\Components\TextInput::make('mynumer')
+                        ->label('Идентификатор MyNumer')
+                        ->disabled(),
                     Forms\Components\FileUpload::make('document_file')
                         ->disk('public')
                         ->directory('images')

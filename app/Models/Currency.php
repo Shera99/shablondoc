@@ -20,4 +20,14 @@ class Currency extends Model
         'convert',
         'status',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'name' => 'string',
+            'code' => 'string',
+            'convert' => 'decimal:2',
+            'status' => 'boolean',
+        ];
+    }
 }

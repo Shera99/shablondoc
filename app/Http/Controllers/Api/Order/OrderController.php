@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Order;
 
 use App\Enums\OrderStatus;
 use App\Models\Employee;
+use App\Models\Setting;
 use App\Models\Template;
 use App\Models\TemplateData;
 use Carbon\Carbon;
@@ -36,7 +37,10 @@ class OrderController extends \App\Http\Controllers\Controller
         $order = $this->service->create($data, $request);
         if (!$order instanceof Order) return $this->sendErrorResponse($order['message'], $order['error']);
 
-        $result = $this->payment_service->create($order->id, 127, 'KGS',  'order');
+        $sum = (int) Setting::query()->where('key', 'order_price')->value('value');
+        if (!empty($order->mynumer)) $sum = $sum - ($sum / 100 * 10);
+
+        $result = $this->payment_service->create($order->id, $sum, 'KGS',  'order');
         if (in_array('error', $result)) return $this->sendErrorResponse($result['message'], $result['error']);
 
         $this->setResponse(data: $result, message: 'Order is created.');

@@ -44,6 +44,7 @@ class OrderService
 
         if (!empty($request_data['email'])) $this->order->email = $request_data['email'];
         if (!empty($request_data['comment'])) $this->order->comment = $request_data['comment'];
+        if (!empty($request_data['mynumer'])) $this->order->mynumer = $request_data['mynumer'];
 
         $this->order->status = OrderStatus::PENDING;
         $this->order->save();

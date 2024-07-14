@@ -28,7 +28,7 @@ class PaymentService
         $this->base_link = config('app.payment_url');
     }
 
-    public function create(int $foreign_id, int $amount, string $currency, string $type, int $user_id = 0): array
+    public function create(int $foreign_id, int|float $amount, string $currency, string $type, int $user_id = 0): array
     {
         try {
             $payment = app(Payment::class);

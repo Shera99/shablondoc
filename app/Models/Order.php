@@ -25,6 +25,7 @@ class Order extends Model
         'document_file',
         'email',
         'phone_number',
+        'mynumer',
         'delivery_date',
         'print_date',
         'comment',
