@@ -89,6 +89,20 @@ class PaymentService
                 } else {
                     $order = UserSubscription::where('id', $this->transaction->foreign_id)->first();
                     $order->is_active = true;
+
+                    $old_subscription = UserSubscription::where('user_id', $order->user_id)
+                        ->where('id', '<>', $order->id)
+                        ->where('is_active', true)
+                        ->whereDate('subscription_date', '<=', Carbon::now())
+                        ->whereDate('subscription_end_date', '>=', Carbon::now())
+                        ->orderBy('id', 'desc')
+                        ->first();
+
+                    if (!empty($old_subscription) && $old_subscription->count_translation > $old_subscription->used_count_translation)
+                        $order->count_translation += $old_subscription->count_translation - $old_subscription->used_count_translation;
+
+                    UserSubscription::query()->where('user_id', $order->user_id)
+                        ->where('id', '<>', $order->id)->update(['is_active' => false]);
                 }
 
                 $order->save();
