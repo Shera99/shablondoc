@@ -46,7 +46,7 @@ class SubscriptionController extends \App\Http\Controllers\Controller
             $user_subscription->is_active = false;
             $user_subscription->save();
 
-            $result = $this->payment_service->create($user_subscription->id, $subscription->price, 'USD',  'subscription');
+            $result = $this->payment_service->create($user_subscription->id, $subscription->price, 'KGS',  'subscription');
             if (in_array('error', $result)) return $this->sendErrorResponse($result['message'], $result['error']);
 
             $this->setResponse(data: $result, message: 'Subscription query is created.');
