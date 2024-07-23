@@ -42,7 +42,9 @@ class OrderController extends \App\Http\Controllers\Controller
         $sum = (int) Setting::query()->where('key', 'order_price')->value('value');
         if (!empty($order->mynumer)) $sum = $sum - ($sum / 100 * 10);
 
-        $result = $this->payment_service->create($order->id, $sum, 'KGS',  'order');
+        $user_id = !empty($order->user_id) ? $order->user_id : 0;
+
+        $result = $this->payment_service->create($order->id, $sum, 'KGS',  'order', $user_id);
         if (in_array('error', $result)) return $this->sendErrorResponse($result['message'], $result['error']);
 
         $this->setResponse(data: $result, message: 'Order is created.');

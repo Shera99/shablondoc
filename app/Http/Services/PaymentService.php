@@ -40,6 +40,8 @@ class PaymentService
             $payment->type = $type;
             $payment->additional_transaction_id = Str::random(60);
 
+            if ($type == 'order' && $user_id !== 0) $payment->status = PaymentStatus::COMPLETED;
+
             $payment->save();
 
             return ['payment_id' => strval($payment->id), 'salt' => $payment->additional_transaction_id,
