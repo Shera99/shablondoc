@@ -94,7 +94,10 @@ class OrderController extends \App\Http\Controllers\Controller
         $company_addresses = DB::table('company_addresses')
             ->whereIn('company_id', $companies)
             ->pluck('id');
-        $query = $query->whereIn('o.company_address_id', $company_addresses);
+        $query = $query->where(function ($query) use ($company_addresses) {
+            return $query->whereIn('o.company_address_id', $company_addresses)
+            ->orWhere('user_id', auth()->user()->id);
+        });
 
         if ($request->get('search')) {
             $search_text = '%' . $request->get('search') . '%';
@@ -126,21 +129,14 @@ class OrderController extends \App\Http\Controllers\Controller
 
         $query = $query->orderBy('o.id', 'desc');
 
-        $query = $query->select(
+        $orders = $query->select(
             'o.id', 'o.user_id', 'o.template_id', 'o.template_data_id', 'o.company_address_id', 'o.country_id',
             'o.language_id', 'o.document_name', 'o.document_file', 'o.email', 'o.phone_number', 'o.delivery_date',
             'o.comment', 'o.status', 'o.created_at', 'o.print_date', 'o.updated_at',
             'c_a.name as company_address_name', 't.name as template_name', 'cm.id as company_id', 'cm.name as company_name',
             'c.name as country_name', 'l.name as language_name', 'l.name_en as language_name_en', 'u.login as translator_login',
             'u.name as translator_name', 'u.last_name as translator_last_name', 'ld.name as l_language_name', 'ld.name_en as l_language_name_en',
-        );
-
-        $orders = $query->paginate(15);
-        if ($orders->isEmpty()) {
-            $orders = $query->where('user_id', auth()->user()->id)->paginate(15);
-        }
-
-        $orders = $orders->toArray();
+        )->paginate(15)->toArray();
 
         $this->setResponse($orders);
         return $this->sendResponse();
