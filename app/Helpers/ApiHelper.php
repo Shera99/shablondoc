@@ -2,6 +2,8 @@
 
 namespace App\Helpers;
 
+use App\Models\Currency;
+
 class ApiHelper
 {
     public static function generateEmailVerificationCode(int $length): string
@@ -18,9 +20,8 @@ class ApiHelper
 
     public static function getConvertedAmount(string $currency, int $amount): int
     {
-        // Добавить код для конвертирования цены $currency
         if ($currency != 'USD') {
-            $amount = $amount * 89;
+            $amount = $amount / Currency::where('code', $currency)->value('convert');
         }
         return $amount;
     }
