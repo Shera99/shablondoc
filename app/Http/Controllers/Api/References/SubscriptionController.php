@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\References;
 
+use App\Helpers\ApiHelper;
 use App\Http\Requests\Api\Subscription\SubscriptionBuyRequest;
 use App\Http\Services\PaymentService;
 use App\Models\Subscription;
@@ -22,10 +23,15 @@ class SubscriptionController extends \App\Http\Controllers\Controller
 
     public function list(): JsonResponse
     {
-        $activeSubscriptions = Subscription::where('is_active', true)
-            ->get()->toArray();
+        $activeSubscriptions = Subscription::where('is_active', true)->get();
 
-        $this->setResponse($activeSubscriptions);
+        $convertedSubscriptions = $activeSubscriptions->map(function ($subscription) {
+            $convertedAmount = ApiHelper::getConvertedAmount('KGS', $subscription->price);
+            $subscription->price = $convertedAmount;
+            return $subscription;
+        });
+
+        $this->setResponse($convertedSubscriptions->toArray());
 
         return $this->sendResponse();
     }
