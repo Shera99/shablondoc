@@ -47,7 +47,7 @@ class OrderService
         if (!empty($request_data['address_id'])) $this->order->company_address_id = $request_data['address_id'];
         if (!empty($request_data['user_id'])) $this->order->user_id = $request_data['user_id'];
 
-        $this->order->status = !empty($this->order->user_id) ? OrderStatus::COMPLETED : OrderStatus::PENDING;
+        $this->order->status = !empty($request_data['user_id']) ? OrderStatus::COMPLETED : OrderStatus::PENDING;
         $this->order->save();
 
         return $this->order;
