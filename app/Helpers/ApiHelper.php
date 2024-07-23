@@ -18,7 +18,7 @@ class ApiHelper
         return $code;
     }
 
-    public static function getConvertedAmount(string $currency, int $amount): int
+    public static function getConvertedAmount(string $currency, int $amount)
     {
         if ($currency != 'USD') {
             $amount = $amount / Currency::where('code', $currency)->value('convert');
