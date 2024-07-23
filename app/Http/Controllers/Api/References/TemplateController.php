@@ -77,7 +77,7 @@ class TemplateController extends \App\Http\Controllers\Controller
             $image_save_result = Image::save($image, 'template');
 
             if (array_key_exists('error', $image_save_result))
-                return $this->sendErrorResponse($image_save_result['message'], $image_save_result['error']);
+                return $this->sendErrorResponse($image_save_result['message'], Response::HTTP_UNPROCESSABLE_ENTITY);
 
             $this->setResponse(['image' => $image_save_result['storedImagePath']]);
             return $this->sendResponse();
