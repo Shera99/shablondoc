@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Api\Order;
 
 use App\Enums\OrderStatus;
+use App\Helpers\ApiHelper;
 use App\Models\Employee;
 use App\Models\Setting;
 use App\Models\Template;
 use App\Models\TemplateData;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\DB;
@@ -28,6 +30,14 @@ class OrderController extends \App\Http\Controllers\Controller
     {
         $this->service = app(OrderService::class);
         $this->payment_service = app(PaymentService::class);
+    }
+
+    public function amount(): JsonResponse
+    {
+        $amount = (int) Setting::query()->where('key', 'order_price')->value('value');
+        $converted_amount = ApiHelper::getConvertedAmount('KGS', $amount);
+        $this->setResponse(['amount' => $converted_amount]);
+        return $this->sendResponse();
     }
 
     public function create(OrderCreateRequest $request): \Illuminate\Http\JsonResponse
