@@ -96,7 +96,7 @@ class OrderController extends \App\Http\Controllers\Controller
             ->pluck('id');
         $query = $query->where(function ($query) use ($company_addresses) {
             return $query->whereIn('o.company_address_id', $company_addresses)
-            ->orWhere('user_id', auth()->user()->id);
+            ->orWhere('o.user_id', auth()->user()->id);
         });
 
         if ($request->get('search')) {
