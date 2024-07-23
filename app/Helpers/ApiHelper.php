@@ -23,6 +23,6 @@ class ApiHelper
         if ($currency != 'USD') {
             $amount = $amount / Currency::where('code', $currency)->value('convert');
         }
-        return $amount;
+        return number_format($amount, 2, '.');
     }
 }
