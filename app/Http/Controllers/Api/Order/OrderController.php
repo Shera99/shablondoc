@@ -64,9 +64,9 @@ class OrderController extends \App\Http\Controllers\Controller
     {
         $query = DB::table('orders as o')
             ->join('payments as p', 'o.id', '=', 'p.foreign_id')
-            ->join('company_addresses as c_a', 'o.company_address_id', '=', 'c_a.id')
             ->join('companies as cm', 'c_a.company_id', '=', 'cm.id')
             ->join('templates as t', 'o.template_id', '=', 't.id')
+            ->leftJoin('company_addresses as c_a', 'o.company_address_id', '=', 'c_a.id')
             ->leftJoin('countries as c', 'o.country_id', '=', 'c.id')
             ->leftJoin('users as u', 'o.user_id', '=', 'u.id')
             ->where('p.type', 'order')->whereIn('o.status', ['completed', 'translated'])
@@ -122,9 +122,9 @@ class OrderController extends \App\Http\Controllers\Controller
             } else if (isset($filter_array['by_company']) && !empty($filter_array['by_company'])) {
                 $query = $query->where('cm.id', $filter_array['by_company']);
             }
-        } else {
-            $query = $query->orderBy('o.id', 'desc');
         }
+
+        $query = $query->orderBy('o.id', 'desc');
 
         $orders = $query->select(
             'o.id', 'o.user_id', 'o.template_id', 'o.template_data_id', 'o.company_address_id', 'o.country_id',
