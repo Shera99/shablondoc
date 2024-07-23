@@ -76,7 +76,7 @@ class TemplateController extends \App\Http\Controllers\Controller
             $image = $request->file('image');
             $image_save_result = Image::save($image, 'template');
 
-            if (in_array('error', $image_save_result))
+            if (array_key_exists('error', $image_save_result))
                 return $this->sendErrorResponse($image_save_result['message'], $image_save_result['error']);
 
             $this->setResponse(['image' => $image_save_result['storedImagePath']]);
