@@ -163,13 +163,7 @@ class OrderController extends \App\Http\Controllers\Controller
             ->whereColumn('count_translation', '>', 'used_count_translation')
             ->first();
 
-        if ($subscription) {
-            $subscription->used_count_translation++;
-            $subscription->save();
-
-            $order->print_date = Carbon::now();
-            $order->save();
-        } else {
+        if (!$subscription) {
             return $this->sendErrorResponse('No valid subscription found', Response::HTTP_BAD_REQUEST);
         }
 

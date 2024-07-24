@@ -8,6 +8,8 @@
         "php": "^8.2",
         "bensampo/laravel-enum": "^6.11",
         "filament/filament": "^3.2",
+        "intervention/image": "^3.7",
+        "intervention/image-laravel": "^1.3",
         "laravel/framework": "^11.0",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
