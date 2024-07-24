@@ -84,6 +84,10 @@ class OrderResource extends Resource
                         ->label('Файл')
                         ->openable()
                         ->downloadable()
+                        ->image()
+                        ->imageResizeMode('cover')
+                        ->imageResizeTargetWidth('500')
+                        ->imageResizeUpscale()
                         ->visible(fn ($record) => $record && $record->document_file),
                 ]),
             ]);
