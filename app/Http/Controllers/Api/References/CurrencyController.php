@@ -29,4 +29,11 @@ class CurrencyController extends \App\Http\Controllers\Controller
         $this->setResponse(['amount' => $converted_amount]);
         return $this->sendResponse();
     }
+
+    public function discount(): JsonResponse
+    {
+        $discount = (int) Setting::query()->where('key', 'mynumer_discount')->value('value');
+        $this->setResponse(['discount' => $discount]);
+        return $this->sendResponse();
+    }
 }

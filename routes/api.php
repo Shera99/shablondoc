@@ -108,6 +108,7 @@ Route::get('/address', [CompanyAddressController::class, 'list']);
 Route::get('/template', [TemplateController::class, 'list']);
 Route::get('/currency', [CurrencyController::class, 'list']);
 Route::get('/translate/price', [CurrencyController::class, 'amount']);
+Route::get('/discount', [CurrencyController::class, 'discount']);
 Route::get('/translation-directions', [TranslationDirectionController::class, 'list']);
 
 Route::post('/order', [OrderController::class, 'create']);

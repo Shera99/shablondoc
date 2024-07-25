@@ -38,7 +38,10 @@ class OrderController extends \App\Http\Controllers\Controller
         if (!$order instanceof Order) return $this->sendErrorResponse($order['message'], $order['error']);
 
         $sum = (int) Setting::query()->where('key', 'order_price')->value('value');
-        if (!empty($order->mynumer)) $sum = $sum - ($sum / 100 * 10);
+        if (!empty($order->mynumer)) {
+            $discount = (int) Setting::query()->where('key', 'mynumer_discount')->value('value');
+            $sum = $sum - ($sum / 100 * $discount);
+        }
 
         $user_id = !empty($order->user_id) ? $order->user_id : 0;
 
