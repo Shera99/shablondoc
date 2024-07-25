@@ -17,7 +17,6 @@ class EditTranslationDirection extends EditRecord
                 ->label('Назад')
                 ->url($this->getResource()::getUrl('index'))
                 ->color('primary'),
-            Actions\DeleteAction::make(),
         ];
     }
 

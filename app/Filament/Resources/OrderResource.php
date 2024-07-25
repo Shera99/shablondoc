@@ -171,7 +171,7 @@ class OrderResource extends Resource
                     ->url(fn ($record) => config('app.front_url') . '/translate-view?id=' . $record->id . '&user=' . auth()->user()->getAuthIdentifier() . '&token=' . config('app.admin_secret_order')),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+//                Tables\Actions\DeleteBulkAction::make(),
             ])
             ->defaultSort('id', 'desc');
     }

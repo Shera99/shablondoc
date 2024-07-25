@@ -18,7 +18,6 @@ class EditCompanyType extends EditRecord
                 ->url($this->getResource()::getUrl('index'))
                 ->color('primary'),
             Actions\ViewAction::make(),
-            Actions\DeleteAction::make(),
         ];
     }
 
