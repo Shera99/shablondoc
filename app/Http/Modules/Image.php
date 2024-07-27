@@ -19,16 +19,20 @@ class Image
                 throw new \Exception('File size exceeds the maximum limit of 10MB.');
             }
 
+            if (!Storage::exists($path)) {
+                Storage::makeDirectory($path);
+            }
+
             $imageName = time().'.'.$image->getClientOriginalExtension();
 //            $storedImagePath = $image->storeAs($path, $imageName);
 
-            $manager = new ImageManager(
-                new \Intervention\Image\Drivers\Gd\Driver()
-            );
+//            $manager = new ImageManager(
+//                new \Intervention\Image\Drivers\Gd\Driver()
+//            );
 
-            $resizedImage = $manager->read($image->path());
+//            $resizedImage = $manager->read($image->path());
 
-//            $resizedImage = MakeImage::read($image->path());
+            $resizedImage = MakeImage::read($image->path());
 
             if ($resizedImage->width() > 500) {
                 $resizedImage->resize(500, null, function ($constraint) {
