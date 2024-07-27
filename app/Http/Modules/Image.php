@@ -35,7 +35,7 @@ class Image
             $resizedImage = MakeImage::read($image->getRealPath());
 
             if ($resizedImage->width() > 500) {
-                $resizedImage->resize(500, null, function ($constraint) {
+                $resizedImage->scale(500, null, function ($constraint) {
                     $constraint->aspectRatio();
                     $constraint->upsize();
                 });
