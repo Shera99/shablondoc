@@ -32,7 +32,7 @@ class Image
 
 //            $resizedImage = $manager->read($image->path());
 
-            $resizedImage = MakeImage::read($image->path());
+            $resizedImage = MakeImage::read($image->getRealPath());
 
             if ($resizedImage->width() > 500) {
                 $resizedImage->resize(500, null, function ($constraint) {
