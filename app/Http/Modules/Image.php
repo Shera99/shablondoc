@@ -4,6 +4,7 @@ namespace App\Http\Modules;
 
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Laravel\Facades\Image as MakeImage;
+use Intervention\Image\Image as MImage;
 
 class Image
 {
@@ -21,7 +22,7 @@ class Image
             $imageName = time().'.'.$image->getClientOriginalExtension();
 //            $storedImagePath = $image->storeAs($path, $imageName);
 
-            $resizedImage = MakeImage::read($image->path());
+            $resizedImage = app(MImage::class)->make($image->path());
 
             if ($resizedImage->width() > 500) {
                 $resizedImage->resize(500, null, function ($constraint) {
