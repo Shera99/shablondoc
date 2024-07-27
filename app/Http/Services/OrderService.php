@@ -34,7 +34,7 @@ class OrderService
             $image = $request->file('document_image');
             $image_save_result = Image::save($image, 'order');
 
-            if (in_array('error', $image_save_result)) return $image_save_result;
+            if (array_key_exists('error', $image_save_result)) return $image_save_result;
 
             $this->order->document_file = $image_save_result['storedImagePath'];
         } else {
