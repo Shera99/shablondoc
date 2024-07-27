@@ -37,9 +37,9 @@ class Image
                 });
             }
 
-            $encoded = $image->toJpg();
+//            $encoded = $image->toJpg();
 
-            $encoded->save(storage_path('app/' . $path . $imageName), 75);
+            $resizedImage->save(storage_path('app/' . $path . $imageName), 75);
 
             $imageUrl = Storage::url($path . $imageName);
 //            $imageUrl = Storage::url($storedImagePath);
