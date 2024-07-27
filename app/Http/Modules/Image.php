@@ -21,7 +21,7 @@ class Image
             $imageName = time().'.'.$image->getClientOriginalExtension();
 //            $storedImagePath = $image->storeAs($path, $imageName);
 
-            $resizedImage = MakeImage::read($image);
+            $resizedImage = MakeImage::make($image);
 
             if ($resizedImage->width() > 500) {
                 $resizedImage->resize(500, null, function ($constraint) {
