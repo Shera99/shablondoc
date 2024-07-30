@@ -15,7 +15,7 @@ class Image
         $path = $basePath . $type . '/' . $datePath . '/';
 
         try {
-            if ($image->getSize() > 10 * 1024 * 1024) {
+            if ($image->getSize() > 29 * 1024 * 1024) {
                 throw new \Exception('File size exceeds the maximum limit of 10MB.');
             }
 
