@@ -16,7 +16,7 @@ class Image
 
         try {
             if ($image->getSize() > 29 * 1024 * 1024) {
-                throw new \Exception('File size exceeds the maximum limit of 10MB.');
+                throw new \Exception('File size exceeds the maximum limit of 29MB.');
             }
 
             if (!Storage::exists($path)) {
