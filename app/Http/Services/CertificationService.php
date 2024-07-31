@@ -2,11 +2,15 @@
 
 namespace App\Http\Services;
 
+use App\Http\Modules\FileHandler;
 use App\Http\Modules\Image;
 use App\Http\Requests\Api\Certification\CertificationSignatureCU;
 
 class CertificationService
 {
+    /**
+     * @throws \Exception
+     */
     public function formatDataAndSaveImage(CertificationSignatureCU $request): array
     {
         $data = $request->only([
@@ -15,12 +19,19 @@ class CertificationService
         ]);
 
         if ($request->hasFile('file')) {
-            $image = $request->file('file');
-            $image_save_result = Image::save($image, 'cert');
+            $files = $request->file('file');
 
-            if (in_array('error', $image_save_result)) return $image_save_result;
+            if (!is_array($files)) {
+                $files = [$files];
+            }
 
-            $data['file'] = $image_save_result['storedImagePath'];
+            $image_save_result = [];
+
+            foreach ($files as $file) {
+                $image_save_result = FileHandler::save($file, 'cert');
+            }
+
+            $data['file'] = $image_save_result['storedFilePath'];
         }
 
         return $data;

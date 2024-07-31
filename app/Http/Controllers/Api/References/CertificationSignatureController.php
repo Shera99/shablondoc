@@ -47,6 +47,7 @@ class CertificationSignatureController extends \App\Http\Controllers\Controller
      * @param CertificationSignatureCU $request
      * @return JsonResponse
      * @throws ValidationException
+     * @throws \Exception
      */
     public function create(CertificationSignatureCU $request): JsonResponse
     {
