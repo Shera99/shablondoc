@@ -6,13 +6,10 @@ use App\Enums\OrderStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use GalleryJsonMedia\JsonMedia\Concerns\InteractWithMedia;
-use GalleryJsonMedia\JsonMedia\Contracts\HasMedia;
 
-class Order extends Model implements HasMedia
+class Order extends Model
 {
     use HasFactory;
-    use InteractWithMedia;
 
     const UPDATED_AT = null;
 
