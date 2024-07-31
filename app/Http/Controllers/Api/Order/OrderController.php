@@ -18,6 +18,8 @@ use App\Http\Requests\Api\Order\{OrderCreateRequest,
 use App\Http\Services\OrderService;
 use App\Http\Services\PaymentService;
 use App\Models\Order;
+use Illuminate\Support\Facades\Storage;
+use ZipArchive;
 
 class OrderController extends \App\Http\Controllers\Controller
 {
@@ -214,6 +216,43 @@ class OrderController extends \App\Http\Controllers\Controller
 
         $order->save();
         return $this->responseOrder($order);
+    }
+
+    public function filesDownload(Order $order)
+    {
+        $files = $order->document_file;
+
+        foreach ($files as $filename) {
+            if (!Storage::disk('public')->exists($filename)) {
+                return response()->json(['error' => 'File not found: ' . $filename], Response::HTTP_NOT_FOUND);
+            }
+        }
+
+        // Создайте zip-архив для скачивания нескольких файлов
+        $zip_file_name = 'files_' . time() . '.zip';
+        $storage_path = 'public/images/zip/';
+
+        if (!Storage::exists($storage_path)) {
+            Storage::makeDirectory($storage_path);
+        }
+
+        $zip = new ZipArchive();
+        $zip_file_path = storage_path('app/' . $storage_path . $zip_file_name);
+
+        // Откройте zip-архив
+        if ($zip->open($zip_file_path, ZipArchive::CREATE) !== true) {
+            return response()->json(['error' => 'Failed to create zip file'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
+        // Добавьте файлы в архив
+        foreach ($files as $file_path) {
+            $file_name = basename($file_path); // Имя файла без пути
+            $zip->addFile(Storage::disk('public')->path($file_path), $file_name);
+        }
+
+        $zip->close();
+
+        return response()->download(storage_path('app/' . $storage_path . $zip_file_name))->deleteFileAfterSend();
     }
 
     private function responseOrder(Order $order): \Illuminate\Http\JsonResponse

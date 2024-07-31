@@ -10,7 +10,6 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Support\Facades\Storage;
 
 class OrderResource extends Resource
 {
@@ -81,14 +80,17 @@ class OrderResource extends Resource
                     Forms\Components\FileUpload::make('document_file')
                         ->disk('public')
                         ->directory('images')
+                        ->visible(function ($record) {
+                            $document_file = $record ? $record->document_file : [];
+                            return $document_file;
+                        })
                         ->label('Файл')
                         ->openable()
                         ->downloadable()
-                        ->image()
-                        ->imageResizeMode('cover')
-                        ->imageResizeTargetWidth('500')
-                        ->imageResizeUpscale()
-                        ->visible(fn ($record) => $record && $record->document_file),
+                        ->multiple()
+                        ->visibility('public')
+                        ->storeFileNamesIn('document_file')
+                        ->helperText('The list of uploaded files'),
                 ]),
             ]);
     }
@@ -128,11 +130,6 @@ class OrderResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->label('Дата печати'),
-                Tables\Columns\ImageColumn::make('document_file')
-                    ->disk('public')
-                    ->width(200)
-                    ->label('Файл')
-                    ->toggleable(),
                 Tables\Columns\TextColumn::make('document_name')
                     ->sortable()
                     ->label('Название документа'),

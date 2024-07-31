@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\References;
 
 use App\Enums\TemplateStatus;
-use App\Http\Modules\Image;
+use App\Http\Modules\FileHandler;
 use App\Http\Requests\Api\Template\TemplateCreateRequest;
 use App\Http\Requests\Api\Template\TemplateUpdateRequest;
 use App\Models\Template;
@@ -70,16 +70,25 @@ class TemplateController extends \App\Http\Controllers\Controller
         return $this->sendResponse();
     }
 
+    /**
+     * @throws \Exception
+     */
     public function imageSave(Request $request): JsonResponse
     {
         if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $image_save_result = Image::save($image, 'template');
+            $files = $request->file('image');
 
-            if (array_key_exists('error', $image_save_result))
-                return $this->sendErrorResponse($image_save_result['message'], Response::HTTP_UNPROCESSABLE_ENTITY);
+            if (!is_array($files)) {
+                $files = [$files];
+            }
 
-            $this->setResponse(['image' => $image_save_result['storedImagePath']]);
+            $image_save_result = [];
+
+            foreach ($files as $file) {
+                $image_save_result = FileHandler::save($file, 'template');
+            }
+
+            $this->setResponse(['image' => $image_save_result['storedFilePath']]);
             return $this->sendResponse();
         }
 

@@ -45,6 +45,7 @@ class ShablondocPanelProvider extends PanelProvider
             ->widgets([
                 Widgets\AccountWidget::class,
             ])
+//            ->plugin(\TomatoPHP\FilamentMediaManager\FilamentMediaManagerPlugin::make()->allowSubFolders())
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,

@@ -3,9 +3,10 @@
 namespace App\Http\Services;
 
 use App\Enums\OrderStatus;
-use App\Http\Modules\Image;
+use App\Http\Modules\FileHandler;
 use App\Models\Order;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Http\Request;
 
 class OrderService
 {
@@ -16,8 +17,12 @@ class OrderService
         $this->order = app(Order::class);
     }
 
-    public function create(array $request_data, $request)
+    /**
+     * @throws \Exception
+     */
+    public function create(array $request_data, Request $request)
     {
+//        dd($request->file('files'));
         $this->order->phone_number = $request_data['phone_number'];
         $this->order->delivery_date = $request_data['delivery_date'];
 
@@ -30,15 +35,23 @@ class OrderService
             return ['error' => Response::HTTP_BAD_REQUEST, 'message' => 'Document data is required.'];
         }
 
-        if ($request->hasFile('document_image')) {
-            $image = $request->file('document_image');
-            $image_save_result = Image::save($image, 'order');
+        if ($request->hasFile('files')) {
+            $files = $request->file('files');
+            $paths = [];
 
-            if (array_key_exists('error', $image_save_result)) return $image_save_result;
+            foreach ($files as $key => $file) {
+                try {
+                    $result = FileHandler::save($file, 'order');
+                    $paths[] = $result['storedFilePath'];
+                } catch (\Exception $e) {
+                    return response()->json(['success' => false, 'errors' => ['message' => $e->getMessage()]])
+                        ->setStatusCode(Response::HTTP_BAD_REQUEST);
+                }
+            }
 
-            $this->order->document_file = $image_save_result['storedImagePath'];
+            $this->order->document_file = $paths;
         } else {
-            return ['error' => Response::HTTP_BAD_REQUEST, 'message' => 'Document image is required.'];
+            return ['error' => Response::HTTP_BAD_REQUEST, 'message' => 'Document(s) is required.'];
         }
 
         if (!empty($request_data['email'])) $this->order->email = $request_data['email'];

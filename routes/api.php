@@ -110,6 +110,7 @@ Route::get('/currency', [CurrencyController::class, 'list']);
 Route::get('/translate/price', [CurrencyController::class, 'amount']);
 Route::get('/discount', [CurrencyController::class, 'discount']);
 Route::get('/translation-directions', [TranslationDirectionController::class, 'list']);
+Route::get('/order/files/download/{order}', [OrderController::class, 'filesDownload']);
 
 Route::post('/order', [OrderController::class, 'create']);
 Route::post('/web-call-back', [OrderController::class, 'webCallBack']);
