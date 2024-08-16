@@ -74,7 +74,14 @@ class OrderController extends \App\Http\Controllers\Controller
 
     public function myOrders(Request $request): \Illuminate\Http\JsonResponse
     {
-        $orders = $this->service->list($request, ['translated', 'delivery', 'delivered'], 'translated');
+        $orders = $this->service->list($request, ['completed'], 'translated');
+        $this->setResponse($orders);
+        return $this->sendResponse();
+    }
+
+    public function myDelivaries(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $orders = $this->service->list($request, ['translated', 'delivery', 'delivered'], 'delivered');
         $this->setResponse($orders);
         return $this->sendResponse();
     }

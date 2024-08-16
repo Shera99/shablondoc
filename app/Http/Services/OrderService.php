@@ -4,6 +4,7 @@ namespace App\Http\Services;
 
 use App\Enums\OrderStatus;
 use App\Http\Modules\FileHandler;
+use App\Models\Employee;
 use App\Models\Order;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -93,19 +94,20 @@ class OrderService
                 ->leftJoin('languages as ld', 'td.target_language_id', '=', 'ld.id');
         });
 
-        if ($type == 'translated') {
-            if (auth()->user()->hasRole('Employee')) {
-                $query->where('o.user_id', auth()->user()->id);
-            } else {
-                $companies = auth()->user()->companies->pluck('id');
-                $company_addresses = DB::table('company_addresses')
-                    ->whereIn('company_id', $companies)
-                    ->pluck('id');
-                $query = $query->where(function ($query) use ($company_addresses) {
-                    return $query->whereIn('o.company_address_id', $company_addresses)
-                        ->orWhere('o.user_id', auth()->user()->id);
-                });
-            }
+        if ($type == 'translated' && auth()->user()->hasRole('Employee'))
+            $query->where('o.user_id', auth()->user()->id);
+        else {
+            if ($type == 'delivered' && auth()->user()->hasRole('Employee'))
+                $companies = Employee::where('user_id', auth()->user()->id)->pluck('company_id');
+            else $companies = auth()->user()->companies->pluck('id');
+
+            $company_addresses = DB::table('company_addresses')
+                ->whereIn('company_id', $companies)
+                ->pluck('id');
+            $query = $query->where(function ($query) use ($company_addresses) {
+                return $query->whereIn('o.company_address_id', $company_addresses)
+                    ->orWhere('o.user_id', auth()->user()->id);
+            });
         }
 
         if ($request->get('search')) {

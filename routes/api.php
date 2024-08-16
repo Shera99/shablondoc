@@ -56,6 +56,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('/order/{order}', [OrderController::class, 'show']);
         Route::get('/order', [OrderController::class, 'list']);
         Route::get('/my-orders', [OrderController::class, 'myOrders']);
+        Route::get('/my-deliveries', [OrderController::class, 'myDelivaries']);
 
         Route::middleware([SubscriptionTranslateCount::class])->group( function () {
             Route::post('/order/{order}/user-link', [OrderController::class, 'userLink']);
