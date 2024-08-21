@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Order;
 
 use App\Enums\OrderStatus;
+use App\Events\NewOrder;
 use App\Models\Employee;
 use App\Models\Setting;
 use App\Models\Template;
@@ -102,8 +103,6 @@ class OrderController extends \App\Http\Controllers\Controller
 
         $subscription = $user->userSubscription()
             ->where('is_active', true)
-            ->whereDate('subscription_date', '<=', Carbon::now())
-            ->whereDate('subscription_end_date', '>=', Carbon::now())
             ->whereColumn('count_translation', '>', 'used_count_translation')
             ->first();
 
@@ -154,6 +153,9 @@ class OrderController extends \App\Http\Controllers\Controller
         $order->updated_at = Carbon::now();
 
         $order->save();
+
+        broadcast(new NewOrder('new-delivery'))->toOthers();
+
         return $this->responseOrder($order);
     }
 

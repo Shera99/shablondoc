@@ -13,6 +13,11 @@ use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {
+    public function websocket()
+    {
+        return view('welcome');
+    }
+
     /**
      * @return JsonResponse
      */

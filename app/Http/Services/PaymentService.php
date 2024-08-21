@@ -95,8 +95,8 @@ class PaymentService
                     $old_subscription = UserSubscription::where('user_id', $order->user_id)
                         ->where('id', '<>', $order->id)
                         ->where('is_active', true)
-                        ->whereDate('subscription_date', '<=', Carbon::now())
-                        ->whereDate('subscription_end_date', '>=', Carbon::now())
+//                        ->whereDate('subscription_date', '<=', Carbon::now())
+//                        ->whereDate('subscription_end_date', '>=', Carbon::now())
                         ->orderBy('id', 'desc')
                         ->first();
 

@@ -25,11 +25,10 @@ class SubscriptionTranslateCount
 
         $subscription = $user->userSubscription()
             ->where('is_active', true)
-            ->whereDate('subscription_date', '<=', Carbon::now())
-            ->whereDate('subscription_end_date', '>=', Carbon::now())
+            ->whereColumn('count_translation', '>', 'used_count_translation')
             ->first();
 
-        if ($subscription && $subscription->count_translation > $subscription->used_count_translation) return $next($request);
+        if ($subscription) return $next($request);
 
         return \response()->json(['success' => false, 'data' => [], 'message' => 'You have reached the limit on the number of translations.'])
             ->setStatusCode(Response::HTTP_FORBIDDEN);

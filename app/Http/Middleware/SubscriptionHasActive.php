@@ -25,8 +25,7 @@ class SubscriptionHasActive
 
         $subscription = $user->userSubscription()
             ->where('is_active', true)
-            ->whereDate('subscription_date', '<=', Carbon::now())
-            ->whereDate('subscription_end_date', '>=', Carbon::now())
+//            ->whereColumn('count_translation', '>', 'used_count_translation')
             ->first();
 
         if ($subscription) return $next($request);

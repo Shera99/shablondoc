@@ -2,14 +2,18 @@
 
 namespace App\Filament\Resources;
 
+use App\Events\NewOrder;
 use App\Filament\Resources\OrderResource\Pages;
 use App\Models\Order;
 use Filament\Forms;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Log;
 
 class OrderResource extends Resource
 {
@@ -69,6 +73,11 @@ class OrderResource extends Resource
                         ])
                         ->default('pending')
                         ->required()
+                        ->afterStateUpdated(function (?string $state, $record) {
+                            if ($state === 'completed') {
+                                broadcast(new NewOrder('new-order'))->toOthers();
+                            }
+                        })
                         ->label('Статус'),
                     Forms\Components\Textarea::make('comment')
                         ->label('Комментарий'),
@@ -145,7 +154,12 @@ class OrderResource extends Resource
                         'failed' => 'Не оплачен!'
                     ])
                     ->label('Статус')
-                    ->extraAttributes(['class' => 'custom-width']),
+                    ->extraAttributes(['class' => 'custom-width'])
+                    ->afterStateUpdated(function (?string $state, $record) {
+                        if ($state === 'completed') {
+                            broadcast(new NewOrder('new-order'))->toOthers();
+                        }
+                    }),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

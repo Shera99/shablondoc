@@ -3,10 +3,13 @@
 namespace App\Models;
 
 use App\Enums\OrderStatus;
+use App\Observers\OrderObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 
+#[ObservedBy([OrderObserver::class])]
 class Order extends Model
 {
     use HasFactory;
@@ -36,6 +39,19 @@ class Order extends Model
         'status' => OrderStatus::class . ':string',
         'document_file' => 'array',
     ];
+
+//    protected static function boot()
+//    {
+//        parent::boot();
+//
+//        static::updated(function ($order) {
+//            if ($order->isDirty('status') && $order->status === 'completed') {
+//                NewOrder::dispatch($order->id);
+//                event(new NewOrder($order->id));
+//                broadcast(new NewOrder($order->toArray()))->toOthers();
+//            }
+//        });
+//    }
 
     /**
      * Get the attributes that should be cast.
