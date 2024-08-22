@@ -8,8 +8,6 @@ use App\Models\Order;
 use Filament\Forms;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Form;
-use Filament\Forms\Get;
-use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -75,7 +73,7 @@ class OrderResource extends Resource
                         ->required()
                         ->afterStateUpdated(function (?string $state, $record) {
                             if ($state === 'completed') broadcast(new NewOrder(['type' => 'new-order']))->toOthers();
-                            if ($state === 'translated') broadcast(new NewOrder(['type' => 'new-delivery']))->toOthers();
+                            if ($state === 'translated') broadcast(new NewOrder(['type' => 'new-delivery', 'company_id' => $record->companyAddress->company->id]))->toOthers();
                         })
                         ->label('Статус'),
                     Forms\Components\Textarea::make('comment')
@@ -156,7 +154,7 @@ class OrderResource extends Resource
                     ->extraAttributes(['class' => 'custom-width'])
                     ->afterStateUpdated(function (?string $state, $record) {
                         if ($state === 'completed') broadcast(new NewOrder(['type' => 'new-order']))->toOthers();
-                        if ($state === 'translated') broadcast(new NewOrder(['type' => 'new-delivery']))->toOthers();
+                        if ($state === 'translated') broadcast(new NewOrder(['type' => 'new-delivery', 'company_id' => $record->companyAddress->company->id]))->toOthers();
                     }),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
