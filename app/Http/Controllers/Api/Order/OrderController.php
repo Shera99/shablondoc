@@ -154,7 +154,7 @@ class OrderController extends \App\Http\Controllers\Controller
 
         $order->save();
 
-        broadcast(new NewOrder('new-delivery'))->toOthers();
+        broadcast(new NewOrder(['type' => 'new-delivery', 'company_id' => $order->companyAddress->company->id]))->toOthers();
 
         return $this->responseOrder($order);
     }

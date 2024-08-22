@@ -47,6 +47,6 @@ class NewOrder implements ShouldBroadcast
      */
     public function broadcastWith(): array
     {
-        return ['type' => $this->message];
+        return $this->message;
     }
 }

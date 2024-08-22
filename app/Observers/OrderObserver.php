@@ -22,7 +22,7 @@ class OrderObserver
     public function updated(Order $order): void
     {
         if ($order->isDirty('status') && $order->status === OrderStatus::COMPLETED) {
-            broadcast(new NewOrder('new-order'))->toOthers();
+            broadcast(new NewOrder(['type' => 'new-order']))->toOthers();
         }
     }
 

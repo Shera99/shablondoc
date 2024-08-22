@@ -74,8 +74,8 @@ class OrderResource extends Resource
                         ->default('pending')
                         ->required()
                         ->afterStateUpdated(function (?string $state, $record) {
-                            if ($state === 'completed') broadcast(new NewOrder('new-order'))->toOthers();
-                            if ($state === 'translated') broadcast(new NewOrder('new-delivery'))->toOthers();
+                            if ($state === 'completed') broadcast(new NewOrder(['type' => 'new-order']))->toOthers();
+                            if ($state === 'translated') broadcast(new NewOrder(['type' => 'new-delivery']))->toOthers();
                         })
                         ->label('Статус'),
                     Forms\Components\Textarea::make('comment')
@@ -155,8 +155,8 @@ class OrderResource extends Resource
                     ->label('Статус')
                     ->extraAttributes(['class' => 'custom-width'])
                     ->afterStateUpdated(function (?string $state, $record) {
-                        if ($state === 'completed') broadcast(new NewOrder('new-order'))->toOthers();
-                        if ($state === 'translated') broadcast(new NewOrder('new-delivery'))->toOthers();
+                        if ($state === 'completed') broadcast(new NewOrder(['type' => 'new-order']))->toOthers();
+                        if ($state === 'translated') broadcast(new NewOrder(['type' => 'new-delivery']))->toOthers();
                     }),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

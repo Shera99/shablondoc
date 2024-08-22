@@ -12,6 +12,6 @@ Route::get('/websocket', [ProfileController::class, 'websocket']);
 Route::get('/websocket-create', function () {
     $order = \App\Models\Order::first();
     //NewOrder::dispatch($order);
-    broadcast(new NewOrder('hello world'))->toOthers();
+    broadcast(new NewOrder(['type' => 'hello world']))->toOthers();
     //event(new NewOrder('hello world'));
 });
