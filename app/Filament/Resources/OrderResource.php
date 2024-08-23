@@ -56,7 +56,6 @@ class OrderResource extends Resource
                         ->required()
                         ->label('Дата доставки'),
                     Forms\Components\DateTimePicker::make('print_date')
-                        ->required()
                         ->label('Дата печати'),
                     Forms\Components\Select::make('status')
                         ->options([
