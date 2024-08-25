@@ -111,7 +111,7 @@ class OrderService
                         ->orWhere('o.user_id', auth()->user()->id);
                 });
 
-                dd($companies, $company_addresses, $query);
+                dd($query);
             }
         }
 
