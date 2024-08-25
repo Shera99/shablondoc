@@ -78,8 +78,7 @@ class OrderService
             ->leftJoin('companies as cm', 'c_a.company_id', '=', 'cm.id')
             ->leftJoin('countries as c', 'o.country_id', '=', 'c.id')
             ->leftJoin('users as u', 'o.user_id', '=', 'u.id')
-            ->where('p.type', 'order')->whereIn('o.status', $statuses)
-            ->where('p.status', 'completed');
+            ->where('p.type', 'order')->whereIn('o.status', $statuses);
 
         $query->when(function($q) {
             return DB::raw('o.language_id IS NOT NULL');
