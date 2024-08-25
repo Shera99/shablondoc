@@ -106,11 +106,12 @@ class OrderService
                     ->whereIn('company_id', $companies)
                     ->pluck('id');
 
-                dd($companies, $company_addresses);
                 $query = $query->where(function ($query) use ($company_addresses) {
                     return $query->whereIn('o.company_address_id', $company_addresses)
                         ->orWhere('o.user_id', auth()->user()->id);
                 });
+
+                dd($companies, $company_addresses, $query);
             }
         }
 
