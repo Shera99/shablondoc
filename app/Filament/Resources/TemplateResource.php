@@ -113,8 +113,8 @@ class TemplateResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\SelectColumn::make('payed_status')
                     ->options([
-                        true => 'Оплачен',
-                        false => 'Неоплачен'
+                        1 => 'Оплачен',
+                        0 => 'Неоплачен'
                     ])->label('Статус оплаты')
                     ->extraAttributes(['class' => 'custom-width']),
                 Tables\Columns\SelectColumn::make('status')
