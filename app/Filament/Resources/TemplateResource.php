@@ -112,28 +112,20 @@ class TemplateResource extends Resource
                     ->sortable()
                     ->label('Дата создания')
                     ->toggleable(isToggledHiddenByDefault: true),
-                BadgeColumn::make('payed_status')
-                    ->label('Статус оплаты')
-                    ->colors([
-                        'success' => true,  // Цвет для true
-                        'danger' => false,  // Цвет для false
-                    ])
-                    ->labels([
-                        true => 'Оплачен',
-                        false => 'Неоплачен',
-                    ]),
                 Tables\Columns\SelectColumn::make('payed_status')
+                    ->label('Статус оплаты')
                     ->options([
-                        "1" => 'Оплачен',
-                        "0" => 'Неоплачен'
-                    ])->label('Статус оплаты')
+                        true => 'Оплачен',
+                        false => 'Неоплачен'
+                    ])
                     ->extraAttributes(['class' => 'custom-width']),
                 Tables\Columns\SelectColumn::make('status')
+                    ->label('Статус')
                     ->options([
                         'active' => 'Активный',
                         'inactive' => 'Неактивный',
                         'moderation' => 'Модерация'
-                    ])->label('Статус')
+                    ])
                     ->extraAttributes(['class' => 'custom-width']),
             ])
             ->filters([
