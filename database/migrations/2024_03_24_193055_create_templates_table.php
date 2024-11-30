@@ -23,6 +23,9 @@ return new class extends Migration
             $table->foreignId('document_type_id')->nullable()->constrained('document_types')->restrictOnDelete();
             $table->string('new_document_type', 200)->nullable();
             $table->foreignId('translation_direction_id')->constrained('translation_directions');
+            $table->string('email', 150);
+            $table->boolean('payed_status')->default(false);
+            $table->string('code', 255);
             $table->timestamps();
         });
 
