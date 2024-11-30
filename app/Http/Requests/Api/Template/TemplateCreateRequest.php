@@ -28,6 +28,11 @@ class TemplateCreateRequest extends FormRequest
             'document_type_id' => 'nullable|int|exists:document_types,id',
             'new_document_type' => 'nullable|string',
             'translation_direction_id' => 'required|int|exists:translation_directions,id',
+            'email' => [
+                'required',
+                'string',
+                'email',
+            ],
         ];
     }
 
@@ -52,6 +57,9 @@ class TemplateCreateRequest extends FormRequest
             'translation_direction_id.required' => 'The translation direction field is required.',
             'translation_direction_id.int' => 'The translation direction field must be an integer.',
             'translation_direction_id.exists' => 'The selected translation direction is invalid.',
+            'email.required' => 'The email field is required.',
+            'email.string' => 'The email must be a string.',
+            'email.email' => 'The email must be a valid email address.',
         ];
     }
 }

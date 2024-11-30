@@ -19,6 +19,9 @@ class Template extends Model
         'translation_direction_id',
         'new_document_type',
 //        'template_file',
+        'email',
+        'payed_status',
+        'code',
         'status'
     ];
 
@@ -31,6 +34,7 @@ class Template extends Model
     {
         return [
             'status' => TemplateStatus::class . ':string',
+            'payed_status' => 'boolean'
         ];
     }
 

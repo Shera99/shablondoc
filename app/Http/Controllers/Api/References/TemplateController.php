@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Api\References;
 use App\Enums\TemplateStatus;
 use App\Http\Modules\FileHandler;
 use App\Http\Requests\Api\Template\TemplateCreateRequest;
-use App\Http\Requests\Api\Template\TemplateUpdateRequest;
 use App\Models\Template;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
 class TemplateController extends \App\Http\Controllers\Controller
@@ -64,6 +64,7 @@ class TemplateController extends \App\Http\Controllers\Controller
     public function create(TemplateCreateRequest $request): JsonResponse
     {
         $validated_data = $request->validated();
+        $validated_data['code'] = hash('sha256', Str::random(20) . $validated_data['name']);
         $template = Template::create($validated_data);
 
         $this->setResponse($template->toArray());

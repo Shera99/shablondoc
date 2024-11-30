@@ -104,11 +104,19 @@ class TemplateResource extends Resource
                 Tables\Columns\TextColumn::make('translationDirection.id')
                     ->numeric()
                     ->sortable()->label('Языковое направление'),
+                Tables\Columns\TextColumn::make('email')
+                    ->searchable()->label('Автор'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->label('Дата создания')
                     ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\SelectColumn::make('payed_status')
+                    ->options([
+                        true => 'Оплачен',
+                        false => 'Неоплачен'
+                    ])->label('Статус оплаты')
+                    ->extraAttributes(['class' => 'custom-width']),
                 Tables\Columns\SelectColumn::make('status')
                     ->options([
                         'active' => 'Активный',

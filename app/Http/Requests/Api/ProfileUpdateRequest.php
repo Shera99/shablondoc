@@ -47,8 +47,6 @@ class ProfileUpdateRequest extends BaseRequest
             'name.string' => 'The name must be a string.',
             'last_name.string' => 'The last name must be a string.',
             'phone_number.string' => 'The phone number must be a string.',
-            'login.required' => 'The login field is required.',
-            'login.string' => 'The login must be a string.',
             'email.required' => 'The email field is required.',
             'email.string' => 'The email must be a string.',
             'email.email' => 'The email must be a valid email address.',
