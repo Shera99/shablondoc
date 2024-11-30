@@ -34,7 +34,6 @@ class Template extends Model
     {
         return [
             'status' => TemplateStatus::class . ':string',
-            'payed_status' => 'boolean'
         ];
     }
 
