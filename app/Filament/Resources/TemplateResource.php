@@ -10,6 +10,7 @@ use Filament\Forms\Components\Card;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -111,6 +112,16 @@ class TemplateResource extends Resource
                     ->sortable()
                     ->label('Дата создания')
                     ->toggleable(isToggledHiddenByDefault: true),
+                BadgeColumn::make('payed_status')
+                    ->label('Статус оплаты')
+                    ->colors([
+                        'success' => true,  // Цвет для true
+                        'danger' => false,  // Цвет для false
+                    ])
+                    ->labels([
+                        true => 'Оплачен',
+                        false => 'Неоплачен',
+                    ]),
                 Tables\Columns\SelectColumn::make('payed_status')
                     ->options([
                         "1" => 'Оплачен',
