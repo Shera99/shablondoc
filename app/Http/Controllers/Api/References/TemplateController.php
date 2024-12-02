@@ -64,7 +64,7 @@ class TemplateController extends \App\Http\Controllers\Controller
     public function create(TemplateCreateRequest $request): JsonResponse
     {
         $validated_data = $request->validated();
-        $validated_data['code'] = hash('sha256', Str::random(20) . $validated_data['name']);
+        $validated_data['code'] = strtotime('now');
         $template = Template::create($validated_data);
 
         $this->setResponse($template->toArray());
