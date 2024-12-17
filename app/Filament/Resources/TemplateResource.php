@@ -137,6 +137,7 @@ class TemplateResource extends Resource
                         true => 'Оплачен',
                         false => 'Неоплачен'
                     ])
+                    ->getStateUsing(fn ($state) => $state ? 'Оплачен' : 'Неоплачен')
                     ->disablePlaceholderSelection()
                     ->extraAttributes(['class' => 'custom-width']),
                 Tables\Columns\SelectColumn::make('status')
