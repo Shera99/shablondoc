@@ -46,9 +46,18 @@ class TemplateResource extends Resource
                         Forms\Components\Select::make('country_id')
                             ->relationship('country', 'name')
                             ->required()->label('Страна'),
+//                        Forms\Components\Select::make('translation_direction_id')
+//                            ->relationship('translationDirection', 'id')
+//                            ->required()->label('Языковое направление'),
                         Forms\Components\Select::make('translation_direction_id')
-                            ->relationship('translationDirection', 'id')
-                            ->required()->label('Языковое направление'),
+                            ->relationship('translationDirection', 'id', function ($query) {
+                                return $query->with(['sourceLanguage', 'targetLanguage']);
+                            })
+                            ->getOptionLabelUsing(fn ($value) =>
+                                optional($value->sourceLanguage)->name . ' - ' . optional($value->targetLanguage)->name
+                            )
+                            ->required()
+                            ->label('Языковое направление'),
                     ])
                 ]),
                 Card::make()->schema([
