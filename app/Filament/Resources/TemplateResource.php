@@ -134,8 +134,8 @@ class TemplateResource extends Resource
                 Tables\Columns\SelectColumn::make('payed_status')
                     ->label('Статус оплаты')
                     ->options([
-                        1 => 'Оплачен',
-                        0 => 'Неоплачен'
+                        '0' => 'Неоплачен',
+                        '1' => 'Оплачен',
                     ])
                     ->disablePlaceholderSelection()
                     ->extraAttributes(['class' => 'custom-width']),
