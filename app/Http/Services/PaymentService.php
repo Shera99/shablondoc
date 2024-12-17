@@ -89,7 +89,7 @@ class PaymentService
                     if (empty($order->template_id)) $order->status = OrderStatus::MODERATION;
                     else $order->status = OrderStatus::COMPLETED;
                 } else {
-                    $order = UserSubscription::where('id', $this->transaction->foreign_id)->first();
+                    $order = UserSubscription::load(['subscription'])->where('id', $this->transaction->foreign_id)->first();
                     $order->is_active = true;
 
                     $old_subscription = UserSubscription::where('user_id', $order->user_id)
@@ -104,7 +104,12 @@ class PaymentService
                         $order->count_translation += $old_subscription->count_translation - $old_subscription->used_count_translation;
 
                     UserSubscription::query()->where('user_id', $order->user_id)
-                        ->where('id', '<>', $order->id)->update(['is_active' => false]);
+                        ->where('id', '<>', $order->id)
+                        ->update([
+                            'subscription_date' => Carbon::now()->format("Y-m-d"),
+                            'subscription_end_date' => Carbon::now()->addDays($order->subscription->day_count)->format("Y-m-d"),
+                            'is_active' => false
+                        ]);
                 }
 
                 $order->save();
