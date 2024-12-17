@@ -124,6 +124,8 @@ class TemplateResource extends Resource
                     ->sortable()->label('Языковое направление'),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable()->label('Автор'),
+                Tables\Columns\TextColumn::make('code')
+                    ->searchable()->label('Код'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
