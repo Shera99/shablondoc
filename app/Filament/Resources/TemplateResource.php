@@ -137,6 +137,8 @@ class TemplateResource extends Resource
                         true => 'Оплачен',
                         false => 'Неоплачен'
                     ])
+                    ->default(false)
+                    ->disablePlaceholderSelection()
                     ->extraAttributes(['class' => 'custom-width']),
                 Tables\Columns\SelectColumn::make('status')
                     ->label('Статус')
