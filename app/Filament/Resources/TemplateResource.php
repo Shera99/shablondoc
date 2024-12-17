@@ -116,7 +116,11 @@ class TemplateResource extends Resource
                 Tables\Columns\TextColumn::make('new_document_type')
                     ->searchable()->label('Новый тип документа'),
                 Tables\Columns\TextColumn::make('translationDirection.id')
-                    ->numeric()
+                    ->formatStateUsing(function ($state, $record) {
+                        return $record->translationDirection
+                            ? $record->translationDirection->sourceLanguage->name . ' - ' . $record->translationDirection->targetLanguage->name
+                            : '-';
+                    })
                     ->sortable()->label('Языковое направление'),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable()->label('Автор'),
