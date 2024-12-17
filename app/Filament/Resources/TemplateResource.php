@@ -50,12 +50,16 @@ class TemplateResource extends Resource
 //                            ->relationship('translationDirection', 'id')
 //                            ->required()->label('Языковое направление'),
                         Forms\Components\Select::make('translation_direction_id')
-                            ->relationship('translationDirection', 'id', function ($query) {
-                                return $query->with(['sourceLanguage', 'targetLanguage']);
+                            ->relationship('translationDirection', 'id') // Оставляем связь
+                            ->options(function () {
+                                return \App\Models\TranslationDirection::with(['sourceLanguage', 'targetLanguage'])
+                                    ->get()
+                                    ->mapWithKeys(function ($direction) {
+                                        return [
+                                            $direction->id => "{$direction->sourceLanguage->name} - {$direction->targetLanguage->name}",
+                                        ];
+                                    });
                             })
-                            ->getOptionLabelUsing(fn ($value) =>
-                                optional($value->sourceLanguage)->name . ' - ' . optional($value->targetLanguage)->name
-                            )
                             ->required()
                             ->label('Языковое направление'),
                     ])
