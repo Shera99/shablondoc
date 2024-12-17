@@ -105,11 +105,10 @@ class PaymentService
 
                     UserSubscription::query()->where('user_id', $order->user_id)
                         ->where('id', '<>', $order->id)
-                        ->update([
-                            'subscription_date' => Carbon::now()->format("Y-m-d"),
-                            'subscription_end_date' => Carbon::now()->addDays($order->subscription->day_count)->format("Y-m-d"),
-                            'is_active' => false
-                        ]);
+                        ->update(['is_active' => false]);
+
+                    $order->subscription_date = Carbon::now()->format("Y-m-d");
+                    $order->subscription_end_date = Carbon::now()->addDays($order->subscription->day_count)->format("Y-m-d");
                 }
 
                 $order->save();
