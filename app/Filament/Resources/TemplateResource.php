@@ -134,10 +134,9 @@ class TemplateResource extends Resource
                 Tables\Columns\SelectColumn::make('payed_status')
                     ->label('Статус оплаты')
                     ->options([
-                        true => 'Оплачен',
-                        false => 'Неоплачен'
+                        1 => 'Оплачен',
+                        0 => 'Неоплачен'
                     ])
-                    ->getStateUsing(fn ($state) => $state ? 'Оплачен' : 'Неоплачен')
                     ->disablePlaceholderSelection()
                     ->extraAttributes(['class' => 'custom-width']),
                 Tables\Columns\SelectColumn::make('status')
