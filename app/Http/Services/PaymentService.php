@@ -89,7 +89,7 @@ class PaymentService
                     if (empty($order->template_id)) $order->status = OrderStatus::MODERATION;
                     else $order->status = OrderStatus::COMPLETED;
                 } else {
-                    $order = UserSubscription::load(['subscription'])->where('id', $this->transaction->foreign_id)->first();
+                    $order = UserSubscription::where('id', $this->transaction->foreign_id)->with(['subscription'])->first();
                     $order->is_active = true;
 
                     $old_subscription = UserSubscription::where('user_id', $order->user_id)
