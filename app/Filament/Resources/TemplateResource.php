@@ -106,7 +106,7 @@ class TemplateResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->searchable()->label('Название'),
+                    ->searchable()->label('Название')->url(),
                 Tables\Columns\TextColumn::make('country.name')
                     ->numeric()
                     ->sortable()->label('Страна'),
@@ -161,7 +161,8 @@ class TemplateResource extends Resource
 //                    Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
-            ->defaultSort('id', 'desc');
+            ->defaultSort('id', 'desc')
+            ->recordUrl(null);
     }
 
     public static function getRelations(): array
@@ -181,7 +182,7 @@ class TemplateResource extends Resource
         return [
             'index' => Pages\ListTemplates::route('/'),
             'create' => Pages\CreateTemplate::route('/create'),
-            //'view' => Pages\ViewTemplate::route('/{record}'),
+            'view' => Pages\ViewTemplate::route('/{record}'),
             'edit' => Pages\EditTemplate::route('/{record}/edit'),
         ];
     }
