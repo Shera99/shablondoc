@@ -31,8 +31,8 @@ class CertificationSignatureCU extends BaseRequest
             'language_id' => 'required|exists:languages,id',
             'certification_signature_type_id' => 'required|exists:certification_signature_types,id',
             'file' => 'nullable|file|mimes:jpeg,png,jpg,svg|max:10240', // Updated to allow image files up to 10MB
-            'user' => 'required|string',
-            'view' => 'required|string',
+//            'user' => 'required|string',
+//            'view' => 'required|string',
             'certification_text' => 'required|string',
         ];
     }
@@ -58,10 +58,10 @@ class CertificationSignatureCU extends BaseRequest
             'file.file' => 'The uploaded file must be a file.',
             'file.mimes' => 'The file must be one of the following types: jpeg, png, jpg, svg.',
             'file.max' => 'The file must not exceed 10MB.',
-            'user.required' => 'The user field is required.',
-            'user.string' => 'The user field must be a string.',
-            'view.required' => 'The view field is required.',
-            'view.string' => 'The view field must be a string.',
+//            'user.required' => 'The user field is required.',
+//            'user.string' => 'The user field must be a string.',
+//            'view.required' => 'The view field is required.',
+//            'view.string' => 'The view field must be a string.',
             'certification_text.required' => 'The certification text field is required.',
             'certification_text.string' => 'The certification text field must be a string.',
         ];

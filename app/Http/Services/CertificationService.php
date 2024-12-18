@@ -14,8 +14,9 @@ class CertificationService
     public function formatDataAndSaveImage(CertificationSignatureCU $request): array
     {
         $data = $request->only([
-            'company_id', 'country_id', 'city_id', 'language_id',
-            'certification_signature_type_id', 'user', 'view', 'certification_text'
+            'company_id', 'country_id', 'city_id',
+            'language_id', 'certification_signature_type_id', 'certification_text'
+//            'user', 'view'
         ]);
 
         if ($request->hasFile('file')) {
