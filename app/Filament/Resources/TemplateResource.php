@@ -181,7 +181,7 @@ class TemplateResource extends Resource
         return [
             'index' => Pages\ListTemplates::route('/'),
             'create' => Pages\CreateTemplate::route('/create'),
-            'view' => Pages\ViewTemplate::route('/{record}'),
+            //'view' => Pages\ViewTemplate::route('/{record}'),
             'edit' => Pages\EditTemplate::route('/{record}/edit'),
         ];
     }
