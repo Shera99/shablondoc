@@ -106,7 +106,7 @@ class TemplateResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->searchable()->label('Название')->url(),
+                    ->searchable()->label('Название'),
                 Tables\Columns\TextColumn::make('country.name')
                     ->numeric()
                     ->sortable()->label('Страна'),
