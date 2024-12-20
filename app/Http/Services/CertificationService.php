@@ -15,8 +15,8 @@ class CertificationService
     {
         $data = $request->only([
             'company_id', 'country_id', 'city_id',
-            'language_id', 'certification_signature_type_id', 'certification_text'
-//            'user', 'view'
+            'language_id', 'certification_text'
+//            'user', 'view', 'certification_signature_type_id'
         ]);
 
         if ($request->hasFile('file')) {

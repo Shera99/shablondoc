@@ -29,7 +29,7 @@ class CertificationSignatureCU extends BaseRequest
             'country_id' => 'required|exists:countries,id',
             'city_id' => 'required|exists:cities,id',
             'language_id' => 'required|exists:languages,id',
-            'certification_signature_type_id' => 'required|exists:certification_signature_types,id',
+//            'certification_signature_type_id' => 'required|exists:certification_signature_types,id',
             'file' => 'nullable|file|mimes:jpeg,png,jpg,svg|max:10240', // Updated to allow image files up to 10MB
 //            'user' => 'required|string',
 //            'view' => 'required|string',
