@@ -48,23 +48,23 @@ class CertificationSignatureResource extends Resource
                             ->relationship('company', 'name')
                             ->label('Компания')
                             ->required(),
-                        Forms\Components\Select::make('certification_signature_type_id')
-                            ->relationship('certificationSignatureType', 'name')
-                            ->label('Тип')
-                            ->required(),
+//                        Forms\Components\Select::make('certification_signature_type_id')
+//                            ->relationship('certificationSignatureType', 'name')
+//                            ->label('Тип')
+//                            ->required(),
                         Forms\Components\Select::make('language_id')
                             ->relationship('language', 'name')
                             ->label('Язык')
                             ->required(),
                     ]),
-                    Forms\Components\Grid::make()->schema([
-                        Forms\Components\TextInput::make('view')
-                            ->label('Вид')
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('user')
-                            ->label('Пользователь')
-                            ->maxLength(255),
-                    ]),
+//                    Forms\Components\Grid::make()->schema([
+//                        Forms\Components\TextInput::make('view')
+//                            ->label('Вид')
+//                            ->maxLength(255),
+//                        Forms\Components\TextInput::make('user')
+//                            ->label('Пользователь')
+//                            ->maxLength(255),
+//                    ]),
                     Forms\Components\RichEditor::make('certification_text')
                         ->required()->columnSpanFull()->columnSpan(8)
                         ->label('Удостоверяющаю надпись'),
@@ -104,20 +104,20 @@ class CertificationSignatureResource extends Resource
                     ->label('Компания')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('certificationSignatureType.name')
-                    ->label('Тип')
-                    ->numeric()
-                    ->sortable(),
+//                Tables\Columns\TextColumn::make('certificationSignatureType.name')
+//                    ->label('Тип')
+//                    ->numeric()
+//                    ->sortable(),
                 Tables\Columns\TextColumn::make('language.name')
                     ->label('Язык')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('view')
-                    ->label('Вид')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('user')
-                    ->label('Пользователь')
-                    ->searchable(),
+//                Tables\Columns\TextColumn::make('view')
+//                    ->label('Вид')
+//                    ->searchable(),
+//                Tables\Columns\TextColumn::make('user')
+//                    ->label('Пользователь')
+//                    ->searchable(),
                 Tables\Columns\ImageColumn::make('file')
                     ->disk('public')
                     ->width(200)
