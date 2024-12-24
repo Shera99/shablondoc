@@ -22,7 +22,7 @@ class Order extends Model
         'template_data_id',
         'company_address_id',
         'country_id',
-        'language_id',
+        'translation_direction_id',
         'certification_signature_id',
         'document_name',
         'document_file',
@@ -101,9 +101,9 @@ class Order extends Model
         return $this->belongsTo(Country::class);
     }
 
-    public function language(): BelongsTo
+    public function translationDirection(): BelongsTo
     {
-        return $this->belongsTo(Language::class);
+        return $this->belongsTo(TranslationDirection::class);
     }
 
     public function certificationSignature(): BelongsTo

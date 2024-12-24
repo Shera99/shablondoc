@@ -33,7 +33,7 @@ class OrderService
         elseif (isset($request_data['document_name']) && !empty($request_data['document_name'])) {
             $this->order->document_name = $request_data['document_name'];
             $this->order->country_id = $request_data['country_id'];
-            $this->order->language_id = $request_data['language_id'];
+            $this->order->translation_direction_id = $request_data['language_id'];
         } else {
             return ['error' => Response::HTTP_BAD_REQUEST, 'message' => 'Document data is required.'];
         }

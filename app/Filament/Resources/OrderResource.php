@@ -49,9 +49,19 @@ class OrderResource extends Resource
                     Forms\Components\Select::make('country_id')
                         ->relationship('country', 'name')
                         ->label('Страна'),
-                    Forms\Components\Select::make('language_id')
-                        ->relationship('language', 'name')
-                        ->label('Язык перевода'),
+                    Forms\Components\Select::make('translation_direction_id')
+                        ->relationship('translationDirection', 'id') // Оставляем связь
+                        ->options(function () {
+                            return \App\Models\TranslationDirection::with(['sourceLanguage', 'targetLanguage'])
+                                ->get()
+                                ->mapWithKeys(function ($direction) {
+                                    return [
+                                        $direction->id => "{$direction->sourceLanguage->name} - {$direction->targetLanguage->name}",
+                                    ];
+                                });
+                        })
+                        ->required()
+                        ->label('Языковое направление'),
                     Forms\Components\DateTimePicker::make('delivery_date')
                         ->required()
                         ->label('Дата доставки'),
@@ -124,9 +134,13 @@ class OrderResource extends Resource
                 Tables\Columns\TextColumn::make('country.name')
                     ->sortable()
                     ->label('Страна'),
-                Tables\Columns\TextColumn::make('language.name')
-                    ->sortable()
-                    ->label('Язык перевода'),
+                Tables\Columns\TextColumn::make('translationDirection.id')
+                    ->formatStateUsing(function ($state, $record) {
+                        return $record->translationDirection
+                            ? $record->translationDirection->sourceLanguage->name . ' - ' . $record->translationDirection->targetLanguage->name
+                            : '-';
+                    })
+                    ->sortable()->label('Языковое направление'),
                 Tables\Columns\TextColumn::make('delivery_date')
                     ->dateTime()
                     ->sortable()

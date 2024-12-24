@@ -4,14 +4,12 @@ namespace App\Http\Controllers\Api\Order;
 
 use App\Enums\OrderStatus;
 use App\Events\NewOrder;
-use App\Models\Employee;
 use App\Models\Setting;
 use App\Models\Template;
 use App\Models\TemplateData;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Support\Facades\DB;
 use App\Http\Requests\Api\Order\{OrderCreateRequest,
     OrderSetWebCallBackRequest,
     OrderTranslateRequest,

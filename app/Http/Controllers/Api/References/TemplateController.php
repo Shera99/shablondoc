@@ -8,7 +8,6 @@ use App\Http\Requests\Api\Template\TemplateCreateRequest;
 use App\Models\Template;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
 class TemplateController extends \App\Http\Controllers\Controller
