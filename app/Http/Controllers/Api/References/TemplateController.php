@@ -18,14 +18,11 @@ class TemplateController extends \App\Http\Controllers\Controller
      */
     public function list(Request $request): JsonResponse
     {
-        $language_id = $request->get('language_id');
         $templates = Template::query()
             ->where('status', TemplateStatus::ACTIVE)
             ->where('country_id', $request->get('country_id'))
             ->where('document_type_id', $request->get('document_type_id'))
-            ->whereHas('translationDirection', function ($query) use ($language_id) {
-                $query->where('target_language_id', $language_id);
-            })
+            ->where('translation_direction_id', $request->get('language_id'))
             ->orderBy('name', 'asc')
             ->get(['id', 'name'])->toArray();
 
