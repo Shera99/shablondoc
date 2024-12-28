@@ -204,12 +204,16 @@ class OrderController extends \App\Http\Controllers\Controller
             'templateData',
             'companyAddress',
             'country',
-            'translationDirection.sourceLanguage as orderSourceLanguage',
-            'translationDirection.targetLanguage as orderTargetLanguage',
+            'translationDirection.sourceLanguage',
+            'translationDirection.targetLanguage',
             'certificationSignature'
         ]);
 
-        $this->setResponse($order->toArray());
+        $orderArray = $order->toArray();
+        $orderArray['orderSourceLanguage'] = $orderArray['translationDirection']['sourceLanguage'] ?? null;
+        $orderArray['orderTargetLanguage'] = $orderArray['translationDirection']['targetLanguage'] ?? null;
+
+        $this->setResponse($orderArray);
         return $this->sendResponse();
     }
 }
