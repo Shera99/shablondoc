@@ -204,7 +204,8 @@ class OrderController extends \App\Http\Controllers\Controller
             'templateData',
             'companyAddress',
             'country',
-            'language',
+            'translationDirection.sourceLanguage as orderSourceLanguage',
+            'translationDirection.targetLanguage as orderTargetLanguage',
             'certificationSignature'
         ]);
 
