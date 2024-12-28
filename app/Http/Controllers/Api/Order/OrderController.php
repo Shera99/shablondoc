@@ -210,6 +210,8 @@ class OrderController extends \App\Http\Controllers\Controller
         ]);
 
         $orderArray = $order->toArray();
+        print_r($orderArray);
+        exit;
         $orderArray['orderSourceLanguage'] = $orderArray['translationDirection']['sourceLanguage'] ?? null;
         $orderArray['orderTargetLanguage'] = $orderArray['translationDirection']['targetLanguage'] ?? null;
 
