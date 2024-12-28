@@ -209,13 +209,7 @@ class OrderController extends \App\Http\Controllers\Controller
             'certificationSignature'
         ]);
 
-        $orderArray = $order->toArray();
-        print_r($orderArray);
-        exit;
-        $orderArray['orderSourceLanguage'] = $orderArray['translationDirection']['sourceLanguage'] ?? null;
-        $orderArray['orderTargetLanguage'] = $orderArray['translationDirection']['targetLanguage'] ?? null;
-
-        $this->setResponse($orderArray);
+        $this->setResponse($order->toArray());
         return $this->sendResponse();
     }
 }
