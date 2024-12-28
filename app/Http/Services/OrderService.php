@@ -81,16 +81,28 @@ class OrderService
             ->where('p.type', 'order')->whereIn('o.status', $statuses)
             ->where('p.status', 'completed');
 
+//        $query->when(DB::raw('o.translation_direction_id IS NOT NULL'), function($q) {
+//            $q->leftJoin('translation_directions as td', 'o.translation_direction_id', '=', 'td.id')
+//                ->leftJoin('languages as lt', 'td.target_language_id', '=', 'lt.id')
+//                ->leftJoin('languages as ls', 'td.source_language_id', '=', 'ls.id');
+//        }, function($q) {
+//            $q->when(DB::raw('o.translation_direction_id IS NULL AND o.template_id IS NOT NULL'), function($q) {
+//                $q->leftJoin('translation_directions as td', 't.translation_direction_id', '=', 'td.id')
+//                    ->leftJoin('languages as lt', 'td.target_language_id', '=', 'lt.id')
+//                    ->leftJoin('languages as ls', 'td.source_language_id', '=', 'ls.id');
+//            });
+//        });
+
         $query->when(DB::raw('o.translation_direction_id IS NOT NULL'), function($q) {
             $q->leftJoin('translation_directions as td', 'o.translation_direction_id', '=', 'td.id')
                 ->leftJoin('languages as lt', 'td.target_language_id', '=', 'lt.id')
                 ->leftJoin('languages as ls', 'td.source_language_id', '=', 'ls.id');
-        }, function($q) {
-            $q->when(DB::raw('o.translation_direction_id IS NULL AND o.template_id IS NOT NULL'), function($q) {
-                $q->leftJoin('translation_directions as td', 't.translation_direction_id', '=', 'td.id')
-                    ->leftJoin('languages as lt', 'td.target_language_id', '=', 'lt.id')
-                    ->leftJoin('languages as ls', 'td.source_language_id', '=', 'ls.id');
-            });
+        });
+
+        $query->when(DB::raw('o.translation_direction_id IS NULL AND o.template_id IS NOT NULL'), function($q) {
+            $q->leftJoin('translation_directions as td', 't.translation_direction_id', '=', 'td.id')
+                ->leftJoin('languages as lt', 'td.target_language_id', '=', 'lt.id')
+                ->leftJoin('languages as ls', 'td.source_language_id', '=', 'ls.id');
         });
 
         if ($type != 'completed') {
