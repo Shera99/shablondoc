@@ -82,16 +82,19 @@ class OrderService
             ->where('p.status', 'completed');
 
         $query->when(function($q) {
-            return DB::raw('o.language_id IS NOT NULL');
+            return DB::raw('o.translation_direction_id IS NOT NULL');
         }, function($q) {
-            $q->leftJoin('languages as l', 'o.language_id', '=', 'l.id');
+            $q->leftJoin('translation_directions as td', 'o.translation_direction_id', '=', 'td.id')
+                ->leftJoin('languages as lt', 'td.target_language_id', '=', 'lt.id')
+                ->leftJoin('languages as ls', 'td.source_language_id', '=', 'ls.id');
         });
 
         $query->when(function($q) {
-            return DB::raw('o.language_id IS NULL AND o.template_id IS NOT NULL');
+            return DB::raw('o.translation_direction_id IS NULL AND o.template_id IS NOT NULL');
         }, function($q) {
             $q->leftJoin('translation_directions as td', 't.translation_direction_id', '=', 'td.id')
-                ->leftJoin('languages as ld', 'td.target_language_id', '=', 'ld.id');
+                ->leftJoin('languages as lt', 'td.target_language_id', '=', 'lt.id')
+                ->leftJoin('languages as ls', 'td.source_language_id', '=', 'ls.id');
         });
 
         if ($type != 'completed') {
@@ -150,8 +153,9 @@ class OrderService
             'o.language_id', 'o.document_name', 'o.document_file', 'o.email', 'o.phone_number', 'o.delivery_date',
             'o.comment', 'o.status', 'o.created_at', 'o.print_date', 'o.updated_at',
             'c_a.name as company_address_name', 't.name as template_name', 'cm.id as company_id', 'cm.name as company_name',
-            'c.name as country_name', 'l.name as language_name', 'l.name_en as language_name_en', 'u.login as translator_login',
-            'u.name as translator_name', 'u.last_name as translator_last_name', 'ld.name as l_language_name', 'ld.name_en as l_language_name_en',
+            'c.name as country_name', 'u.login as translator_login', 'u.name as translator_name', 'u.last_name as translator_last_name',
+            'lt.name as target_language_name', 'lt.name_en as target_language_name_en',
+            'ls.name as source_language_name', 'ls.name_en as source_language_name_en',
         )->paginate(15)->toArray();
     }
 }
