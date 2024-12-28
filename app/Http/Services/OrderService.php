@@ -93,19 +93,29 @@ class OrderService
 //            });
 //        });
 
-        $query->when(function ($query) {
-            return $query->whereNotNull('o.translation_direction_id');
-        }, function ($q) {
-            $q->leftJoin('translation_directions as td', 'o.translation_direction_id', '=', 'td.id')
+//        $query->when(function ($query) {
+//            return $query->whereNotNull('o.translation_direction_id');
+//        }, function ($q) {
+//            $q->leftJoin('translation_directions as td', 'o.translation_direction_id', '=', 'td.id')
+//                ->leftJoin('languages as lt', 'td.target_language_id', '=', 'lt.id')
+//                ->leftJoin('languages as ls', 'td.source_language_id', '=', 'ls.id');
+//        }, function ($q) {
+//            $q->whereNull('o.translation_direction_id')
+//                ->whereNotNull('o.template_id')
+//                ->leftJoin('translation_directions as td', 't.translation_direction_id', '=', 'td.id')
+//                ->leftJoin('languages as lt', 'td.target_language_id', '=', 'lt.id')
+//                ->leftJoin('languages as ls', 'td.source_language_id', '=', 'ls.id');
+//        });
+
+        if ($query->whereNotNull('o.translation_direction_id')->exists()) {
+            $query->leftJoin('translation_directions as td', 'o.translation_direction_id', '=', 'td.id')
                 ->leftJoin('languages as lt', 'td.target_language_id', '=', 'lt.id')
                 ->leftJoin('languages as ls', 'td.source_language_id', '=', 'ls.id');
-        }, function ($q) {
-            $q->whereNull('o.translation_direction_id')
-                ->whereNotNull('o.template_id')
-                ->leftJoin('translation_directions as td', 't.translation_direction_id', '=', 'td.id')
+        } elseif ($query->whereNull('o.translation_direction_id')->whereNotNull('o.template_id')->exists()) {
+            $query->leftJoin('translation_directions as td', 't.translation_direction_id', '=', 'td.id')
                 ->leftJoin('languages as lt', 'td.target_language_id', '=', 'lt.id')
                 ->leftJoin('languages as ls', 'td.source_language_id', '=', 'ls.id');
-        });
+        }
 
         if ($type != 'completed') {
             if ($type == 'translated' && auth()->user()->hasRole('Employee'))
