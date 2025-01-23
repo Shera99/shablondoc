@@ -28,7 +28,7 @@ class TemplateCreateRequest extends FormRequest
             'document_type_id' => 'nullable|int|exists:document_types,id',
             'new_document_type' => 'nullable|string',
             'translation_direction_id' => 'required|int|exists:translation_directions,id',
-            'code' => 'required',
+//            'code' => 'required',
             'email' => [
                 'required',
                 'string',
