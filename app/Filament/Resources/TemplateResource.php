@@ -155,7 +155,7 @@ class TemplateResource extends Resource
                 Tables\Actions\ViewAction::make()
                     ->url(fn ($record) => config('app.front_url') . '/view?id=' . $record->id . '&user=' . auth()->user()->getAuthIdentifier() . '&token=' . config('app.admin_secret'))
                     ->openUrlInNewTab(),
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()->openUrlInNewTab(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
